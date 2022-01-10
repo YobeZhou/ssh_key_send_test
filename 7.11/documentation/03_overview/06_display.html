@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>显示(Displays) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="字体(Fonts)" href="07_font.html" />
+    <link rel="prev" title="输入设备(Input devices)" href="05_indev.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">显示(Displays)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">多种显示支持</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">仅使用一个显示器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">镜面展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">分割影像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">透明屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">显示器功能</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">不活跃</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">背景</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">色彩</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">转换颜色</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">交换16种颜色</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">创建和混合颜色</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">不透明度</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">内置颜色</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>显示(Displays)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/06_display.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="displays">
+<h1>显示(Displays)<a class="headerlink" href="#displays" title="永久链接至标题">¶</a></h1>
+<p>LVGL中显示的基本概念在  <a class="reference external" href="http://lvgl.100ask.net/documentation/02_porting/03_display.html">显示接口</a> 部分中进行了说明。因此，在进一步阅读之前，请先阅读  <a class="reference external" href="http://lvgl.100ask.net/documentation/02_porting/03_display.html">显示接口</a>  部分。</p>
+<div class="section" id="id2">
+<h2>多种显示支持<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>在LVGL中，可以有多个显示，每个显示都有自己的驱动程序和对象。唯一的限制是，每个显示器都必须具有相同的色深（如中所述 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> ）。如果在这方面显示有所不同，则可以在驱动程序中将渲染的图像转换为正确的格式 <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> 。</p>
+<p>创建更多的显示很容易：只需初始化更多的显示缓冲区并为每个显示注册另一个驱动程序。创建UI时，用于 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default(disp)</span></code> 告诉库在其上创建对象的显示。</p>
+<p>为什么要多显示器支持？这里有些例子：</p>
+<ul class="simple">
+<li><p>具有带有本地UI的“常规” TFT显示屏，并根据需要在VNC上创建“虚拟”屏幕。（需要添加 VNC 驱动程序）。</p></li>
+<li><p>具有大型TFT显示屏和小型单色显示屏。</p></li>
+<li><p>在大型仪器或技术中具有一些较小且简单的显示器。</p></li>
+<li><p>有两个大型TFT显示屏：一个用于客户，一个用于店员。</p></li>
+</ul>
+<div class="section" id="id3">
+<h3>仅使用一个显示器<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>使用更多显示器可能很有用，但在大多数情况下，并非必需。因此，如果仅注册一个显示器，则整个多显示器概念将被完全隐藏。默认情况下，最后创建的（唯一的）显示用作默认设置。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> ,  <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr)</span></code> ,  <code class="docutils literal notranslate"><span class="pre">lv_layer_top()</span></code> ,  <code class="docutils literal notranslate"><span class="pre">lv_layer_sys()</span></code> ,  <code class="docutils literal notranslate"><span class="pre">LV_HOR_RES</span></code> 以及 <code class="docutils literal notranslate"><span class="pre">LV_VER_RES</span></code> 始终应用在最后创建的（默认）屏幕上。
+如果将 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 作为 <code class="docutils literal notranslate"><span class="pre">disp</span></code> 参数传递给显示相关功能，通常将使用默认显示。
+例如。 <code class="docutils literal notranslate"><span class="pre">lv_disp_trig_activity(NULL)</span></code> 将在默认屏幕上触发用户活动。（请参见下面的非活动状态）。</p>
+</div>
+<div class="section" id="id4">
+<h3>镜面展示<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>要将显示器的图像镜像到另一台显示器，则无需使用多显示器支持。只需将在 <code class="docutils literal notranslate"><span class="pre">drv.flush_cb</span></code> 中接收的缓冲区也转移到另一个显示器。</p>
+</div>
+<div class="section" id="id5">
+<h3>分割影像<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>可以从较小的显示创建较大的显示。可以如下创建它：</p>
+<ol class="arabic simple">
+<li><p>将显示器的分辨率设置为大显示器的分辨率。</p></li>
+<li><p>在中 <code class="docutils literal notranslate"><span class="pre">drv.flush_cb</span></code> ，截断并修改 <code class="docutils literal notranslate"><span class="pre">area</span></code> 每个显示的参数。</p></li>
+<li><p>将缓冲区的内容发送到带有截断区域的每个显示。</p></li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h3>屏幕<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>每个显示器都有每组屏幕和屏幕上的对象。</p>
+<p>确保不要混淆显示和屏幕：</p>
+<ul class="simple">
+<li><p><strong>显示</strong> 是绘制像素的物理硬件。</p></li>
+<li><p><strong>屏幕</strong> 是与特定显示器关联的高级根对象。一个显示器可以具有与其关联的多个屏幕，但反之则不然。</p></li>
+</ul>
+<p>屏幕可以视为没有父级的最高级别的容器。屏幕的大小始终等于其显示，屏幕的大小始终为(0;0)。
+因此，无法更改屏幕坐标，即，不能在屏幕上使用 lv_obj_set_pos(), lv_obj_set_size() 或类似功能。</p>
+<p>可以从任何对象类型创建屏幕，但是，两种最典型的类型是 <a href="#id21"><span class="problematic" id="id22">`基础对象`_</span></a> 和 <a href="#id23"><span class="problematic" id="id24">`图像`_</span></a> （用于创建墙纸）。</p>
+<p>要创建屏幕，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span> <span class="pre">*</span> <span class="pre">scr</span> <span class="pre">=</span> <span class="pre">lv_&lt;type&gt;_create(NULL,</span> <span class="pre">copy)</span></code> 。复制可以是另一个屏幕来复制它。</p>
+<p>要加载屏幕，请使用 <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr)</span></code> 。要获取活动屏幕，请使用 <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> 。这些功能在默认显示屏上起作用。如果要指定要处理的显示器，请使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_get_scr_act(disp)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_disp_load_sc(disp，scr)</span></code> 。屏幕也可以加载动画。在这里阅读更多。</p>
+<p>可以使用 <a href="#id7"><span class="problematic" id="id8">``</span></a>lv_obj_del(scr)``删除屏幕，但请确保不删除当前加载的屏幕。</p>
+</div>
+<div class="section" id="id9">
+<h3>透明屏幕<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>通常，屏幕的不透明度是 <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> 为其子级提供坚实的背景。如果不是这种情况（不透明度&lt;100％），则显示器的背景颜色或图像将可见。有关更多详细信息，请参见显示背景部分。如果显示器的背景不透明性也不是，则 <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVERLVGL</span></code> 不会绘制纯色背景。</p>
+<p>此配置（透明屏幕和显示器）可用于创建OSD菜单，例如在其中将视频播放到下层，并在上层创建菜单。</p>
+<p>为了处理透明显示器，LVGL需要使用特殊（较慢）的颜色混合算法，因此需要使用LV_COLOR_SCREEN_TRANSPn 启用此功能lv_conf.h。由于此模式在像素的Alpha通道上运行，因此也是必需的。32位颜色的Alpha通道在没有对象的情况下将为0，在有实体对象的情况下将为255。LV_COLOR_DEPTH = 32</p>
+<p>总而言之，要启用透明屏幕和显示以创建类似于OSD菜单的UI：</p>
+<ul class="simple">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 中启用 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_SCREEN_TRANSP</span></code></p></li>
+<li><p>请务必使用 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span> <span class="pre">32</span></code></p></li>
+<li><p>将屏幕的不透明度设置为 <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> 例如 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_style_local_bg_opa(lv_scr_act(),</span> <span class="pre">LV_OBJMASK_PART_MAIN,</span> <span class="pre">LV_STATE_DEFAULT,</span> <span class="pre">LV_OPA_TRANSP)</span></code></p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_opa(NULL,</span> <span class="pre">LV_OPA_TRANSP);</span></code> 将显示不透明度设置为 <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>显示器功能<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id11">
+<h4>不活跃<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h4>
+<p>在每个显示器上测量用户的不活动状态。每次使用输入设备（如果与显示器关联）都被视为一项活动。要获取自上一次活动以来经过的时间，请使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_get_inactive_time(disp)</span></code> 。如果传递了 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，则所有显示（不是默认显示）将返回整体最小的不活动时间。</p>
+<p>可以使用手动触发活动 <code class="docutils literal notranslate"><span class="pre">lv_disp_trig_activity(disp)</span></code> 。如果 <code class="docutils literal notranslate"><span class="pre">disp</span></code> 为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，则将使用默认屏幕（并非所有显示）。</p>
+</div>
+<div class="section" id="id12">
+<h4>背景<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h4>
+<p>每个显示都有背景色，背景图像和背景不透明度属性。当当前屏幕是透明的或未定位为覆盖整个显示器时，它们将变为可见。</p>
+<p>背景色是填充显示的一种简单颜色。可以使用 <a href="#id13"><span class="problematic" id="id14">``</span></a>lv_disp_set_bg_color(disp，color)``进行调整；</p>
+<p>背景图像是用作墙纸的文件路径或指向 <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span></code> 变量（转换后的图像）的指针。可以使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_color(disp，＆my_img);</span></code> 进行设置。如果设置了背景图片（非 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ），则背景将不会填充 <code class="docutils literal notranslate"><span class="pre">bg_color</span></code>。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_opa(disp，opa)</span></code> 调整背景颜色或图像的不透明度。</p>
+<p>这些函数的`` disp`` 参数可以为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，以将其引用到默认显示。</p>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>色彩<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>颜色模块处理所有与颜色相关的功能，例如更改颜色深度，从十六进制代码创建颜色，在颜色深度之间转换，混合颜色等。</p>
+<p>颜色模块定义了以下变量类型：</p>
+<ul class="simple">
+<li><p><strong>lv_color1_t</strong> 存储单色。为了兼容性，它也具有R，G，B字段，但它们始终是相同的值（1个字节）</p></li>
+<li><p><strong>lv_color8_t</strong> 用于存储8位颜色（1字节）的R（3位），G（3位），B（2位）的结构体。</p></li>
+<li><p><strong>lv_color16_t</strong> 用于存储16位颜色（2字节）的R（5位），G（6位），B（5位）的结构体。</p></li>
+<li><p><strong>lv_color32_t</strong> 用于存储24位颜色（4字节）的R（8位），G（8位），B（8位）的结构体。</p></li>
+<li><p><strong>lv_color_t</strong> 等于 <code class="docutils literal notranslate"><span class="pre">lv_color1/8/16/24_t</span></code> 根据颜色深度设置</p></li>
+<li><p><strong>lv_color_int_t</strong>  <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> ， <code class="docutils literal notranslate"><span class="pre">uint16_t</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code> 根据颜色深度设置。用于从纯数字构建颜色阵列。</p></li>
+<li><p><strong>lv_opa_t</strong> 一种简单的 <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> 类型，用于描述不透明度。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> ， <code class="docutils literal notranslate"><span class="pre">lv_color1_t</span></code> ， <code class="docutils literal notranslate"><span class="pre">lv_color8_t</span></code> ， <code class="docutils literal notranslate"><span class="pre">lv_color16_t</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_color32_t</span></code> 类型具有四个字段：</p>
+<ul class="simple">
+<li><p><strong>ch.red</strong>            红色通道</p></li>
+<li><p><strong>ch.green</strong>  绿色通道</p></li>
+<li><p><strong>ch.blue</strong>           蓝色通道</p></li>
+<li><p><strong>full</strong>                      红+绿+蓝为一个数字</p></li>
+</ul>
+<p>通过将 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> 定义设置为1（单色），8、16或32，可以在lv_conf.h中设置当前颜色深度。</p>
+<div class="section" id="id16">
+<h4>转换颜色<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h4>
+<p>可以将一种颜色从当前颜色深度转换为另一种颜色。转换器函数以数字返回，因此必须使用 <code class="docutils literal notranslate"><span class="pre">完整</span></code> 字段：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">lv_color_t</span> <span class="n">c</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">c</span><span class="p">.</span><span class="n">red</span>   <span class="o">=</span> <span class="mh">0x38</span><span class="p">;</span>
+<span class="linenos"> 3</span>    <span class="n">c</span><span class="p">.</span><span class="n">green</span> <span class="o">=</span> <span class="mh">0x70</span><span class="p">;</span>
+<span class="linenos"> 4</span>    <span class="n">c</span><span class="p">.</span><span class="n">blue</span>  <span class="o">=</span> <span class="mh">0xCC</span><span class="p">;</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">lv_color1_t</span> <span class="n">c1</span><span class="p">;</span>
+<span class="linenos"> 7</span>    <span class="n">c1</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">lv_color_to1</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>      <span class="cm">/*Return 1 for light colors, 0 for dark colors*/</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">lv_color8_t</span> <span class="n">c8</span><span class="p">;</span>
+<span class="linenos">10</span>    <span class="n">c8</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">lv_color_to8</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>      <span class="cm">/*Give a 8 bit number with the converted color*/</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">lv_color16_t</span> <span class="n">c16</span><span class="p">;</span>
+<span class="linenos">13</span>    <span class="n">c16</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">lv_color_to16</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="cm">/*Give a 16 bit number with the converted color*/</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">lv_color32_t</span> <span class="n">c24</span><span class="p">;</span>
+<span class="linenos">16</span>    <span class="n">c32</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">lv_color_to32</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>    <span class="cm">/*Give a 32 bit number with the converted color*/</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id17">
+<h4>交换16种颜色<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h4>
+<p>可以在lv_conf.h中设置 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_16_SWAP</span></code> 以交换RGB565颜色的字节。如果通过SPI等面向字节的接口发送16位颜色，则很有用。</p>
+<p>由于16位数字以Little Endian格式存储（低位地址的低位字节），因此接口将首先发送低位字节。但是，显示通常首先需要较高的字节。字节顺序不匹配会导致色彩严重失真。</p>
+</div>
+<div class="section" id="id18">
+<h4>创建和混合颜色<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h4>
+<p>可以使用LV_COLOR_MAKE宏以当前颜色深度创建颜色。它使用3个参数（红色，绿色，蓝色）作为8位数字。例如，创建浅红色： <code class="docutils literal notranslate"><span class="pre">my_color</span> <span class="pre">=</span> <span class="pre">COLOR_MAKE(0xFF,0x80,0x80)</span></code> .</p>
+<p>颜色也可以从十六进制代码创建： <code class="docutils literal notranslate"><span class="pre">my_color</span> <span class="pre">=</span> <span class="pre">lv_color_hex(0x288ACF)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">my_color</span> <span class="pre">=</span> <span class="pre">lv_folro_hex3(0x28C)</span></code> .</p>
+<p>可以混合两种颜色：<code class="docutils literal notranslate"><span class="pre">mixed_color</span> <span class="pre">=</span> <span class="pre">lv_color_mix(color1,</span> <span class="pre">color2,</span> <span class="pre">ratio)</span></code> 。比例可以是 0..255。 0 表示全彩色 2，255 表示全彩色 1。</p>
+<p>也可以使用 <code class="docutils literal notranslate"><span class="pre">lv_color_hsv_to_rgb(hue，saturation，value)</span></code> 从HSV空间创建颜色。色相应在 0..360 范围内，饱和度和值应在 0..100 范围内。</p>
+</div>
+<div class="section" id="id19">
+<h4>不透明度<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h4>
+<p>为了描述不透明度，创建了 <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> 类型作为 <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> 的包装。还介绍了一些定义：</p>
+<ul class="simple">
+<li><p><strong>LV_OPA_TRANSP</strong> 值：0，表示不透明度使颜色完全透明</p></li>
+<li><p><strong>LV_OPA_10</strong> 值：25，表示颜色仅覆盖一点</p></li>
+<li><p><strong>LV_OPA_20 … OPA_80</strong> 比较常用</p></li>
+<li><p><strong>LV_OPA_90</strong>  值：229，表示几乎完全覆盖的颜色</p></li>
+<li><p><strong>LV_OPA_COVER</strong> 值：255，表示颜色完全覆盖</p></li>
+</ul>
+<p>还可以将 <code class="docutils literal notranslate"><span class="pre">LV_OPA_*</span></code> 定义 <code class="docutils literal notranslate"><span class="pre">lv_color_mix()</span></code> 作为比率使用。</p>
+</div>
+<div class="section" id="id20">
+<h4>内置颜色<a class="headerlink" href="#id20" title="永久链接至标题">¶</a></h4>
+<p>颜色模块定义了最基本的颜色，例如：</p>
+<ul class="simple">
+<li><p>#FFFFFF LV_COLOR_WHITE</p></li>
+<li><p>#000000 LV_COLOR_BLACK</p></li>
+<li><p>#808080 LV_COLOR_GRAY</p></li>
+<li><p>#c0c0c0 LV_COLOR_SILVER</p></li>
+<li><p>#ff0000 LV_COLOR_RED</p></li>
+<li><p>#800000 LV_COLOR_MAROON</p></li>
+<li><p>#00ff00 LV_COLOR_LIME</p></li>
+<li><p>#008000 LV_COLOR_GREEN</p></li>
+<li><p>#808000 LV_COLOR_OLIVE</p></li>
+<li><p>#0000ff LV_COLOR_BLUE</p></li>
+<li><p>#000080 LV_COLOR_NAVY</p></li>
+<li><p>#008080 LV_COLOR_TEAL</p></li>
+<li><p>#00ffff LV_COLOR_CYAN</p></li>
+<li><p>#00ffff LV_COLOR_AQUA</p></li>
+<li><p>#800080 LV_COLOR_PURPLE</p></li>
+<li><p>#ff00ff LV_COLOR_MAGENTA</p></li>
+<li><p>#ffa500 LV_COLOR_ORANGE</p></li>
+<li><p>#ffff00 LV_COLOR_YELLOW</p></li>
+</ul>
+<p>以及 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_WHITE</span></code> （全白）。</p>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="07_font.html" class="btn btn-neutral float-right" title="字体(Fonts)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="05_indev.html" class="btn btn-neutral float-left" title="输入设备(Input devices)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

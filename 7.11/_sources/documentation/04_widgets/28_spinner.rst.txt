@@ -1,0 +1,113 @@
+==================================
+旋转器(lv_spinner)
+==================================
+
+概述
+##################################
+旋转器对象是边界上的旋转弧，实现旋转加载效果。
+
+
+零件和样式
+##################################
+旋转器包括一下部分：
+
+- ``LV_SPINNER_PART_BG``: 主要部分
+- ``LV_SPINNER_PART_INDIC``: 旋转弧（虚拟部分）
+
+零件和样式的作用与 `弧(lv_arc)`_ 情况相同。
+
+.. _弧(lv_arc): http://lvgl.100ask.net/documentation/04_widgets/02_arc.html
+
+
+用法
+##################################
+
+弧长
+**********************************
+圆弧的长度可以通过 ``lv_spinner_set_arc_length(spinner, deg)`` 进行调整。
+
+
+旋转速度
+**********************************
+旋转速度可以通过 ``lv_spinner_set_spin_time(preload, time_ms)`` 进行调整。
+
+
+旋转类型
+**********************************
+支持以下旋转类型
+
+- **LV_SPINNER_TYPE_SPINNING_ARC** 旋转弧线，在顶部减速
+- **LV_SPINNER_TYPE_FILLSPIN_ARC** 旋转弧线，在顶部放慢速度，但也伸展弧线
+- **LV_SPINNER_TYPE_CONSTANT_ARC** 以恒定速度旋转
+
+使用 ``lv_spinner_set_type(preload, LV_SPINNER_TYPE_...)`` 进行设置
+
+
+旋转方向
+**********************************
+旋转方向可以通过 ``lv_spinner_set_dir(preload, LV_SPINNER_DIR_FORWARD/BACKWARD)`` 进行更改。
+
+
+仅支持 `通用事件`_  
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+对象类型不处理任何键。 
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单的旋转效果
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/28_spinner/01_lv_ex_spinner_1.png
+	   
+	  简单的旋转效果
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_SPINNER
+
+	void lv_ex_spinner_1(void)
+	{
+		/*Create a Preloader object*/
+		lv_obj_t * preload = lv_spinner_create(lv_scr_act(), NULL);
+		lv_obj_set_size(preload, 100, 100);
+		lv_obj_align(preload, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+	#endif
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

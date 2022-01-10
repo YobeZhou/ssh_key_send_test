@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>显示接口 &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="输入设备接口" href="04_indev.html" />
+    <link rel="prev" title="⭐建立一个lvgl项目" href="02_project.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">显示接口</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">显示缓冲区</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">显示驱动器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#apis">相关APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>显示接口</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/02_porting/03_display.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>显示接口<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>要设置显示，必须初始化 <code class="docutils literal notranslate"><span class="pre">lv_disp_buf_t</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> 变量。</p>
+<ul class="simple">
+<li><p><strong>lv_disp_buf_t</strong> 保存显示缓冲区信息的结构体</p></li>
+<li><p><strong>lv_disp_drv_t</strong>  HAL要注册的显示驱动程序、与显示交互并处理与图形相关的结构体、回调函数。</p></li>
+</ul>
+<div class="section" id="id2">
+<h2>显示缓冲区<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lv_disp_buf_t</span></code> 初始化示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="cm">/*A static or global variable to store the buffers*/</span>
+<span class="linenos">2</span>    <span class="k">static</span> <span class="n">lv_disp_buf_t</span> <span class="n">disp_buf</span><span class="p">;</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="cm">/*Static or global buffer(s). The second buffer is optional*/</span>
+<span class="linenos">5</span>    <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">buf_1</span><span class="p">[</span><span class="n">MY_DISP_HOR_RES</span> <span class="o">*</span> <span class="mi">10</span><span class="p">];</span>
+<span class="linenos">6</span>    <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">buf_2</span><span class="p">[</span><span class="n">MY_DISP_HOR_RES</span> <span class="o">*</span> <span class="mi">10</span><span class="p">];</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span>    <span class="cm">/*Initialize `disp_buf` with the buffer(s) */</span>
+<span class="linenos">9</span>    <span class="n">lv_disp_buf_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">,</span> <span class="n">buf_1</span><span class="p">,</span> <span class="n">buf_2</span><span class="p">,</span> <span class="n">MY_DISP_HOR_RES</span><span class="o">*</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>关于缓冲区大小，有 3 种情况：</p>
+<ol class="arabic simple">
+<li><p><strong>一个缓冲区</strong> LVGL将屏幕的内保存到缓冲区中并将其发送到显示器。缓冲区可以小于屏幕。在这种情况下，较大的区域将被重画成多个部分。如果只有很小的区域发生变化(例如按下按钮)，则只会刷新该部分的区域。</p></li>
+<li><p><strong>两个非屏幕大小的缓冲区</strong> 具有两个缓冲区的 LVGL 可以将其中一个作为显示缓冲区，而另一缓冲区的内容发送到后台显示。应该使用 DMA 或其他硬件将数据传输到显示器，以让CPU同时绘图。这样，渲染和刷新并行处理。与 <strong>一个缓冲区</strong> 的情况类似，如果缓冲区小于要刷新的区域，LVGL将按块绘制显示内容</p></li>
+<li><p><strong>两个屏幕大小的缓冲区</strong> 与两个非屏幕大小的缓冲区相反，LVGL将始终提供整个屏幕的内容，而不仅仅是块。这样，驱动程序可以简单地将帧缓冲区的地址更改为从 LVGL 接收的缓冲区。因此，当MCU具有 LCD/TFT 接口且帧缓冲区只是 RAM 中的一个位置时，这种方法的效果很好。</p></li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>显示驱动器<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>一旦缓冲区初始化准备就绪，就需要初始化显示驱动程序。在最简单的情况下，仅需要设置 <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> 的以下两个字段：</p>
+<ul class="simple">
+<li><p><strong>buffer</strong> 指向已初始化的 <code class="docutils literal notranslate"><span class="pre">lv_disp_buf_t</span></code> 变量的指针。</p></li>
+<li><p><strong>flush_cb</strong> 回调函数，用于将缓冲区的内容复制到显示的特定区域。刷新准备就绪后，需要调用lv_disp_flush_ready()。 LVGL可能会以多个块呈现屏幕，因此多次调用flush_cb。使用 lv_disp_flush_is_last() 可以查看哪块是最后渲染的。</p></li>
+</ul>
+<p>其中，有一些可选的数据字段：</p>
+<ul class="simple">
+<li><p><strong>hor_res</strong> 显示器的水平分辨率。(默认为 lv_conf.h 中的 <code class="docutils literal notranslate"><span class="pre">LV_HOR_RES_MAX</span></code> )</p></li>
+<li><p><strong>ver_res</strong> 显示器的垂直分辨率。 (默认为 lv_conf.h 中的 <code class="docutils literal notranslate"><span class="pre">LV_VER_RES_MAX</span></code> )</p></li>
+<li><p><strong>color_chroma_key</strong> 在 chrome 键控图像上将被绘制为透明的颜色。(默认为 lv_conf.h 中的 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_TRANSP</span></code> )</p></li>
+<li><p><strong>user_data</strong> 驱动程序的自定义用户数据。可以在 lv_conf.h 中修改其类型。</p></li>
+<li><p><strong>anti-aliasing</strong> 使用抗锯齿(anti-aliasing)(边缘平滑)。缺省情况下默认为 lv_conf.h 中的 <code class="docutils literal notranslate"><span class="pre">LV_ANTIALIAS</span></code> 。</p></li>
+<li><p><strong>rotated</strong> 如果 <code class="docutils literal notranslate"><span class="pre">1</span></code> 交换 <code class="docutils literal notranslate"><span class="pre">hor_res</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ver_res</span></code> 。两种情况下 LVGL 的绘制方向相同(从上到下的线条)，因此还需要重新配置驱动程序以更改显示器的填充方向。</p></li>
+<li><p><strong>screen_transp</strong> 如果为 <code class="docutils literal notranslate"><span class="pre">1</span></code> ，则屏幕可以具有透明或不透明的样式。需要在 lv_conf.h 中启用 <code class="docutils literal notranslate"><span class="pre">LV_COLOR_SCREEN_TRANSP</span></code> 。</p></li>
+</ul>
+<p>要使用GPU，可以使用以下回调：</p>
+<ul class="simple">
+<li><p><strong>gpu_fill_cb</strong> 用颜色填充内存中的区域。</p></li>
+<li><p><strong>gpu_blend_cb</strong> 使用不透明度混合两个内存缓冲区。</p></li>
+<li><p><strong>gpu_wait_cb</strong> 如果在 GPU 仍在运行 LVGL 的情况下返回了任何 GPU 函数，则在需要确保GPU渲染就绪时将使用此函数。</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>注意，这些功能需要绘制到内存(RAM)中，而不是直接显示在屏幕上。
+</pre></div>
+</div>
+<p>其他一些可选的回调，使单色、灰度或其他非标准RGB显示一起使用时更轻松、优化：</p>
+<ul class="simple">
+<li><p><strong>rounder_cb</strong> 四舍五入要重绘的区域的坐标。例如。 2x2像素可以转换为2x8。如果显示控制器只能刷新特定高度或宽度的区域(对于单色显示器，通常为8 px高)，则可以使用它。</p></li>
+<li><p><strong>set_px_cb</strong> 编写显示缓冲区的自定义函数。如果显示器具有特殊的颜色格式，则可用于更紧凑地存储像素。 (例如1位单色，2位灰度等)。这样，lv_disp_buf_t中使用的缓冲区可以较小，以仅保留给定区域大小所需的位数。 set_px_cb不能与两个屏幕大小的缓冲区一起显示缓冲区配置。</p></li>
+<li><p><strong>monitor_cb</strong> 回调函数告诉在多少时间内刷新了多少像素。</p></li>
+<li><p><strong>clean_dcache_cb</strong> 清除与显示相关的所有缓存的回调</p></li>
+</ul>
+<p>要设置 lv_disp_drv_t 变量的字段，需要使用 lv_disp_drv_init(＆disp_drv) 进行初始化。最后，要为 LVGL 注册显示设备，需要调用lv_disp_drv_register(＆disp_drv)。</p>
+<p>代码示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_disp_drv_t</span> <span class="n">disp_drv</span><span class="p">;</span>                 <span class="cm">/*A variable to hold the drivers. Can be local variable*/</span>
+<span class="linenos">2</span>    <span class="n">lv_disp_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span>            <span class="cm">/*Basic initialization*/</span>
+<span class="linenos">3</span>    <span class="n">disp_drv</span><span class="p">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">;</span>            <span class="cm">/*Set an initialized buffer*/</span>
+<span class="linenos">4</span>    <span class="n">disp_drv</span><span class="p">.</span><span class="n">flush_cb</span> <span class="o">=</span> <span class="n">my_flush_cb</span><span class="p">;</span>        <span class="cm">/*Set a flush callback to draw to the display*/</span>
+<span class="linenos">5</span>    <span class="n">lv_disp_t</span> <span class="o">*</span> <span class="n">disp</span><span class="p">;</span>
+<span class="linenos">6</span>    <span class="n">disp</span> <span class="o">=</span> <span class="n">lv_disp_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span> <span class="cm">/*Register the driver and save the created display objects*/</span>
+</pre></div>
+</div>
+<p>回调的一些简单示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="kt">void</span> <span class="nf">my_flush_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="k">const</span> <span class="n">lv_area_t</span> <span class="o">*</span> <span class="n">area</span><span class="p">,</span> <span class="n">lv_color_t</span> <span class="o">*</span> <span class="n">color_p</span><span class="p">)</span>
+<span class="linenos"> 2</span>    <span class="p">{</span>
+<span class="linenos"> 3</span>            <span class="cm">/*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/</span>
+<span class="linenos"> 4</span>            <span class="kt">int32_t</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+<span class="linenos"> 5</span>            <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 6</span>                    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">area</span><span class="o">-&gt;</span><span class="n">x2</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 7</span>                            <span class="n">put_px</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">color_p</span><span class="p">)</span>
+<span class="linenos"> 8</span>                            <span class="n">color_p</span><span class="o">++</span><span class="p">;</span>
+<span class="linenos"> 9</span>                    <span class="p">}</span>
+<span class="linenos">10</span>            <span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>            <span class="cm">/* IMPORTANT!!!</span>
+<span class="linenos">13</span><span class="cm">             * Inform the graphics library that you are ready with the flushing*/</span>
+<span class="linenos">14</span>            <span class="n">lv_disp_flush_ready</span><span class="p">(</span><span class="n">disp</span><span class="p">);</span>
+<span class="linenos">15</span>    <span class="p">}</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="kt">void</span> <span class="nf">my_gpu_fill_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="n">lv_color_t</span> <span class="o">*</span> <span class="n">dest_buf</span><span class="p">,</span> <span class="k">const</span> <span class="n">lv_area_t</span> <span class="o">*</span> <span class="n">dest_area</span><span class="p">,</span> <span class="k">const</span> <span class="n">lv_area_t</span> <span class="o">*</span> <span class="n">fill_area</span><span class="p">,</span> <span class="n">lv_color_t</span> <span class="n">color</span><span class="p">);</span>
+<span class="linenos">18</span>    <span class="p">{</span>
+<span class="linenos">19</span>            <span class="cm">/*It&#39;s an example code which should be done by your GPU*/</span>
+<span class="linenos">20</span>            <span class="kt">uint32_t</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+<span class="linenos">21</span>            <span class="n">dest_buf</span> <span class="o">+=</span> <span class="n">dest_width</span> <span class="o">*</span> <span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span> <span class="cm">/*Go to the first line*/</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">24</span>                    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">x2</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">25</span>                            <span class="n">dest_buf</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+<span class="linenos">26</span>                    <span class="p">}</span>
+<span class="linenos">27</span>                    <span class="n">dest_buf</span><span class="o">+=</span><span class="n">dest_width</span><span class="p">;</span>    <span class="cm">/*Go to the next line*/</span>
+<span class="linenos">28</span>            <span class="p">}</span>
+<span class="linenos">29</span>    <span class="p">}</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="kt">void</span> <span class="n">my_gpu_blend_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="n">lv_color_t</span> <span class="o">*</span> <span class="n">dest</span><span class="p">,</span> <span class="k">const</span> <span class="n">lv_color_t</span> <span class="o">*</span> <span class="n">src</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">length</span><span class="p">,</span> <span class="n">lv_opa_t</span> <span class="n">opa</span><span class="p">)</span>
+<span class="linenos">32</span>    <span class="p">{</span>
+<span class="linenos">33</span>            <span class="cm">/*It&#39;s an example code which should be done by your GPU*/</span>
+<span class="linenos">34</span>            <span class="kt">uint32_t</span> <span class="n">i</span><span class="p">;</span>
+<span class="linenos">35</span>            <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">36</span>                    <span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lv_color_mix</span><span class="p">(</span><span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">opa</span><span class="p">);</span>
+<span class="linenos">37</span>            <span class="p">}</span>
+<span class="linenos">38</span>    <span class="p">}</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>    <span class="kt">void</span> <span class="n">my_rounder_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="n">lv_area_t</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span>
+<span class="linenos">41</span>    <span class="p">{</span>
+<span class="linenos">42</span>      <span class="cm">/* Update the areas as needed. Can be only larger.</span>
+<span class="linenos">43</span><span class="cm">       * For example to always have lines 8 px height:*/</span>
+<span class="linenos">44</span>       <span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span> <span class="o">=</span> <span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span> <span class="o">&amp;</span> <span class="mh">0x07</span><span class="p">;</span>
+<span class="linenos">45</span>       <span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span> <span class="o">=</span> <span class="p">(</span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span> <span class="o">&amp;</span> <span class="mh">0x07</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
+<span class="linenos">46</span>    <span class="p">}</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>    <span class="kt">void</span> <span class="n">my_set_px_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="n">lv_coord_t</span> <span class="n">buf_w</span><span class="p">,</span> <span class="n">lv_coord_t</span> <span class="n">x</span><span class="p">,</span> <span class="n">lv_coord_t</span> <span class="n">y</span><span class="p">,</span> <span class="n">lv_color_t</span> <span class="n">color</span><span class="p">,</span> <span class="n">lv_opa_t</span> <span class="n">opa</span><span class="p">)</span>
+<span class="linenos">49</span>    <span class="p">{</span>
+<span class="linenos">50</span>            <span class="cm">/* Write to the buffer as required for the display.</span>
+<span class="linenos">51</span><span class="cm">             * Write only 1-bit for monochrome displays mapped vertically:*/</span>
+<span class="linenos">52</span>     <span class="n">buf</span> <span class="o">+=</span> <span class="n">buf_w</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="p">;</span>
+<span class="linenos">53</span>     <span class="k">if</span><span class="p">(</span><span class="n">lv_color_brightness</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">128</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">buf</span><span class="p">)</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">8</span><span class="p">));</span>
+<span class="linenos">54</span>     <span class="k">else</span> <span class="p">(</span><span class="o">*</span><span class="n">buf</span><span class="p">)</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">8</span><span class="p">));</span>
+<span class="linenos">55</span>    <span class="p">}</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span>    <span class="kt">void</span> <span class="n">my_monitor_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">time</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">px</span><span class="p">)</span>
+<span class="linenos">58</span>    <span class="p">{</span>
+<span class="linenos">59</span>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d px refreshed in %d ms</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">ms</span><span class="p">);</span>
+<span class="linenos">60</span>    <span class="p">}</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span>    <span class="kt">void</span> <span class="n">my_clean_dcache_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span> <span class="o">*</span> <span class="n">disp_drv</span><span class="p">,</span> <span class="n">uint32</span><span class="p">)</span>
+<span class="linenos">63</span>    <span class="p">{</span>
+<span class="linenos">64</span>      <span class="cm">/* Example for Cortex-M (CMSIS) */</span>
+<span class="linenos">65</span>      <span class="n">SCB_CleanInvalidateDCache</span><span class="p">();</span>
+<span class="linenos">66</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="apis">
+<h2>相关APIs<a class="headerlink" href="#apis" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="04_indev.html" class="btn btn-neutral float-right" title="输入设备接口" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="02_project.html" class="btn btn-neutral float-left" title="⭐建立一个lvgl项目" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

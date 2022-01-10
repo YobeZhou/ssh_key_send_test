@@ -1,0 +1,147 @@
+==================================
+窗口(lv_win)
+==================================
+
+概述
+##################################
+窗口是类似 `容器(lv_cont)`_ 的对象，由带有标题和按钮的标题以及内容区域构建而成。
+
+.. _容器(lv_cont): http://lvgl.100ask.net/documentation/04_widgets/10_cont.html
+
+零件和样式
+##################################
+主要部分是 ``LV_WIN_PART_BG`` ，它包含另外两个实际部分：
+
+- ``LV_WIN_PART_HEADER`` 顶部的标题容器，带有标题和控制按钮
+- ``LV_WIN_PART_CONTENT_SCRL`` 页眉下方内容的页面可滚动部分。
+
+除此之外， ``LV_WIN_PART_CONTENT_SCRL`` 还有一个滚动条，称为 ``LV_WIN_PART_CONTENT_SCRL`` 。阅读 `页面(lv_page)`_ 的文档以获取有关滚动条的更多详细信息。
+
+所有部分均支持典型的背景属性。标题使用标题部分的Text属性。
+
+控制按钮的高度为：标头高度-标头padding_top-标头padding_bottom。
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+窗口标题
+**********************************
+窗口上有一个标题，可以通过以下方式修改 ``lv_win_set_title(win, "New title")`` 
+
+
+控制按钮
+**********************************
+可以使用以下命令将控制按钮添加到窗口标题的右侧： ``lv_win_add_btn_right(win, LV_SYMBOL_CLOSE)`` ，要在窗口标题的左侧添加按钮，请使用lv_win_add_btn_left（win，LV_SYMBOL_CLOSE）。第二个参数是图像源，因此它可以是符号，指向lv_img_dsc_t变量的指针或文件的路径。
+
+可以使用 ``lv_win_add_btn_left(win, LV_SYMBOL_CLOSE)`` 设置按钮的宽度。如果 ``w == 0`` ，则按钮将为正方形。
+
+``lv_win_close_event_cb`` 可以用作关闭窗口的事件回调。
+
+
+
+滚动条
+**********************************
+可以通过 ``lv_win_set_scrlbar_mode(win, LV_SCRLBAR_MODE_...)`` 设置滚动条行为。有关详细信息，请参见 `页面(lv_page)`_ 。 
+
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+
+手动滚动和聚焦
+**********************************
+要直接滚动窗口，可以使用 ``lv_win_scroll_hor(win, dist_px)`` 或 ``lv_win_scroll_ver(win, dist_px)`` 。
+
+要使窗口在其上显示对象，请使用 ``lv_win_focus(win, child, LV_ANIM_ON/OFF)`` 。
+
+滚动和焦点动画的时间可以使用 ``lv_win_set_anim_time(win, anim_time_ms)`` 进行调整
+
+布局
+**********************************
+要设置内容的布局，请使用 ``lv_win_set_layout(win, LV_LAYOUT_...)`` 。有关详细信息，请参见 `容器(lv_cont)`_ 。
+
+.. _容器(lv_cont): http://lvgl.100ask.net/documentation/04_widgets/10_cont.html
+
+
+事件
+##################################
+仅支持 `通用事件`_  
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+窗口可处理以下按键：
+
+- **LV_KEY_RIGHT/LEFT/UP/DOWN** 滚动页面
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+范例
+##################################
+
+简单的窗口
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/34_win/01_lv_ex_win_1.png
+	   
+	  简单的窗口
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_WIN
+
+	void lv_ex_win_1(void)
+	{
+		/*Create a window*/
+		lv_obj_t * win = lv_win_create(lv_scr_act(), NULL);
+		lv_win_set_title(win, "Window title");                        /*Set the title*/
+
+
+		/*Add control button to the header*/
+		lv_obj_t * close_btn = lv_win_add_btn(win, LV_SYMBOL_CLOSE);           /*Add close button and use built-in close action*/
+		lv_obj_set_event_cb(close_btn, lv_win_close_event_cb);
+		lv_win_add_btn(win, LV_SYMBOL_SETTINGS);        /*Add a setup button*/
+
+		/*Add some dummy content*/
+		lv_obj_t * txt = lv_label_create(win, NULL);
+		lv_label_set_text(txt, "This is the content of the window\n\n"
+							   "You can add control buttons to\n"
+							   "the window header\n\n"
+							   "The content area becomes\n"
+							   "automatically scrollable is it's \n"
+							   "large enough.\n\n"
+							   " You can scroll the content\n"
+							   "See the scroll bar on the right!");
+	}
+
+	#endif
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

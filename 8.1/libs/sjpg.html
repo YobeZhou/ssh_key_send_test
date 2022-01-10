@@ -1,0 +1,1849 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>JPG decoder(JPG解码器) &mdash; 百问网LVGL中文教程文档  文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+
+  
+  
+
+  
+    <link rel="canonical" href="https://docs.lvgl.io/v8.1/en/html/libs/sjpg.html" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="PNG decoder(PNG解码器)" href="png.html" />
+    <link rel="prev" title="BMP decoder(BMP解码器)" href="bmp.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics: coding page raw  -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WFZ773051V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WFZ773051V');
+</script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo_100ask.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                8.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Introduction （介绍）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#key-features">Key features （主要特性）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#requirements">Requirements（配置要求）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#license">License（许可证）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#repository-layout">Repository layout （仓库布局）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#release-policy">Release policy（发布策略）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#release-cycle">Release cycle（发布周期）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#branches">Branches（分支）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#changelog">Changelog（变更日志）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#version-support">Version support(版本支持)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/index.html#faq">FAQ（常见问题）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#where-can-i-ask-questions">Where can I ask questions?（我可以在哪里提问？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#is-my-mcu-hardware-supported-lvgl-mcu">Is my MCU/hardware supported?（LVGL是否支持我的 MCU/硬件？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#is-my-display-supported">Is my display supported?（支持我的显示器吗？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#nothing-happens-my-display-driver-is-not-called-what-have-i-missed">Nothing happens, my display driver is not called. What have I missed?（没有任何反应，我的显示驱动程序没有被调用。我错过了什么？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#why-the-display-driver-is-called-only-once-only-the-upper-part-of-the-display-is-refreshed">Why the display driver is called only once? Only the upper part of the display is refreshed. （为什么显示驱动程序只调用一次？仅刷新显示的上部。）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#why-i-see-only-garbage-on-the-screen">Why I see only garbage on the screen?（为什么我在屏幕上只看到垃圾？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#why-i-see-non-sense-colors-on-the-screen">Why I see non-sense colors on the screen? （为什么我在屏幕上看到无意义的颜色？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#how-to-speed-up-my-ui">How to speed up my UI?（如何加速我的用户界面？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#how-to-reduce-flash-rom-usage-rom">How to reduce flash/ROM usage?（如何减少闪存/ROM的使用？）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#how-to-reduce-the-ram-usage">How to reduce the RAM usage（如何减少内存使用）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro/index.html#how-to-work-with-an-operating-system">How to work with an operating system?（如何使用操作系统？）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#get-started">Get started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#styles">Styles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#size-styles">Size styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#background-styles">Background styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#border-styles">Border styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#outline-styles">Outline styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#shadow-styles">Shadow styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#image-styles">Image styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#text-styles">Text styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#line-styles">Line styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#transition">Transition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#using-multiple-styles">Using multiple styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#local-styles">Local styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#add-styles-to-parts-and-states">Add styles to parts and states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#extending-the-current-theme">Extending the current theme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#animations">Animations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#events">Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#button-click-event">Button click event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#handle-multiple-events">Handle multiple events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#event-bubbling">Event bubbling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#layouts">Layouts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#flex">Flex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#grid">Grid</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#scrolling">Scrolling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#widgets">Widgets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#base-object">Base object</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#base-objects-with-custom-styles">Base objects with custom styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#make-an-object-draggable">Make an object draggable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#arc">Arc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-arc">Simple Arc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#loader-with-arc">Loader with Arc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#bar">Bar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-bar">Simple Bar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#styling-a-bar">Styling a bar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#temperature-meter">Temperature meter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#stripe-pattern-and-range-value">Stripe pattern and range value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#bar-with-rtl-and-rtl-base-direction">Bar with RTL and RTL base direction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#custom-drawr-to-show-the-current-value">Custom drawr to show the current value</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#button">Button</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-buttons">Simple Buttons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#styling-buttons">Styling buttons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#gummy-button">Gummy button</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#button-matrix">Button matrix</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-button-matrix">Simple Button matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#custom-buttons">Custom buttons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#pagination">Pagination</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#calendar">Calendar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#calendar-with-header">Calendar with header</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#canvas">Canvas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#drawing-on-the-canvas-and-rotate">Drawing on the Canvas and rotate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#transparent-canvas-with-chroma-keying">Transparent Canvas with chroma keying</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#chart">Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#checkbox">Checkbox</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-checkboxes">Simple Checkboxes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#colorwheel">Colorwheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#dropdown">Dropdown</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-drop-down-list">Simple Drop down list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#drop-down-in-four-directions">Drop down in four directions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#menu">Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#image">Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#image-from-variable-and-symbol">Image from variable and symbol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#image-recoloring">Image recoloring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#rotate-and-zoom">Rotate and zoom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#image-offset-and-styling">Image offset and styling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#image-button">Image button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#keyboard">Keyboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#label">Label</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#line-wrap-recoloring-and-scrolling">Line wrap, recoloring and scrolling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#text-shadow">Text shadow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#led">LED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#line">Line</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-line">Simple Line</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#list">List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#meter">Meter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#message-box">Message box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#roller">Roller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-roller">Simple Roller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#styling-the-roller">Styling the roller</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#slider">Slider</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-slider">Simple Slider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#slider-with-custom-style">Slider with custom style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#slider-with-extended-drawer">Slider with extended drawer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#span">Span</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#spinbox">Spinbox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#spinner">Spinner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#switch">Switch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#table">Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-table">Simple table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#lightweighted-list-from-table">Lightweighted list from table</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#tabview">Tabview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#textarea">Textarea</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#simple-text-area">Simple Text area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#text-area-with-password-field">Text area with password field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.html#text-auto-formatting">Text auto-formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#id1">Tabview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.html#window">Window</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../get-started/index.html">Get started（开始）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../get-started/index.html#where-to-look-first">Where to look first?(先去哪里看？)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../get-started/index.html#platform-specific-tutorials">Platform-specific tutorials(基于特定于平台的教程)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/pc-simulator.html">Simulator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/pc-simulator.html#select-an-ide-ide">Select an IDE（选择适合的IDE）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/pc-simulator.html#set-up-eclipse-cdt-eclipse-cdt">Set-up Eclipse CDT（使用 Eclipse CDT 开发）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/nxp.html">NXP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nxp.html#creating-new-project-with-lvgl-lvgl">Creating new project with LVGL（使用 LVGL 创建新项目）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nxp.html#adding-hw-acceleration-for-nxp-imx-rt-platforms-using-pxp-pixel-pipeline-engine-for-existing-projects">Adding HW acceleration for NXP iMX RT platforms using PXP (PiXel Pipeline) engine for existing projects</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/espressif.html">Espressif (ESP32)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#get-the-lvgl-demo-project-for-esp32-esp32-lvgl">Get the LVGL demo project for ESP32（获取 ESP32 的 LVGL 演示项目）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#use-lvgl-in-your-esp32-project-esp32-lvgl">Use LVGL in your ESP32 project（在 ESP32 项目中使用 LVGL）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#use-lvgl-esp32-drivers-in-your-project-lvgl-esp32-drivers">Use lvgl_esp32_drivers in your project（在您的项目中使用 lvgl_esp32_drivers）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/arduino.html">Arduino</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#get-the-lvgl-arduino-library-lvgl-arduino">Get the LVGL Arduino library（获取 LVGL Arduino 库）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#set-up-drivers">Set up drivers（设置驱动程序）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#configure-lvgl-lvgl">Configure LVGL（配置LVGL）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#initialize-lvgl-and-run-an-example-lvgl">Initialize LVGL and run an example（初始化 LVGL 并运行示例）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#debugging-and-logging">Debugging and logging（调试和日志）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/tasmota-berry.html">Tasmota-Berry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/micropython.html">Micropython</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#what-is-micropython-micropython">What is Micropython?（什么是Micropython？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#why-micropython-lvgl-micropython-lvgl">Why Micropython + LVGL?（为什么是 Micropython + LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#so-what-does-it-look-like">So what does it look like?（它看起来像什么？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#how-can-i-use-it">How can I use it?（我怎样才能使用它？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#where-can-i-find-more-information">Where can I find more information?（我在哪里可以找到更多的信息？）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/nuttx.html">NuttX RTOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#what-is-nuttx-nuttx">What is NuttX?（什么是NuttX）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#why-nuttx-lvgl-nuttx-lvgl">Why NuttX + LVGL?（为什么是 NuttX + LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#how-to-get-started-with-nuttx-and-lvgl-nuttx-lvgl">How to get started with NuttX and LVGL?（如何开始使用 NuttX 和 LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#where-can-i-find-more-information">Where can I find more information?（我在哪里可以找到更多信息？）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/cmake.html">CMake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/quick-overview.html">Quick overview （快速概览）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/quick-overview.html#get-started-in-a-simulator">Get started in a simulator（从模拟器开始）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/quick-overview.html#add-lvgl-into-your-project-lvgl">Add LVGL into your project（将 LVGL 添加到您的项目中）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/quick-overview.html#learn-the-basics">Learn the basics（学习基础知识）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/quick-overview.html#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/quick-overview.html#micropython">Micropython</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/pc-simulator.html">Simulator on PC（PC上的模拟器）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/pc-simulator.html#select-an-ide-ide">Select an IDE（选择适合的IDE）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/pc-simulator.html#set-up-eclipse-cdt-eclipse-cdt">Set-up Eclipse CDT（使用 Eclipse CDT 开发）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/stm32.html">STM32</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/nxp.html">NXP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nxp.html#creating-new-project-with-lvgl-lvgl">Creating new project with LVGL（使用 LVGL 创建新项目）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nxp.html#adding-hw-acceleration-for-nxp-imx-rt-platforms-using-pxp-pixel-pipeline-engine-for-existing-projects">Adding HW acceleration for NXP iMX RT platforms using PXP (PiXel Pipeline) engine for existing projects</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/espressif.html">Espressif (ESP32)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#get-the-lvgl-demo-project-for-esp32-esp32-lvgl">Get the LVGL demo project for ESP32（获取 ESP32 的 LVGL 演示项目）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#use-lvgl-in-your-esp32-project-esp32-lvgl">Use LVGL in your ESP32 project（在 ESP32 项目中使用 LVGL）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/espressif.html#use-lvgl-esp32-drivers-in-your-project-lvgl-esp32-drivers">Use lvgl_esp32_drivers in your project（在您的项目中使用 lvgl_esp32_drivers）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/arduino.html">Arduino</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#get-the-lvgl-arduino-library-lvgl-arduino">Get the LVGL Arduino library（获取 LVGL Arduino 库）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#set-up-drivers">Set up drivers（设置驱动程序）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#configure-lvgl-lvgl">Configure LVGL（配置LVGL）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#initialize-lvgl-and-run-an-example-lvgl">Initialize LVGL and run an example（初始化 LVGL 并运行示例）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/arduino.html#debugging-and-logging">Debugging and logging（调试和日志）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/micropython.html">Micropython</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#what-is-micropython-micropython">What is Micropython?（什么是Micropython？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#why-micropython-lvgl-micropython-lvgl">Why Micropython + LVGL?（为什么是 Micropython + LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#so-what-does-it-look-like">So what does it look like?（它看起来像什么？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#how-can-i-use-it">How can I use it?（我怎样才能使用它？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/micropython.html#where-can-i-find-more-information">Where can I find more information?（我在哪里可以找到更多的信息？）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/tasmota-berry.html">Tasmota and berry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/nuttx.html">NuttX RTOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#what-is-nuttx-nuttx">What is NuttX?（什么是NuttX）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#why-nuttx-lvgl-nuttx-lvgl">Why NuttX + LVGL?（为什么是 NuttX + LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#how-to-get-started-with-nuttx-and-lvgl-nuttx-lvgl">How to get started with NuttX and LVGL?（如何开始使用 NuttX 和 LVGL？）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get-started/nuttx.html#where-can-i-find-more-information">Where can I find more information?（我在哪里可以找到更多信息？）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../get-started/cmake.html">CMake</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../porting/index.html">Porting（移植）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../porting/project.html">Set-up a project（设置项目）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/project.html#get-the-library-lvgl">Get the library（获取LVGL图形库）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/project.html#configuration-file">Configuration file（修改配置文件）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/project.html#initialization">Initialization（初始化）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/display.html">Display interface（显示接口）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/display.html#draw-buffer">Draw buffer（绘制缓冲区）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/display.html#display-driver">Display driver（显示驱动程序）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../porting/display.html#mandatory-fields">Mandatory fields（必须要适配的部分）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/display.html#optional-fields">Optional fields （可选的部分）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/display.html#examples">Examples（示例）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/display.html#rotation">Rotation（旋转屏幕）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/display.html#further-reading">Further reading（深入学习）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/display.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/indev.html">Input device interface（输入设备接口）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/indev.html#types-of-input-devices">Types of input devices（输入设备的类型）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#touchpad-mouse-or-any-pointer">Touchpad, mouse or any pointer（触摸板、鼠标或任何指针）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#keypad-or-keyboard">Keypad or keyboard（键盘或键盘）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#encoder">Encoder（编码器）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#button">Button（按钮）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/indev.html#other-features">Other features（其它功能）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#parameters">Parameters（参数）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#feedback">Feedback（回调处理）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#associating-with-a-display">Associating with a display（与显示器关联）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/indev.html#buffered-reading">Buffered reading（缓冲读取）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/indev.html#further-reading">Further reading（深入学习）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/indev.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/tick.html">Tick interface（心跳接口）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/tick.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/task-handler.html">Task Handler（任务处理器）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/sleep.html">Sleep management（睡眠管理）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/os.html">Operating system and interrupts（操作系统和中断）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/os.html#tasks-and-threads">Tasks and threads（任务和线程）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/os.html#interrupts">Interrupts（中断）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/log.html">Logging（日志）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../porting/log.html#log-level">Log level（日记等级）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/log.html#printing-logs">Printing logs（打印日志）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../porting/log.html#logging-with-printf-printf">Logging with printf（使用 printf 记录）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../porting/log.html#custom-log-function">Custom log function（自定义日志功能）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../porting/log.html#add-logs">Add logs（添加日志）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview（概览）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/object.html">Objects（对象）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#attributes">Attributes（属性）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#basic-attributes">Basic attributes（基本属性）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#specific-attributes">Specific attributes（特定属性）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#working-mechanisms">Working mechanisms（工作机制）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#parent-child-structure">Parent-child structure（父子结构）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#moving-together">Moving together（一起移动）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#visibility-only-on-the-parent">Visibility only on the parent（仅在父对象上可见）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#create-and-delete-objects">Create and delete objects（创建和删除对象）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#screens">Screens（屏幕）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#create-screens">Create screens（创建屏幕）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#get-the-active-screen">Get the active screen（获取活动屏幕）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#load-screens">Load screens（加载屏幕）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#layers">Layers（层）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/object.html#handling-multiple-displays">Handling multiple displays（处理多个显示器）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#parts">Parts（部分）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#states">States（状态）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/object.html#snapshot">Snapshot（快照）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/coords.html">Positions, sizes, and layouts（位置、大小和布局）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#overview">Overview（概述）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#units">Units（单位）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#boxing-model">Boxing model（盒子模型）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#important-notes">Important notes（重要笔记）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#position">Position（位置）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#simple-way">Simple way（最简单的方法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#align">Align（对齐）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#size">Size（大小）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#id1">Simple way（最简单的方法）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#using-styles">Using styles（使用样式）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#translation">Translation（风格样式转换）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#transformation">Transformation（转换）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#min-and-max-size">Min and Max size（最小和最大尺寸）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#layout">Layout（布局）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#id2">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#built-in-layout">Built-in layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#flags">Flags（标志）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/coords.html#adding-new-layouts">Adding new layouts（添加新布局）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/coords.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/style.html">Styles（风格样式）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#states">States（状态）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#cascading-styles">Cascading styles（层叠样式）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#inheritance">Inheritance（继承）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#parts">Parts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#initialize-styles-and-set-get-properties">Initialize styles and set/get properties（初始化样式和设置/获取属性）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#add-and-remove-styles-to-a-widget">Add and remove styles to a widget（向部件添加和删除样式）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#add-styles">Add styles（添加样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#remove-styles">Remove styles（删除样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#report-style-changes">Report style changes（通知样式更改）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#get-a-property-s-value-on-an-object">Get a property's value on an object（获取对象的属性值）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#local-styles">Local styles（本地样式）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#properties">Properties（属性）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#typical-background-properties">Typical background properties（典型的背景属性）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#transitions">Transitions（过渡特效）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#color-filter">Color filter（色彩过滤）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#themes">Themes（主题）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#extending-themes">Extending themes（扩展主题）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#size-styles">Size styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#background-styles">Background styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#border-styles">Border styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#outline-styles">Outline styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#shadow-styles">Shadow styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#image-styles">Image styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#arc-styles">Arc styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#text-styles">Text styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#line-styles">Line styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#transition">Transition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#using-multiple-styles">Using multiple styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#id1">Local styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#add-styles-to-parts-and-states">Add styles to parts and states</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style.html#extending-the-current-theme">Extending the current theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/style-props.html">Style properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#size-and-position">Size and position</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#width">width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#min-width">min_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#max-width">max_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#height">height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#min-height">min_height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#max-height">max_height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#x">x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#y">y</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#align">align</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#transform-width">transform_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#transform-height">transform_height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#translate-x">translate_x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#translate-y">translate_y</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#transform-zoom">transform_zoom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#transform-angle">transform_angle</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#padding">Padding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-top">pad_top</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-bottom">pad_bottom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-left">pad_left</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-right">pad_right</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-row">pad_row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#pad-column">pad_column</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#radius">radius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#clip-corner">clip_corner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#opa">opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#color-filter-dsc">color_filter_dsc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#color-filter-opa">color_filter_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#anim-time">anim_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#anim-speed">anim_speed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#transition">transition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#blend-mode">blend_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#layout">layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#base-dir">base_dir</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#background">Background</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-color">bg_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-opa">bg_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-grad-color">bg_grad_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-grad-dir">bg_grad_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-main-stop">bg_main_stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-grad-stop">bg_grad_stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-img-src">bg_img_src</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-img-opa">bg_img_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-img-recolor">bg_img_recolor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-img-recolor-opa">bg_img_recolor_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#bg-img-tiled">bg_img_tiled</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#border">Border</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#border-color">border_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#border-opa">border_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#border-width">border_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#border-side">border_side</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#border-post">border_post</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#text">Text</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-color">text_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-opa">text_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-font">text_font</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-letter-space">text_letter_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-line-space">text_line_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-decor">text_decor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#text-align">text_align</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#image">Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#img-opa">img_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#img-recolor">img_recolor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#img-recolor-opa">img_recolor_opa</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#outline">Outline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#outline-width">outline_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#outline-color">outline_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#outline-opa">outline_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#outline-pad">outline_pad</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#shadow">Shadow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-width">shadow_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-ofs-x">shadow_ofs_x</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-ofs-y">shadow_ofs_y</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-spread">shadow_spread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-color">shadow_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#shadow-opa">shadow_opa</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#line">Line</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-width">line_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-dash-width">line_dash_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-dash-gap">line_dash_gap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-rounded">line_rounded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-color">line_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#line-opa">line_opa</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/style-props.html#arc">Arc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#arc-width">arc_width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#arc-rounded">arc_rounded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#arc-color">arc_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#arc-opa">arc_opa</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/style-props.html#arc-img-src">arc_img_src</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/scroll.html">Scroll（滚动）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#overview">Overview（概述）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scrollbar">Scrollbar（滚动条）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#events">Events(事件)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#basic-example">Basic example（基本示例）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#features-of-scrolling">Features of scrolling（滚动的特点）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scrollable">Scrollable（滚动效果）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scroll-chain">Scroll chain（滚动条）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scroll-momentum">Scroll momentum（滚动惯性效果）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#elastic-scroll">Elastic scroll（弹性卷轴效果）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#snapping">Snapping（捕捉）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scroll-one">Scroll one(只滚动一个)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/scroll.html#scroll-on-focus">Scroll on focus（滚动焦点）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#scroll-manually">Scroll manually</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#self-size">Self size（自身尺寸）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/scroll.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/layer.html">Layers（图层）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/layer.html#order-of-creation">Order of creation（图层顺序）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/layer.html#bring-to-the-foreground">Bring to the foreground（前台展示）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/layer.html#top-and-sys-layers">Top and sys layers（顶层和系统层）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/event.html">Events（事件）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#add-events-to-the-object">Add events to the object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#remove-event-s-from-an-object">Remove event(s) from an object(从对象中删除事件)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#event-codes">Event codes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#input-device-events">Input device events（输入设备事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#drawing-events">Drawing events（绘图事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#other-events">Other events（其他事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#special-events">Special events（特殊事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#custom-events">Custom events（自定义事件）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#sending-events">Sending events（发送事件）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#refresh-event">Refresh event（刷新事件）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#fields-of-lv-event-t-lv-event-t">Fields of lv_event_t（lv_event_t 的字段）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#event-bubbling">Event bubbling（事件冒泡）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/event.html#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#button-click-event">Button click event</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#handle-multiple-events">Handle multiple events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/event.html#id1">Event bubbling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/indev.html">Input devices（输入设备）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/indev.html#pointers">Pointers（光标）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/indev.html#keypad-and-encoder">Keypad and encoder（键盘和编码器）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/indev.html#groups">Groups（组）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/indev.html#styling">Styling（风格样式）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/indev.html#api">API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/indev.html#input-device">Input device（输入设备）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/indev.html#id1">Groups（组）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/display.html">Displays（显示）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/display.html#multiple-display-support">Multiple display support（多显示器支持）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#using-only-one-display">Using only one display（仅使用一个显示器）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#mirror-display">Mirror display（镜像显示）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#split-image">Split image（分割图像）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/display.html#screens">Screens（屏幕）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#transparent-screens">Transparent screens（透明屏幕）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/display.html#features-of-displays">Features of displays（显示器的特点）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#inactivity">Inactivity（不活动）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/display.html#background">Background（背景）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/display.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/color.html">Colors（颜色）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/color.html#creating-colors">Creating colors（创造色彩）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#rgb">RGB（三原色）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#hsv-hue-saturation-value">HSV（色调饱和值-Hue Saturation Value）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#palette">Palette（调色板）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#modify-and-mix-colors">Modify and mix colors（修改和混合颜色）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#built-in-colors">Built-in colors（内置颜色）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/color.html#opacity">Opacity（不透明度）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/color.html#color-types">Color types（颜色类型）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/color.html#convert-color">Convert color（颜色转换）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/color.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/font.html">Fonts（字体）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#unicode-support-unicode">Unicode support（支持Unicode编码）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#built-in-fonts">Built-in fonts（内置字体）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#normal-fonts">Normal fonts（普通字体）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#special-fonts">Special fonts（特殊字体）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#special-features">Special features（特殊功能）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#bidirectional-support">Bidirectional support（双向支持）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#arabic-and-persian-support">Arabic and Persian support(阿拉伯语和波斯语支持)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#subpixel-rendering">Subpixel rendering（亚像素渲染）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/font.html#compress-fonts">Compress fonts（压缩字体）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#add-new-font">Add new font（添加新字体）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#add-new-symbols">Add new symbols（添加新符号）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#load-font-at-run-time">Load font at run-time（在运行时加载字体）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/font.html#add-a-new-font-engine">Add a new font engine（添加新的字体引擎）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/image.html">Images（图象）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#store-images">Store images（存储图像）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#variables">Variables（变量）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#files">Files（文件）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#color-formats">Color formats（颜色格式）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#add-and-use-images">Add and use images（添加和使用图像）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#online-converter">Online converter（在线转换器）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#manually-create-an-image">Manually create an image（手动创建图像）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#use-images">Use images（使用图片）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#image-decoder">Image decoder（图像解码器）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#custom-image-formats">Custom image formats（自定义图像格式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#register-an-image-decoder">Register an image decoder（注册图像解码器）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#manually-use-an-image-decoder">Manually use an image decoder（手动使用图像解码器）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#image-caching">Image caching（图片缓存）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#cache-size">Cache size（缓存大小）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#value-of-images">Value of images（图片的价值）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#memory-usage">Memory usage（内存使用情况）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#clean-the-cache">Clean the cache（清理缓存）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/image.html#api">API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/image.html#image-buffer">Image buffer（图像缓冲区）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/file-system.html">File system（文件系统）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/file-system.html#ready-to-use-drivers">Ready to use drivers（准备使用驱动程序）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/file-system.html#add-a-driver">Add a driver（添加驱动程序）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/file-system.html#registering-a-driver">Registering a driver（注册驱动）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/file-system.html#implementing-the-callbacks">Implementing the callbacks（实现回调）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/file-system.html#other-callbacks">Other callbacks（其他回调）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/file-system.html#usage-example">Usage example（使用示例）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/file-system.html#use-drivers-for-images">Use drivers for images（使用图像驱动程序）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/file-system.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/animation.html">Animations（动画）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#create-an-animation">Create an animation（创建动画）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#animation-path">Animation path（动画轨迹）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#speed-vs-time">Speed vs time（速度与时间）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#delete-animations">Delete animations（删除动画）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#timeline">Timeline（时间线）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/animation.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/timer.html">Timers（定时器）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#create-a-timer">Create a timer（创建定时器）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#ready-and-reset">Ready and Reset（准备与重置）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#set-parameters">Set parameters（参数设置）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#repeat-count">Repeat count（设置重复次数）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#measure-idle-time">Measure idle time（测量空闲时间）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#asynchronous-calls">Asynchronous calls（异步调用）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/timer.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/drawing.html">Drawing（绘画）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/drawing.html#mechanism-of-screen-refreshing">Mechanism of screen refreshing（屏幕刷新机制）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/drawing.html#masking">Masking（蒙版）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/drawing.html#hook-drawing">Hook drawing（挂钩绘图）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../overview/drawing.html#main-drawing">Main drawing（主图）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/drawing.html#post-drawing">Post drawing（后绘图）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/drawing.html#part-drawing">Part drawing（零件绘图）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../overview/drawing.html#others">Others（其他）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/new_widget.html">New widget</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets（部件）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../widgets/obj.html">Base object（基础对象） (lv_obj)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/obj.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#coordinates">Coordinates（坐标）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#parents-and-children">Parents and children（父母和孩子）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#display-and-screens">Display and Screens(显示和屏幕)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#styles">Styles（样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#flags">Flags（宏开关）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#groups">Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#extended-click-area">Extended click area（拓展的点击区域）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/obj.html#id1">Events（事件）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/obj.html#keys">Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/obj.html#example">Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#base-objects-with-custom-styles">Base objects with custom styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/obj.html#make-an-object-draggable">Make an object draggable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/obj.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../widgets/core/index.html">Core widgets（核心部件）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/arc.html">Arc（弧） (lv_arc)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/arc.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/bar.html">Bar（进度条） (lv_bar)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#parts-and-styles">Parts and Styles（零件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/bar.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/btn.html">Button（按钮） (lv_btn)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#parts-and-styles">Parts and Styles（零件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btn.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/btnmatrix.html">Button matrix（按钮矩阵） (lv_btnmatrix)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#parts-and-styles">Parts and Styles（零件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/btnmatrix.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/canvas.html">Canvas（画布） (lv_canvas)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#parts-and-styles">Parts and Styles（零件和风格）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/canvas.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/checkbox.html">Checkbox（复选框） (lv_checkbox)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/checkbox.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/dropdown.html">Drop-down list（下拉列表） (lv_dropdown)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#id1">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/dropdown.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/img.html">Image（图象） (lv_img)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#parts-and-styles">Parts and Styles（部件和风格）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#transformations">Transformations（转换）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/img.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/label.html">Label（标签） (lv_label)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#parts-and-styles">Parts and Styles（部件和风格）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/label.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/line.html">Line（线） (lv_line)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#parts-and-styles">Parts and Styles（零件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/line.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/roller.html">Roller（滚轮） (lv_roller)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#parts-and-styles">Parts and Styles（零件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/roller.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/slider.html">Slider（滑杆） (lv_slider)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/slider.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/switch.html">Switch（开关） (lv_switch)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/switch.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/table.html">Table（表） (lv_table)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/table.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/core/textarea.html">Text area（文本框） (lv_textarea)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/core/textarea.html#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../widgets/extra/index.html">Extra widgets（附加部件）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/calendar.html">Calendar（日历） (lv_calendar)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#overview">Overview（概述）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#parts-and-styles">Parts and Styles（部件和样式）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#usage">Usage（用法）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#events">Events（事件）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#keys">Keys（按键）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#headers">Headers（标题）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/calendar.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/chart.html">Chart (lv_chart)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/chart.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/colorwheel.html">Color wheel (lv_colorwheel)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/colorwheel.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/imgbtn.html">Image button (lv_imgbtn)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/imgbtn.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/keyboard.html">Keyboard (lv_keyboard)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/keyboard.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/led.html">LED (lv_led)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/led.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/list.html">List (lv_list)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/list.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/meter.html">Meter (lv_meter)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/meter.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/msgbox.html">Message box (lv_msgbox)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/msgbox.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/span.html">Span (lv_span)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/span.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/spinbox.html">Spinbox (lv_spinbox)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinbox.html#id1">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/spinner.html">Spinner (lv_spinner)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/spinner.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/tabview.html">Tabview (lv_tabview)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tabview.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/tileview.html">Tile view (lv_tileview)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/tileview.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/extra/win.html">Window (lv_win)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#parts-and-styles">Parts and Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#get-the-parts">Get the parts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#events">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#keys">Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../widgets/extra/win.html#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../layouts/index.html">Layouts（布局）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../layouts/flex.html">Flex（弹性布局）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#overview">Overview（概述）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#terms">Terms（约定）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#simple-interface">Simple interface（简单接口）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/flex.html#flex-flow">Flex flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/flex.html#flex-align">Flex align</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/flex.html#flex-grow">Flex grow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#style-interface">Style interface（样式接口）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#other-features">Other features（其它功能）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/flex.html#rtl">RTL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/flex.html#new-track">New track（新轨道）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/flex.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../layouts/grid.html">Grid（网格布局）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#overview">Overview（概述）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#terms">Terms（约定）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#simple-interface">Simple interface（简单的接口）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/grid.html#grid-descriptors">Grid descriptors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/grid.html#grid-items">Grid items（网格项）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/grid.html#grid-align">Grid align（网格对齐）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#style-interface">Style interface（样式接口）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#other-features">Other features （其它功能）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../layouts/grid.html#rtl">RTL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../layouts/grid.html#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3rd party libraries(第三方库)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fsdrv.html">File System Interfaces(文件系统接口)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fsdrv.html#usage">Usage(用法)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bmp.html">BMP decoder(BMP解码器)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bmp.html#limitations">Limitations(限制条件)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bmp.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bmp.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">JPG decoder(JPG解码器)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview(概述)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage(用法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converter">Converter(转换器)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#converting-jpg-to-c-array-jpg-c">Converting JPG to C array(将 JPG 转换为 C 数组)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#converting-jpg-to-sjpg-jpg-sjpg">Converting JPG to SJPG(将 JPG 转换为 SJPG)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example(示例)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="png.html">PNG decoder(PNG解码器)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="png.html#example">Example(用法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="png.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gif.html">GIF decoder(GIF解码器)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gif.html#convert-gif-files-to-c-array-gif-c">Convert GIF files to C array(将 GIF 文件转换为 C 数组)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gif.html#use-gif-images-from-file-gif">Use GIF images from file(使用文件中的 GIF 图片)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gif.html#memory-requirements">Memory requirements(内存要求)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gif.html#example">Example(用法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gif.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="freetype.html">FreeType support(支持FreeType)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="freetype.html#install-freetype-freetype">Install FreeType(安装 FreeType)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freetype.html#add-freetype-to-your-project-freetype">Add FreeType to your project(将 FreeType 添加到项目中)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freetype.html#usage">Usage(用法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freetype.html#learn-more">Learn more(深入学习)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freetype.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qrcode.html">QR code(二维码)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qrcode.html#get-started">Get started(开始)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qrcode.html#notes">Notes(注意)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qrcode.html#example">Example(示例)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qrcode.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rlottie.html">Lottie player</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rlottie.html#build-rlottie-rlottie">Build Rlottie(构建 Rlottie)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rlottie.html#usage">Usage(用法)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rlottie.html#use-rlottie-from-file-rlottie">Use Rlottie from file(使用文件中的 Rlottie)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rlottie.html#use-rlottie-from-raw-string-data-rlottie">Use Rlottie from raw string data(使用原始字符串数据中的 Rlottie)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rlottie.html#getting-animations">Getting animations(获取动画)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rlottie.html#example">Example(示例)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rlottie.html#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../others/index.html">Others（其他）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../others/snapshot.html">Snapshot（快照）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../others/snapshot.html#usage">Usage（用法）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../others/snapshot.html#free-the-image">Free the Image（释放图像）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../others/snapshot.html#use-existing-buffer">Use Existing Buffer（使用现有缓冲区）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../others/snapshot.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../others/snapshot.html#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing（贡献）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../CONTRIBUTING.html#introduction">Introduction（介绍）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../CONTRIBUTING.html#pull-request">Pull request（拉取请求）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#from-github-github">From GitHub（来自GitHub）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#from-command-line">From command line（从命令行获取）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#commit-message-format-commit">Commit message format（commit的格式）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CONTRIBUTING.html#developer-certification-of-origin-dco-dco">Developer Certification of Origin (DCO)（开发者原产地认证 (DCO)）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#overview">Overview（概述）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#accepted-licenses-and-copyright-notices">Accepted licenses and copyright notices（接受的许可和版权声明）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../CONTRIBUTING.html#your-own-work">Your own work（你自己的作品）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CONTRIBUTING.html#use-code-from-online-source">Use code from online source（使用来自网上的代码）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CONTRIBUTING.html#use-mit-licensed-code-mit">Use MIT licensed code（使用 MIT 许可代码）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CONTRIBUTING.html#use-gpl-licensed-code-gpl">Use GPL licensed code（使用 GPL 许可代码）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CONTRIBUTING.html#ways-to-contribute">Ways to contribute（贡献方式）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#give-lvgl-a-star-lvgl">Give LVGL a Star（给 LVGL 一颗星）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#tell-what-you-have-achieved">Tell what you have achieved（讲述你的成就）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#write-examples">Write examples（撰写实例）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#improve-the-docs">Improve the docs（改进文档）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#report-bugs-bug">Report bugs（报告bug）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#send-fixes">Send fixes（提交补丁）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#join-the-conversations-in-the-forum">Join the conversations in the Forum（参与论坛讨论）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#add-features">Add features（添加功能）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#become-a-maintainer">Become a maintainer（成为维护者）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CONTRIBUTING.html#move-your-project-repository-under-lvgl-organization-lvgl">Move your project repository under LVGL organization（将您的项目库移到LVGL组织下）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog（更新日志）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v8-1-0-in-progress">v8.1.0 (In progress)（进行中）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v8-0-2-16-07-2021">v8.0.2 (16.07.2021)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v8-0-1-14-06-2021">v8.0.1 (14.06.2021)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v8-0-0-01-06-2021">v8.0.0 (01.06.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#directory-structure">Directory structure（目录结构）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#widget-changes">Widget changes（部件更改）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-scrolling">New scrolling（新的滚动功能）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-layouts">New layouts（新的布局）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#styles">Styles（样式）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#events">Events（事件）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#driver-changes">Driver changes（驱动程序更改）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#other-changes">Other changes（其他变化）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-release-policy">New release policy（新的发布政策）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#migrating-from-v7-to-v8-v7-v8">Migrating from v7 to v8（从 v7 迁移到 v8）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-11-0-16-03-2021">v7.11.0 (16.03.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-features">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-10-1-16-02-2021">v7.10.1 (16.02.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id1">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-10-0-02-02-2021">v7.10.0 (02.02.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id2">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id3">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-9-1-19-01-2021">v7.9.1 (19.01.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id4">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-9-0-05-01-2021">v7.9.0 (05.01.2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id5">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id6">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-8-1-15-12-2020">v7.8.1 (15.12.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id7">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-8-0-01-12-2020">v7.8.0 (01.12.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id8">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id9">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-7-2-17-11-2020">v7.7.2 (17.11.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id10">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-7-1-03-11-2020">v7.7.1 (03.11.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id11">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-7-0-20-10-2020">v7.7.0 (20.10.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id12">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id13">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-6-1-06-10-2020">v7.6.1 (06.10.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id14">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-6-0-22-09-2020">v7.6.0 (22.09.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id15">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id16">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-5-0-15-09-2020">v7.5.0 (15.09.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id17">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id18">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-4-0-01-09-2020">v7.4.0 (01.09.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id19">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id20">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-3-1-18-08-2020">v7.3.1 (18.08.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id21">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-3-0-04-08-2020">v7.3.0 (04.08.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id22">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id23">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-2-0-21-07-2020">v7.2.0 (21.07.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id24">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id25">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-1-0-07-07-2020">v7.1.0 (07.07.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id26">New features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id27">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-0-2-16-06-2020">v7.0.2 (16.06.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id28">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-0-1-01-06-2020">v7.0.1 (01.06.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id29">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../CHANGELOG.html#v7-0-0-18-05-2020">v7.0.0 (18.05.2020)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#legal-changes">Legal changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-drawing-system">New drawing system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-style-system">New style system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#gpu-integration">GPU integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#renames">Renames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#reworked-and-improved-object">Reworked and improved object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#new-object-types">New object types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#others">Others</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#demos">Demos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#id30">New release policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CHANGELOG.html#migrating-from-v6-to-v7">Migrating from v6 to v7</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ROADMAP.html">Roadmap（产品线路）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ROADMAP.html#v8-1">v8.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ROADMAP.html#features">Features（功能）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ROADMAP.html#new-features">New features（新功能）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ROADMAP.html#discuss">Discuss（讨论）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROADMAP.html#docs">Docs（文档）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROADMAP.html#others">Others（其他）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ROADMAP.html#v8-2">v8.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ROADMAP.html#ideas">Ideas（想法）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ROADMAP.html#v8">v8</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../100ask_project/index.html">⭐项目实战</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../100ask_project/pc-simulator.html">在windwos模拟器运行lvgl(v8.0)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/pc-simulator.html#code-blocks">Code::Blocks上运行</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../100ask_project/pc-simulator.html#id1">获取资料</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../100ask_project/pc-simulator.html#id2">获取Code::Blocks并安装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../100ask_project/pc-simulator.html#id3">获取示例源码并运行</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/pc-simulator.html#eclipse">在 Eclipse 上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/pc-simulator.html#vscode">在 vscode 上运行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../100ask_project/st-stm32f103.html">STM32F103 LVGL GUI DEMO效果</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/st-stm32f103.html#id1">STM32F103 LVGL GUI DEMO源码</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../100ask_project/st-stm32mp157.html">STM32MP157 LVGL GUI DEMO效果</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/st-stm32mp157.html#id1">STM32MP157 LVGL GUI DEMO源码</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../100ask_project/nxp-imx6ull.html">✨IMX6ULL LVGL GUI DEMO效果</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/nxp-imx6ull.html#imx6ull-linux-lvgl-gui-v2-0">IMX6ULL Linux LVGL GUI V2.0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../100ask_project/nxp-imx6ull.html#id1">源码</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../100ask_project/nxp-imx6ull.html#imx6ull-linux-lvgl-gui-1-0">IMX6ULL Linux LVGL GUI 1.0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../100ask_project/nxp-imx6ull.html#id2">源码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../100ask_project/espressif-esp32.html">ESP32 LVGL GUI DEMO效果</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contact_us/index.html">联系我们</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact_us/index.html#id2">🔥加入技术交流群聊一起学习！</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">百问网LVGL中文教程文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">3rd party libraries(第三方库)</a> &raquo;</li>
+        
+      <li>JPG decoder(JPG解码器)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/lvgl/docs/blob/release/v8.1/libs/sjpg.md" class="fa fa-github"> 在 GitHub 上修改</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="jpg-decoder-jpg">
+<h1>JPG decoder(JPG解码器)<a class="headerlink" href="#jpg-decoder-jpg" title="永久链接至标题">¶</a></h1>
+<details>
+<summary>查看原文</summary>
+<p><p>Allow the use of JPG images in LVGL. Besides that it also allows the use of a custom format, called Split JPG (SJPG), which can be decided in more optimal way on embedded systems.</p>
+</p>
+</details><p>允许在 LVGL 中使用 JPG 图像。除此之外，它还允许使用称为 Split JPG (SJPG) 的自定义格式，可以在嵌入式系统上以更优化的方式决定。</p>
+<div class="section" id="overview">
+<h2>Overview(概述)<a class="headerlink" href="#overview" title="永久链接至标题">¶</a></h2>
+<details>
+<summary>查看原文</summary>
+<p><ul class="simple">
+<li><p>Supports both normal JPG and the custom SJPG formats.</p></li>
+<li><p>Decoding normal JPG consumes RAM with the size fo the whole uncompressed image (recommended only for devices with more RAM)</p></li>
+<li><p>SJPG is a custom format based on &quot;normal&quot; JPG and specially made for LVGL.</p></li>
+<li><p>SJPG is 'split-jpeg' which is a bundle of small jpeg fragments with an sjpg header.</p></li>
+<li><p>SJPG size will be almost comparable to the jpg file or might be a slightly larger.</p></li>
+<li><p>File read from file and c-array are implemented.</p></li>
+<li><p>SJPEG frame fragment cache enables fast fetching of lines if availble in cache.</p></li>
+<li><p>By default the sjpg image cache will be image width * 2 * 16 bytes (can be modified)</p></li>
+<li><p>Currently only 16 bit image format is supported (TODO)</p></li>
+<li><p>Only the required partion of the JPG and SJPG images are decoded, therefore they can't be zoomed or rotated.</p></li>
+</ul>
+</p>
+</details><ul class="simple">
+<li><p>支持普通 JPG 和自定义 SJPG 格式。</p></li>
+<li><p>解码普通 JPG 会消耗整个未压缩图像大小的 RAM（仅推荐用于具有更多 RAM 的设备）</p></li>
+<li><p>SJPG 是基于“普通”JPG 的自定义格式，专为LVGL。</p></li>
+<li><p>SJPG 是“split-jpeg”，它是一捆带有 sjpg 标头的小 jpeg 片段。</p></li>
+<li><p>SJPG 大小几乎与 jpg 文件相当，或者可能稍大一些。</p></li>
+<li><p>从文件和 c-array 读取的文件已实现。</p></li>
+<li><p>如果缓存中可用，SJPEG 帧片段缓存可以快速获取行。</p></li>
+<li><p>默认情况下，sjpg 图像缓存将为图像宽度 * 2 * 16 字节（可以修改）- 目前仅支持 16 位图像格式（TODO )</p></li>
+<li><p>仅解码 JPG 和 SJPG 图像所需的部分，因此无法对其进行缩放或旋转。</p></li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2>Usage(用法)<a class="headerlink" href="#usage" title="永久链接至标题">¶</a></h2>
+<details>
+<summary>查看原文</summary>
+<p><p>If enabled in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> by <code class="docutils literal notranslate"><span class="pre">LV_USE_SJPG</span></code> LVGL will register a new image decoder automatically so JPG and SJPG files can be directly used as image sources. For example:</p>
+</p>
+</details><p>如果在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 中通过 <code class="docutils literal notranslate"><span class="pre">LV_USE_SJPG</span></code> 启用 LVGL 将自动注册一个新的图像解码器，因此 JPG 和 SJPG 文件可以直接用作图像源。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">my_img</span><span class="p">,</span> <span class="s">&quot;S:path/to/picture.jpg&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<details>
+<summary>查看原文</summary>
+<p><p>Note that, a file system driver needs to registered to open images from files. Read more about it <a class="reference external" href="https://docs.lvgl.io/master/overview/file-system.html">here</a> or just enable one in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> with <code class="docutils literal notranslate"><span class="pre">LV_USE_FS_...</span></code></p>
+</p>
+</details><blockquote>
+<div><p>请注意，文件系统驱动程序需要注册才能从文件中打开图像。阅读更多相关信息 <a class="reference external" href="https://docs.lvgl.io/master/overview/file-system.html">此处</a> 或仅在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 中使用 <code class="docutils literal notranslate"><span class="pre">LV_USE_FS_...</span></code> 启用一个</p>
+</div></blockquote>
+</div>
+<div class="section" id="converter">
+<h2>Converter(转换器)<a class="headerlink" href="#converter" title="永久链接至标题">¶</a></h2>
+<div class="section" id="converting-jpg-to-c-array-jpg-c">
+<h3>Converting JPG to C array(将 JPG 转换为 C 数组)<a class="headerlink" href="#converting-jpg-to-c-array-jpg-c" title="永久链接至标题">¶</a></h3>
+<details>
+<summary>查看原文</summary>
+<p><ul class="simple">
+<li><p>Use lvgl online tool https://lvgl.io/tools/imageconverter</p></li>
+<li><p>Color format = RAW, output format = C Array</p></li>
+</ul>
+</p>
+</details><ul class="simple">
+<li><p>使用 lvgl 在线工具 https://lvgl.io/tools/imageconverter</p></li>
+<li><p>颜色格式 = RAW，输出格式 = C 数组</p></li>
+</ul>
+</div>
+<div class="section" id="converting-jpg-to-sjpg-jpg-sjpg">
+<h3>Converting JPG to SJPG(将 JPG 转换为 SJPG)<a class="headerlink" href="#converting-jpg-to-sjpg-jpg-sjpg" title="永久链接至标题">¶</a></h3>
+<details>
+<summary>查看原文</summary>
+<p></p>
+</details><p>python3 and the PIL library required. (PIL can be installed with <code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">pillow</span></code>)</p>
+<p>To create SJPG from JPG:</p>
+<ul class="simple">
+<li><p>Copy the image to convert into <code class="docutils literal notranslate"><span class="pre">lvgl/scripts</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">lvgl/scripts</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">jpg_to_sjpg.py</span> <span class="pre">image_to_convert.jpg</span></code>. It creates both a C files and an SJPG image.</p></li>
+</ul>
+<p>The expected result is:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Conversion started...
+
+Input:
+        image_to_convert.jpg
+        <span class="nv">RES</span> <span class="o">=</span> <span class="m">640</span> x <span class="m">480</span>
+
+Output:
+        Time <span class="nv">taken</span> <span class="o">=</span> <span class="m">1</span>.66 sec
+        bin <span class="nv">size</span> <span class="o">=</span> <span class="m">77</span>.1 KB
+        walpaper.sjpg           <span class="o">(</span>bin file<span class="o">)</span>
+        walpaper.c              <span class="o">(</span>c array<span class="o">)</span>
+
+All good!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example(示例)<a class="headerlink" href="#example" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418lv_split_jpeg_initv">
+<span id="_CPPv318lv_split_jpeg_initv"></span><span id="_CPPv218lv_split_jpeg_initv"></span><span id="lv_split_jpeg_init__void"></span><span class="target" id="lv__sjpg_8h_1a0b3cc161e2b41c694997f6b4ed9e9240"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lv_split_jpeg_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418lv_split_jpeg_initv" title="永久链接至目标">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="png.html" class="btn btn-neutral float-right" title="PNG decoder(PNG解码器)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="bmp.html" class="btn btn-neutral float-left" title="BMP decoder(BMP解码器)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+      <span class="lastupdated">
+        最后更新于 2021 年 12 月 28 日.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<style>
+    .wy-side-nav-search > div[role="search"] {
+      color: black;
+    }
+</style> 
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    //return "master\n8.1.0\n7.11"
+    //return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+    return fetch("https://gitee.com/zhouyuebiao/docs_100ask_versionlist/raw/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

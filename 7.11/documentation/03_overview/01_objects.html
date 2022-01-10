@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>对象(Objects) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="对象层级(Layers)" href="02_Layers.html" />
+    <link rel="prev" title="日志记录" href="../02_porting/09_log.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">对象(Objects)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#attributes">对象的属性(Attributes)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">对象的基本属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">对象的特殊属性</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">对象的工作机制</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">亲子结构</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">追随原则</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">子对象仅在父对象的范围内可见</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">创建-删除对象</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">屏幕对象</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">创建屏幕对象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">获取活动屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">载入屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">加载屏幕动画</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">处理多个显示</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parts">零件(Parts)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#states">状态-States</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>对象(Objects)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/01_objects.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="objects">
+<h1>对象(Objects)<a class="headerlink" href="#objects" title="永久链接至标题">¶</a></h1>
+<p>在 LVGL 中，用户界面的基本构建块是对象，也称为小部件(widget)。例如，按钮，标签，图像，列表，图表或文本区域。</p>
+<p>查看  <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/01_obj.html">LVGL所有的对象类型(widget)</a> 。</p>
+<div class="section" id="attributes">
+<h2>对象的属性(Attributes)<a class="headerlink" href="#attributes" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id1">
+<h3>对象的基本属性<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h3>
+<p>所有对象类型都共享一些基本属性：</p>
+<ul class="simple">
+<li><p>Position (位置)</p></li>
+<li><p>Size (尺寸)</p></li>
+<li><p>Parent (父母)</p></li>
+<li><p>Drag enable (拖动启用)</p></li>
+<li><p>Click enable (单击启用)</p></li>
+<li><p>position (位置)</p></li>
+<li><p>等等</p></li>
+</ul>
+<p>我们可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set</span> <span class="pre">_...</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_obj_get</span> <span class="pre">_...</span></code> 等前缀的函数设置或者获取这些属性。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="cm">/* 设置基础对象的属性 */</span>
+<span class="linenos">2</span>    <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>   <span class="cm">/* 设置按键的大小 */</span>
+<span class="linenos">3</span>    <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span>      <span class="cm">/* 设置按键的位置 */</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>对象的特殊属性<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<p>有些对象类型也具有特殊的属性。例如，滑块具有</p>
+<ul class="simple">
+<li><p>Min. max. values (最小最大值)</p></li>
+<li><p>Current value    (当前值)</p></li>
+<li><p>Custom styles    (自定义样式)</p></li>
+</ul>
+<p>对于这些属性，每种对象类型都有唯一的 API 函数。例如一个滑块的 API 调用过程：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="cm">/* 设置滑块的特殊属性 */</span>
+<span class="linenos">2</span>    <span class="n">lv_slider_set_range</span><span class="p">(</span><span class="n">slider1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>                   <span class="cm">/* 设置滑块的最小值和最大值 */</span>
+<span class="linenos">3</span>    <span class="n">lv_slider_set_value</span><span class="p">(</span><span class="n">slider1</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">LV_ANIM_ON</span><span class="p">);</span>   <span class="cm">/* 设置当前值(屏幕坐标系位置) */</span>
+<span class="linenos">4</span>    <span class="n">lv_slider_set_action</span><span class="p">(</span><span class="n">slider1</span><span class="p">,</span> <span class="n">my_action</span><span class="p">);</span>       <span class="cm">/* 设置回调函数 */</span>
+</pre></div>
+</div>
+<p>要查看 API 的实现代码，可以检查相应的头文件（例如滑块对象的头文件 <code class="docutils literal notranslate"><span class="pre">lv_objx/lv_slider.h</span></code>）</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>对象的工作机制<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>亲子结构<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>父对象可以作为其子对象的容器。每个对象只能一个父对象（<strong>屏幕除外</strong>），但是一个父对象可以有无限多个子对象。父对象的类型没有限制，但是有特殊的父对象（例如，按钮）和特殊的子对象（例如，标签）。</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>追随原则<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>如果更改了父对象的位置，则子对象将与父对象一起移动，并且子对象的位置都保持相对于父对象位置不变。
+例如，坐标 (0,0) 表示子对象将独立于父对象的位置保留在父对象的左上角，代码：</p>
+<div class="figure align-default" id="id16">
+<img alt="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child1.png" src="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child1.png" />
+<p class="caption"><span class="caption-text">一个父子对象</span><a class="headerlink" href="#id16" title="永久链接至图片">¶</a></p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">par</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span> <span class="cm">/* 在当前屏幕中创建一个对象 */</span>
+<span class="linenos">2</span>    <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>                      <span class="cm">/* 设置对象的大小 */</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj1</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>         <span class="cm">/* 基于前面创建的对象(par)创建一个子对象(obj1)，之前的对像成为父对象 */</span>
+<span class="linenos">5</span>    <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>                       <span class="cm">/* 设置子对象的位置 */</span>
+</pre></div>
+</div>
+<p>当我们修改父对象的位置，子对象也会一起移动，以保持和父对象的相对位置不变：</p>
+<div class="figure align-default" id="id17">
+<img alt="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child2.png" src="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child2.png" />
+<p class="caption"><span class="caption-text">子对象跟随父对象</span><a class="headerlink" href="#id17" title="永久链接至图片">¶</a></p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>    <span class="cm">/* 移动父对象，子对象也会跟着移动，以保持相对位置不变 */</span>
+</pre></div>
+</div>
+<div class="section" id="id6">
+<h3>子对象仅在父对象的范围内可见<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>如果子对象的部分或全部不在其父级之内，则超出父对象的部分将不可见。</p>
+<div class="figure align-default" id="id18">
+<img alt="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child3.png" src="http://photos.100ask.net/lvgl/03_overview/01_objects/par_child3.png" />
+<p class="caption"><span class="caption-text">子对象超出父对象的部分不可见</span><a class="headerlink" href="#id18" title="永久链接至图片">¶</a></p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_set_x</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="mi">-30</span><span class="p">);</span>        <span class="cm">/* 将子对象移出一部分到从父对象的范围内之外 */</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>创建-删除对象<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>在LVGL中，可以在运行时动态地创建和删除对象。这意味着仅当前创建的对象需要消耗RAM。例如，如果需要图表，我们可以在需要时创建它，并在不可见或不需要时将其删除。</p>
+<p>每个对象类型都有各自的创建函数。它需要两个参数：</p>
+<ul class="simple">
+<li><p>指向父对象的指针。创建屏幕时以 NULL 作为父级。</p></li>
+<li><p>用于复制具有相同类型的对象的指针(可选)。如果不行进行复制操作为 NULL。</p></li>
+</ul>
+<p>使用 lv_obj_t 指针作为句柄在 C 代码中引用所有对象。以后可以使用该指针设置或获取对象的属性。</p>
+<p>创建函数如下所示：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">lv_</span> <span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="n">_create</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">copy</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>所有对象类型都有一个通用的删除功能。它删除对象及其所有子对象。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="kt">void</span> <span class="nf">lv_obj_del</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_del</span></code> 将立即删除该对象。如果出于某种原因不能立即删除该对象，则可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_del_async(obj)</span></code> ，例如，如果要删除子对象的 LV_EVENT_DELETE 信号中对象的父对象，这很有用，。</p>
+<p>我们可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_clean</span></code> 删除对象的所有子对象（但不会删除对象本身）：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="kt">void</span> <span class="nf">lv_obj_clean</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>屏幕对象<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h3>创建屏幕对象<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>屏幕是没有父对象的特殊对象。应该像这样创建它们：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">scr1</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>可以使用任何对象类型创建屏幕。例如：创建墙纸的基础对象或图像。</p>
+</div>
+<div class="section" id="id10">
+<h3>获取活动屏幕<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>这始终是每个显示屏上的活动屏幕。默认情况下，该库为每个显示创建并加载 “基础对象” 作为屏幕。</p>
+<p>要获取当前活动的屏幕使用函数 <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code></p>
+</div>
+<div class="section" id="id11">
+<h3>载入屏幕<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>调用函数 <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr1)</span></code> 加载屏幕。</p>
+</div>
+<div class="section" id="id12">
+<h3>加载屏幕动画<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>我们可以调用函数： <code class="docutils literal notranslate"><span class="pre">lv_scr_load_anim(scr,</span> <span class="pre">transition_type,</span> <span class="pre">time,</span> <span class="pre">delay,</span> <span class="pre">auto_del)</span></code> 加载屏幕动画。参数 <code class="docutils literal notranslate"><span class="pre">transition_type</span></code> 是动画过渡类型，该参数可设为：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_NONE</span></code> 延迟x毫秒后立即切换</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_OVER_LEFT/RIGHT/TOP/BOTTOM</span></code> 将新屏幕移到给定方向上</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_MOVE_LEFT/RIGHT/TOP/BOTTOM</span></code> 将旧屏幕和新屏幕都移至给定方向</p></li>
+<li><p><a href="#id13"><span class="problematic" id="id14">``</span></a>LV_SCR_LOAD_ANIM_FADE_ON `` 使新屏幕淡出旧屏幕</p></li>
+</ul>
+<p>将 <code class="docutils literal notranslate"><span class="pre">auto_del</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 会在动画结束时自动删除旧屏幕。</p>
+<p>在延迟时间之后开始动画播放时，新屏幕将变为活动状态（由 <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> 返回）。</p>
+</div>
+<div class="section" id="id15">
+<h3>处理多个显示<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>屏幕在当前选择的默认屏幕上创建。默认显示设备使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_register</span></code> 注册的最后一个屏幕作为显示，或者可以使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default(disp)</span></code> 显式选择新的默认显示屏幕。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> , <code class="docutils literal notranslate"><span class="pre">lv_scr_load()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_scr_load_anim()</span></code> 将会在默认的屏幕上操作。</p>
+<p>访问 多显示器支持 以了解更多信息。</p>
+</div>
+</div>
+<div class="section" id="parts">
+<h2>零件(Parts)<a class="headerlink" href="#parts" title="永久链接至标题">¶</a></h2>
+<p>widget 可以包含多个 Parts 。例如，按钮仅具有主要部分，而滑块则由背景，指示器和旋钮组成。</p>
+<p>Parts 名称的构造类似于 <code class="docutils literal notranslate"><span class="pre">LV_</span> <span class="pre">+</span> <span class="pre">&lt;TYPE&gt;</span> <span class="pre">_PART_</span> <span class="pre">&lt;NAME&gt;</span></code> 。比如 <code class="docutils literal notranslate"><span class="pre">LV_BTN_PART_MAIN</span></code> 、 <code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_KNOB</span></code> 。
+通常在将样式添加到对象时使用 Parts。使用 Parts 可以将不同的样式分配给对象的不同 Parts 。</p>
+</div>
+<div class="section" id="states">
+<h2>状态-States<a class="headerlink" href="#states" title="永久链接至标题">¶</a></h2>
+<p>对象可以处于以下状态的组合：</p>
+<ul class="simple">
+<li><p><strong>LV_STATE_DEFAULT</strong>  默认或正常状态</p></li>
+<li><p><strong>LV_STATE_CHECKED</strong>  选中或点击</p></li>
+<li><p><strong>LV_STATE_FOCUSED</strong>  通过键盘或编码器聚焦或通过触摸板/鼠标单击</p></li>
+<li><p><strong>LV_STATE_EDITED</strong>   由编码器编辑</p></li>
+<li><p><strong>LV_STATE_HOVERED</strong>  鼠标悬停（现在还不支持）</p></li>
+<li><p><strong>LV_STATE_PRESSED</strong>  按下</p></li>
+<li><p><strong>LV_STATE_DISABLED</strong> 禁用或无效</p></li>
+</ul>
+<p>当用户按下，释放，聚焦等对象时，状态通常由库自动检测更改。
+当然状态也可以手动检测更改。
+要完全覆盖当前状态，调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE...)</span></code>
+要设置或清除某个状态(但不更改其他状态)，调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_add/clear_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE_...)</span></code>
+可以组合使用状态值。例如： <code class="docutils literal notranslate"><span class="pre">lv_obj_set_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE_PRESSED</span> <span class="pre">|</span> <span class="pre">LV_PRESSED_CHECKED)</span></code> .</p>
+<p>要了解有关状态的更多信息，请阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/04_Styles.html">样式(Styles)</a> 概述的相关部分。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="02_Layers.html" class="btn btn-neutral float-right" title="对象层级(Layers)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../02_porting/09_log.html" class="btn btn-neutral float-left" title="日志记录" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

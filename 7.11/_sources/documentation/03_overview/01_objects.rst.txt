@@ -1,0 +1,246 @@
+==================================
+对象(Objects)
+==================================
+
+在 LVGL 中，用户界面的基本构建块是对象，也称为小部件(widget)。例如，按钮，标签，图像，列表，图表或文本区域。
+
+
+查看  `LVGL所有的对象类型(widget)`_ 。
+
+
+.. _LVGL所有的对象类型(widget): http://lvgl.100ask.net/documentation/04_widgets/01_obj.html
+
+
+对象的属性(Attributes)
+##################################
+
+
+对象的基本属性
+**********************************
+所有对象类型都共享一些基本属性：
+
+- Position (位置)
+- Size (尺寸)
+- Parent (父母)
+- Drag enable (拖动启用)
+- Click enable (单击启用)
+- position (位置)
+- 等等
+
+
+我们可以使用 ``lv_obj_set _...`` 和 ``lv_obj_get _...`` 等前缀的函数设置或者获取这些属性。例如：
+
+.. code-block:: c
+    :linenos:
+	
+	/* 设置基础对象的属性 */
+	lv_obj_set_size(btn1, 100, 50);	  /* 设置按键的大小 */
+	lv_obj_set_pos(btn1, 20,30);      /* 设置按键的位置 */
+
+
+对象的特殊属性
+**********************************
+
+有些对象类型也具有特殊的属性。例如，滑块具有
+
+- Min. max. values (最小最大值)
+- Current value    (当前值)
+- Custom styles    (自定义样式)
+
+
+对于这些属性，每种对象类型都有唯一的 API 函数。例如一个滑块的 API 调用过程：
+
+.. code-block:: c
+    :linenos:
+	
+	/* 设置滑块的特殊属性 */
+	lv_slider_set_range(slider1, 0, 100);	   		/* 设置滑块的最小值和最大值 */
+	lv_slider_set_value(slider1, 40, LV_ANIM_ON);	/* 设置当前值(屏幕坐标系位置) */
+	lv_slider_set_action(slider1, my_action);     	/* 设置回调函数 */
+
+
+要查看 API 的实现代码，可以检查相应的头文件（例如滑块对象的头文件 ``lv_objx/lv_slider.h``）
+
+对象的工作机制
+##################################
+
+亲子结构
+**********************************
+
+父对象可以作为其子对象的容器。每个对象只能一个父对象（**屏幕除外**），但是一个父对象可以有无限多个子对象。父对象的类型没有限制，但是有特殊的父对象（例如，按钮）和特殊的子对象（例如，标签）。
+
+
+追随原则
+##################################
+如果更改了父对象的位置，则子对象将与父对象一起移动，并且子对象的位置都保持相对于父对象位置不变。
+例如，坐标 (0,0) 表示子对象将独立于父对象的位置保留在父对象的左上角，代码：
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/01_objects/par_child1.png
+	   
+	  一个父子对象
+	  
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * par = lv_obj_create(lv_scr_act(), NULL); /* 在当前屏幕中创建一个对象 */
+	lv_obj_set_size(par, 100, 80);	                    /* 设置对象的大小 */
+
+	lv_obj_t * obj1 = lv_obj_create(par, NULL);         /* 基于前面创建的对象(par)创建一个子对象(obj1)，之前的对像成为父对象 */
+	lv_obj_set_pos(obj1, 10, 10);                       /* 设置子对象的位置 */
+
+
+当我们修改父对象的位置，子对象也会一起移动，以保持和父对象的相对位置不变：
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/01_objects/par_child2.png
+	   
+	  子对象跟随父对象
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_set_pos(par, 50, 50);	/* 移动父对象，子对象也会跟着移动，以保持相对位置不变 */
+
+
+
+子对象仅在父对象的范围内可见
+**********************************
+如果子对象的部分或全部不在其父级之内，则超出父对象的部分将不可见。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/01_objects/par_child3.png
+	   
+	  子对象超出父对象的部分不可见
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_set_x(obj1, -30);	/* 将子对象移出一部分到从父对象的范围内之外 */
+
+
+创建-删除对象
+**********************************
+在LVGL中，可以在运行时动态地创建和删除对象。这意味着仅当前创建的对象需要消耗RAM。例如，如果需要图表，我们可以在需要时创建它，并在不可见或不需要时将其删除。
+
+每个对象类型都有各自的创建函数。它需要两个参数：
+
+- 指向父对象的指针。创建屏幕时以 NULL 作为父级。
+- 用于复制具有相同类型的对象的指针(可选)。如果不行进行复制操作为 NULL。
+
+
+使用 lv_obj_t 指针作为句柄在 C 代码中引用所有对象。以后可以使用该指针设置或获取对象的属性。
+
+
+创建函数如下所示：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * lv_ <type>_create(lv_obj_t * parent, lv_obj_t * copy);
+
+所有对象类型都有一个通用的删除功能。它删除对象及其所有子对象。
+
+
+.. code-block:: c
+    :linenos:
+	
+	void lv_obj_del(lv_obj_t * obj);
+
+``lv_obj_del`` 将立即删除该对象。如果出于某种原因不能立即删除该对象，则可以使用 ``lv_obj_del_async(obj)`` ，例如，如果要删除子对象的 LV_EVENT_DELETE 信号中对象的父对象，这很有用，。
+
+我们可以使用 ``lv_obj_clean`` 删除对象的所有子对象（但不会删除对象本身）：
+
+.. code-block:: c
+    :linenos:
+	
+	void lv_obj_clean(lv_obj_t * obj);
+
+
+屏幕对象
+##################################
+
+创建屏幕对象
+**********************************
+屏幕是没有父对象的特殊对象。应该像这样创建它们：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * scr1 = lv_obj_create(NULL, NULL);
+
+
+可以使用任何对象类型创建屏幕。例如：创建墙纸的基础对象或图像。
+
+
+获取活动屏幕
+**********************************
+这始终是每个显示屏上的活动屏幕。默认情况下，该库为每个显示创建并加载 “基础对象” 作为屏幕。 
+
+要获取当前活动的屏幕使用函数 ``lv_scr_act()`` 
+
+
+载入屏幕
+**********************************
+调用函数 ``lv_scr_load(scr1)`` 加载屏幕。
+
+加载屏幕动画
+**********************************
+我们可以调用函数： ``lv_scr_load_anim(scr, transition_type, time, delay, auto_del)`` 加载屏幕动画。参数 ``transition_type`` 是动画过渡类型，该参数可设为：
+
+- ``LV_SCR_LOAD_ANIM_NONE`` 延迟x毫秒后立即切换
+- ``LV_SCR_LOAD_ANIM_OVER_LEFT/RIGHT/TOP/BOTTOM`` 将新屏幕移到给定方向上
+- ``LV_SCR_LOAD_ANIM_MOVE_LEFT/RIGHT/TOP/BOTTOM`` 将旧屏幕和新屏幕都移至给定方向
+- ``LV_SCR_LOAD_ANIM_FADE_ON `` 使新屏幕淡出旧屏幕
+
+将 ``auto_del`` 设置为 ``true`` 会在动画结束时自动删除旧屏幕。
+
+在延迟时间之后开始动画播放时，新屏幕将变为活动状态（由 ``lv_scr_act()`` 返回）。
+
+
+处理多个显示
+**********************************
+屏幕在当前选择的默认屏幕上创建。默认显示设备使用 ``lv_disp_drv_register`` 注册的最后一个屏幕作为显示，或者可以使用 ``lv_disp_set_default(disp)`` 显式选择新的默认显示屏幕。
+
+``lv_scr_act()`` , ``lv_scr_load()`` 和 ``lv_scr_load_anim()`` 将会在默认的屏幕上操作。
+
+
+访问 多显示器支持 以了解更多信息。
+
+
+零件(Parts)
+##################################
+
+widget 可以包含多个 Parts 。例如，按钮仅具有主要部分，而滑块则由背景，指示器和旋钮组成。
+
+Parts 名称的构造类似于 ``LV_ + <TYPE> _PART_ <NAME>`` 。比如 ``LV_BTN_PART_MAIN`` 、 ``LV_SLIDER_PART_KNOB`` 。
+通常在将样式添加到对象时使用 Parts。使用 Parts 可以将不同的样式分配给对象的不同 Parts 。
+
+状态-States
+##################################
+对象可以处于以下状态的组合：
+
+- **LV_STATE_DEFAULT**  默认或正常状态
+- **LV_STATE_CHECKED**  选中或点击
+- **LV_STATE_FOCUSED**  通过键盘或编码器聚焦或通过触摸板/鼠标单击
+- **LV_STATE_EDITED**   由编码器编辑
+- **LV_STATE_HOVERED**  鼠标悬停（现在还不支持）
+- **LV_STATE_PRESSED**  按下
+- **LV_STATE_DISABLED** 禁用或无效
+
+
+当用户按下，释放，聚焦等对象时，状态通常由库自动检测更改。
+当然状态也可以手动检测更改。
+要完全覆盖当前状态，调用 ``lv_obj_set_state(obj, part, LV_STATE...)``
+要设置或清除某个状态(但不更改其他状态)，调用 ``lv_obj_add/clear_state(obj, part, LV_STATE_...)``
+可以组合使用状态值。例如： ``lv_obj_set_state(obj, part, LV_STATE_PRESSED | LV_PRESSED_CHECKED)`` .
+
+要了解有关状态的更多信息，请阅读 `样式(Styles)`_ 概述的相关部分。
+
+.. _样式(Styles): http://lvgl.100ask.net/documentation/03_overview/04_Styles.html
+
+
+
+
+
+
+
+
+

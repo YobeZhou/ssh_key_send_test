@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>滑杆(lv_slider) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="数字调整框(lv_spinbox)" href="27_spinbox.html" />
+    <link rel="prev" title="滚筒(lv_roller)" href="25_roller.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">滑杆(lv_slider)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">值和范围</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">对称范围</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">仅旋钮模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">按键处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">自定义样式的滑块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">用滑块设定值</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>滑杆(lv_slider)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/26_slider.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-slider">
+<h1>滑杆(lv_slider)<a class="headerlink" href="#lv-slider" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>滑杆对象看起来像是带有旋钮的 <code class="docutils literal notranslate"><span class="pre">进度条(lv_bar)</span></code> 。可以拖动该旋钮以设置一个值。滑块也可以是垂直或水平的。</p>
+</div>
+<div class="section" id="id2">
+<h2>零件和样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>滑块的主要部分称为 <code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_BG</span></code> ，它使用典型的背景样式属性。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_INDIC</span></code> 是一个虚拟部件，它也使用所有典型的背景属性。默认情况下，指标的最大大小与背景的大小相同，但在 <code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_BG</span></code> 中设置正填充值将使指标变小。 （负值会使它变大）
+如果在指示器上使用了值样式属性，则将根据指示器的当前大小来计算对齐方式。例如，中心对齐值始终显示在指示器的中间，无论其当前大小如何。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_KNOB</span></code> 是一个虚拟部件，使用所有典型的背景属性来描述旋钮。与指示器类似，值文本也与旋钮的当前位置和大小对齐。默认情况下，旋钮是正方形（具有半径），其边长等于滑块的较小边。
+可以使用填充值使旋钮变大。填充值也可以是不对称的。</p>
+</div>
+<div class="section" id="id3">
+<h2>用法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>值和范围<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>要设置初始值，请使用 <code class="docutils literal notranslate"><span class="pre">lv_slider_set_value(slider,</span> <span class="pre">new_value,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> 。 <code class="docutils literal notranslate"><span class="pre">lv_slider_set_anim_time(slider,</span> <span class="pre">anim_time)</span></code> 设置动画时间（以毫秒为单位）。</p>
+<p>要指定范围（最小，最大值），可以使用 <code class="docutils literal notranslate"><span class="pre">lv_slider_set_range(slider,</span> <span class="pre">min</span> <span class="pre">,</span> <span class="pre">max)</span></code> 。</p>
+</div>
+<div class="section" id="id5">
+<h3>对称范围<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>除普通类型外，滑块还可以配置为两种其他类型：</p>
+<ul class="simple">
+<li><p><strong>LV_SLIDER_TYPE_NORMAL</strong> 普通型</p></li>
+<li><p><strong>LV_SLIDER_TYPE_SYMMETRICAL</strong> 将指标对称地绘制为零（从零开始，从左到右）</p></li>
+<li><p><strong>LV_SLIDER_TYPE_RANGE</strong> 允许为左（起始）值使用附加旋钮。 （可与 <code class="docutils literal notranslate"><span class="pre">lv_slider_set/get_left_value()</span></code> 一起使用）</p></li>
+</ul>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_slider_set_type(slider,</span> <span class="pre">LV_SLIDER_TYPE_...)</span></code> 更改类型</p>
+</div>
+<div class="section" id="id6">
+<h3>仅旋钮模式<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>通常，可以通过拖动旋钮或单击滑块来调整滑块。在后一种情况下，旋钮移动到所单击的点，并且滑块值相应地变化。在某些情况下，希望将滑块设置为仅在拖动旋钮时做出反应。</p>
+<p>通过调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_adv_hittest(slider,</span> <span class="pre">true);</span></code> 启用此功能。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>事件<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>除了 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a> ，滑杆还支持以下 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7">特殊事件</a> ：</p>
+<ul class="simple">
+<li><p><strong>LV_EVENT_VALUE_CHANGED</strong> 在使用键拖动或更改滑块时发送。拖动滑块时（仅当释放时）连续发送事件。使用lv_slider_is_dragged确定滑块是被拖动还是刚刚释放。</p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多内容。</p>
+</div>
+<div class="section" id="id11">
+<h2>按键处理<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>滑杆可处理以下按键：</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_UP, LV_KEY_RIGHT</strong> 将滑块的值增加1</p></li>
+<li><p><strong>LV_KEY_DOWN, LV_KEY_LEFT</strong> 将滑块的值减1</p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a>  的更多内容。</p>
+</div>
+<div class="section" id="id13">
+<h2>范例<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id14">
+<h3>自定义样式的滑块<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id16">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/26_slider/01_lv_ex_slider_1.png" src="http://photos.100ask.net/lvgl/04_widgets/26_slider/01_lv_ex_slider_1.png" />
+<p class="caption"><span class="caption-text">自定义样式的滑块</span><a class="headerlink" href="#id16" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_SLIDER</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">event_handler</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos"> 6</span>    <span class="p">{</span>
+<span class="linenos"> 7</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 8</span>                    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Value: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">lv_slider_get_value</span><span class="p">(</span><span class="n">obj</span><span class="p">));</span>
+<span class="linenos"> 9</span>            <span class="p">}</span>
+<span class="linenos">10</span>    <span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="kt">void</span> <span class="nf">lv_ex_slider_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="p">{</span>
+<span class="linenos">14</span>            <span class="cm">/*Create a slider*/</span>
+<span class="linenos">15</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">slider</span> <span class="o">=</span> <span class="n">lv_slider_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">18</span>    <span class="p">}</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>用滑块设定值<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id17">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/26_slider/02_lv_ex_slider_2.png" src="http://photos.100ask.net/lvgl/04_widgets/26_slider/02_lv_ex_slider_2.png" />
+<p class="caption"><span class="caption-text">用滑块设定值</span><a class="headerlink" href="#id17" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_SLIDER</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">slider_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">slider</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">);</span>
+<span class="linenos"> 6</span>    <span class="k">static</span> <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">slider_label</span><span class="p">;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="kt">void</span> <span class="nf">lv_ex_slider_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 9</span>    <span class="p">{</span>
+<span class="linenos">10</span>            <span class="cm">/* Create a slider in the center of the display */</span>
+<span class="linenos">11</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">slider</span> <span class="o">=</span> <span class="n">lv_slider_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">lv_obj_set_width</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="n">LV_DPI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="n">slider_event_cb</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_slider_set_range</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>            <span class="cm">/* Create a label below the slider */</span>
+<span class="linenos">18</span>            <span class="n">slider_label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">slider_label</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_obj_set_auto_realign</span><span class="p">(</span><span class="n">slider_label</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">slider_label</span><span class="p">,</span> <span class="n">slider</span><span class="p">,</span> <span class="n">LV_ALIGN_OUT_BOTTOM_MID</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="cm">/* Create an informative label */</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">info</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s">&quot;Welcome to the slider+label demo!</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">26</span>                                                            <span class="s">&quot;Move the slider and see that the label</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">27</span>                                                            <span class="s">&quot;updates to match it.&quot;</span><span class="p">);</span>
+<span class="linenos">28</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_IN_TOP_LEFT</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">29</span>    <span class="p">}</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">slider_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">slider</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos">32</span>    <span class="p">{</span>
+<span class="linenos">33</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">34</span>                    <span class="k">static</span> <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="cm">/* max 3 bytes for number plus 1 null terminating byte */</span>
+<span class="linenos">35</span>                    <span class="n">snprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&quot;%u&quot;</span><span class="p">,</span> <span class="n">lv_slider_get_value</span><span class="p">(</span><span class="n">slider</span><span class="p">));</span>
+<span class="linenos">36</span>                    <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">slider_label</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+<span class="linenos">37</span>            <span class="p">}</span>
+<span class="linenos">38</span>    <span class="p">}</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="27_spinbox.html" class="btn btn-neutral float-right" title="数字调整框(lv_spinbox)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="25_roller.html" class="btn btn-neutral float-left" title="滚筒(lv_roller)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

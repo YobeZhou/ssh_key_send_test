@@ -1,0 +1,164 @@
+==================================
+显示接口
+==================================
+要设置显示，必须初始化 ``lv_disp_buf_t`` 和 ``lv_disp_drv_t`` 变量。
+
+-  **lv_disp_buf_t** 保存显示缓冲区信息的结构体
+-  **lv_disp_drv_t**  HAL要注册的显示驱动程序、与显示交互并处理与图形相关的结构体、回调函数。
+
+
+显示缓冲区
+###################################
+``lv_disp_buf_t`` 初始化示例：
+
+.. code-block:: c
+    :linenos:
+	
+	/*A static or global variable to store the buffers*/
+	static lv_disp_buf_t disp_buf;
+
+	/*Static or global buffer(s). The second buffer is optional*/
+	static lv_color_t buf_1[MY_DISP_HOR_RES * 10];
+	static lv_color_t buf_2[MY_DISP_HOR_RES * 10];
+
+	/*Initialize `disp_buf` with the buffer(s) */
+	lv_disp_buf_init(&disp_buf, buf_1, buf_2, MY_DISP_HOR_RES*10);
+
+
+
+关于缓冲区大小，有 3 种情况：
+
+1. **一个缓冲区** LVGL将屏幕的内保存到缓冲区中并将其发送到显示器。缓冲区可以小于屏幕。在这种情况下，较大的区域将被重画成多个部分。如果只有很小的区域发生变化(例如按下按钮)，则只会刷新该部分的区域。
+#. **两个非屏幕大小的缓冲区** 具有两个缓冲区的 LVGL 可以将其中一个作为显示缓冲区，而另一缓冲区的内容发送到后台显示。应该使用 DMA 或其他硬件将数据传输到显示器，以让CPU同时绘图。这样，渲染和刷新并行处理。与 **一个缓冲区** 的情况类似，如果缓冲区小于要刷新的区域，LVGL将按块绘制显示内容
+#. **两个屏幕大小的缓冲区** 与两个非屏幕大小的缓冲区相反，LVGL将始终提供整个屏幕的内容，而不仅仅是块。这样，驱动程序可以简单地将帧缓冲区的地址更改为从 LVGL 接收的缓冲区。因此，当MCU具有 LCD/TFT 接口且帧缓冲区只是 RAM 中的一个位置时，这种方法的效果很好。
+
+
+显示驱动器
+###################################
+一旦缓冲区初始化准备就绪，就需要初始化显示驱动程序。在最简单的情况下，仅需要设置 ``lv_disp_drv_t`` 的以下两个字段：
+
+- **buffer** 指向已初始化的 ``lv_disp_buf_t`` 变量的指针。
+- **flush_cb** 回调函数，用于将缓冲区的内容复制到显示的特定区域。刷新准备就绪后，需要调用lv_disp_flush_ready()。 LVGL可能会以多个块呈现屏幕，因此多次调用flush_cb。使用 lv_disp_flush_is_last() 可以查看哪块是最后渲染的。
+
+
+其中，有一些可选的数据字段：
+
+- **hor_res** 显示器的水平分辨率。(默认为 lv_conf.h 中的 ``LV_HOR_RES_MAX`` )
+- **ver_res** 显示器的垂直分辨率。 (默认为 lv_conf.h 中的 ``LV_VER_RES_MAX`` )
+- **color_chroma_key** 在 chrome 键控图像上将被绘制为透明的颜色。(默认为 lv_conf.h 中的 ``LV_COLOR_TRANSP`` )
+- **user_data** 驱动程序的自定义用户数据。可以在 lv_conf.h 中修改其类型。
+- **anti-aliasing** 使用抗锯齿(anti-aliasing)(边缘平滑)。缺省情况下默认为 lv_conf.h 中的 ``LV_ANTIALIAS`` 。
+- **rotated** 如果 ``1`` 交换 ``hor_res`` 和 ``ver_res`` 。两种情况下 LVGL 的绘制方向相同(从上到下的线条)，因此还需要重新配置驱动程序以更改显示器的填充方向。
+- **screen_transp** 如果为 ``1`` ，则屏幕可以具有透明或不透明的样式。需要在 lv_conf.h 中启用 ``LV_COLOR_SCREEN_TRANSP`` 。
+
+要使用GPU，可以使用以下回调：
+
+- **gpu_fill_cb** 用颜色填充内存中的区域。
+- **gpu_blend_cb** 使用不透明度混合两个内存缓冲区。
+- **gpu_wait_cb** 如果在 GPU 仍在运行 LVGL 的情况下返回了任何 GPU 函数，则在需要确保GPU渲染就绪时将使用此函数。
+
+:: 
+
+   注意，这些功能需要绘制到内存(RAM)中，而不是直接显示在屏幕上。
+
+其他一些可选的回调，使单色、灰度或其他非标准RGB显示一起使用时更轻松、优化：
+
+- **rounder_cb** 四舍五入要重绘的区域的坐标。例如。 2x2像素可以转换为2x8。如果显示控制器只能刷新特定高度或宽度的区域(对于单色显示器，通常为8 px高)，则可以使用它。
+- **set_px_cb** 编写显示缓冲区的自定义函数。如果显示器具有特殊的颜色格式，则可用于更紧凑地存储像素。 (例如1位单色，2位灰度等)。这样，lv_disp_buf_t中使用的缓冲区可以较小，以仅保留给定区域大小所需的位数。 set_px_cb不能与两个屏幕大小的缓冲区一起显示缓冲区配置。
+- **monitor_cb** 回调函数告诉在多少时间内刷新了多少像素。
+- **clean_dcache_cb** 清除与显示相关的所有缓存的回调
+
+
+要设置 lv_disp_drv_t 变量的字段，需要使用 lv_disp_drv_init(＆disp_drv) 进行初始化。最后，要为 LVGL 注册显示设备，需要调用lv_disp_drv_register(＆disp_drv)。
+
+
+代码示例：
+
+.. code-block:: c
+    :linenos:
+
+	lv_disp_drv_t disp_drv;                 /*A variable to hold the drivers. Can be local variable*/
+	lv_disp_drv_init(&disp_drv);            /*Basic initialization*/
+	disp_drv.buffer = &disp_buf;            /*Set an initialized buffer*/
+	disp_drv.flush_cb = my_flush_cb;        /*Set a flush callback to draw to the display*/
+	lv_disp_t * disp;
+	disp = lv_disp_drv_register(&disp_drv); /*Register the driver and save the created display objects*/
+
+
+回调的一些简单示例：
+
+.. code-block:: c
+    :linenos:
+
+	void my_flush_cb(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
+	{
+		/*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
+		int32_t x, y;
+		for(y = area->y1; y <= area->y2; y++) {
+			for(x = area->x1; x <= area->x2; x++) {
+				put_px(x, y, *color_p)
+				color_p++;
+			}
+		}
+
+		/* IMPORTANT!!!
+		 * Inform the graphics library that you are ready with the flushing*/
+		lv_disp_flush_ready(disp);
+	}
+
+	void my_gpu_fill_cb(lv_disp_drv_t * disp_drv, lv_color_t * dest_buf, const lv_area_t * dest_area, const lv_area_t * fill_area, lv_color_t color);
+	{
+		/*It's an example code which should be done by your GPU*/
+		uint32_t x, y;
+		dest_buf += dest_width * fill_area->y1; /*Go to the first line*/
+
+		for(y = fill_area->y1; y < fill_area->y2; y++) {
+			for(x = fill_area->x1; x < fill_area->x2; x++) {
+				dest_buf[x] = color;
+			}
+			dest_buf+=dest_width;    /*Go to the next line*/
+		}
+	}
+
+	void my_gpu_blend_cb(lv_disp_drv_t * disp_drv, lv_color_t * dest, const lv_color_t * src, uint32_t length, lv_opa_t opa)
+	{
+		/*It's an example code which should be done by your GPU*/
+		uint32_t i;
+		for(i = 0; i < length; i++) {
+			dest[i] = lv_color_mix(dest[i], src[i], opa);
+		}
+	}
+
+	void my_rounder_cb(lv_disp_drv_t * disp_drv, lv_area_t * area)
+	{
+	  /* Update the areas as needed. Can be only larger.
+	   * For example to always have lines 8 px height:*/
+	   area->y1 = area->y1 & 0x07;
+	   area->y2 = (area->y2 & 0x07) + 8;
+	}
+
+	void my_set_px_cb(lv_disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y, lv_color_t color, lv_opa_t opa)
+	{
+		/* Write to the buffer as required for the display.
+		 * Write only 1-bit for monochrome displays mapped vertically:*/
+	 buf += buf_w * (y >> 3) + x;
+	 if(lv_color_brightness(color) > 128) (*buf) |= (1 << (y % 8));
+	 else (*buf) &= ~(1 << (y % 8));
+	}
+
+	void my_monitor_cb(lv_disp_drv_t * disp_drv, uint32_t time, uint32_t px)
+	{
+	  printf("%d px refreshed in %d ms\n", time, ms);
+	}
+
+	void my_clean_dcache_cb(lv_disp_drv_t * disp_drv, uint32)
+	{
+	  /* Example for Cortex-M (CMSIS) */
+	  SCB_CleanInvalidateDCache();
+	}
+
+
+相关APIs
+###################################
+TODO
+

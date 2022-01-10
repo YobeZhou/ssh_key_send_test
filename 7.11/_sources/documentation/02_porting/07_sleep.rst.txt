@@ -1,0 +1,45 @@
+==================================
+睡眠管理
+==================================
+没有用户输入时，MCU 可以进入睡眠状态。在这种情况下，mian 函数中的 while(1) 应该看起来像这样：
+
+.. code-block:: c
+    :linenos:
+	
+	while(1) {
+	  /*Normal operation (no sleep) in < 1 sec inactivity*/
+	  if(lv_disp_get_inactive_time(NULL) < 1000) {
+		  lv_task_handler();
+	  }
+	  /*Sleep after 1 sec inactivity*/
+	  else {
+		  timer_stop();   /*Stop the timer where lv_tick_inc() is called*/
+		  sleep();		    /*Sleep the MCU*/
+	  }
+	  my_delay_ms(5);
+	}
+
+
+如果发生唤醒(按，触摸或单击等)，还应该在输入设备读取功能中添加以下几行：
+
+
+.. code-block:: c
+    :linenos:
+	
+	lv_tick_inc(LV_DISP_DEF_REFR_PERIOD);  /*Force task execution on wake-up*/
+	timer_start();                         /*Restart the timer where lv_tick_inc() is called*/
+	lv_task_handler();                     /*Call `lv_task_handler()` manually to process the wake-up event*/
+
+
+除了 lv_disp_get_inactive_time() 外，还可以调用 lv_anim_count_running() 来查看每个动画是否完成。
+
+
+
+
+
+
+
+
+
+
+

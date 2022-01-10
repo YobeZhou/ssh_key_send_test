@@ -1,0 +1,189 @@
+==================================
+平铺视图(lv_tileview)
+==================================
+
+概述
+##################################
+平铺视图(Tileview)是一个容器对象，其中的元素（称为图块）可以以网格形式排列。通过滑动，用户可以在图块之间导航。
+
+如果Tileview是屏幕尺寸的，它将提供可能已经在智能手表上看到的用户界面。
+
+
+零件和样式
+##################################
+Tileview与 `页面(lv_page)`_ 具有相同的部分。期望 ``LV_PAGE_PART_SCRL`` ，因为它不能被引用并且始终是透明的。请参阅该页面的详细文档。
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+用法
+##################################
+
+有效区域
+**********************************
+磁贴不必在每个元素都存在的地方形成完整的网格。网格中可以有孔，但必须是连续的，即不能有空的行或列。
+
+使用 ``lv_tileview_set_valid_positions(tileview, valid_pos_array, array_len)`` 可以设置有效位置。仅可以滚动到该位置。 ``0,0`` 索引表示左上方的图块。
+例如。 ``lv_point_t valid_pos_array[] = {{0,0}, {0,1}, {1,1}, {{LV_COORD_MIN, LV_COORD_MIN}}`` 给出了 "L" 形的图块视图。它指示 ``{1,1}`` 中没有图块，因此用户无法在此处滚动。
+
+换句话说， ``valid_pos_array`` 告诉磁贴在哪里。可以即时更改它以禁用特定图块上的某些位置。
+例如，可能存在一个2x2网格，其中添加了所有图块，但第一行（y = 0）作为“主行”，第二行（y = 1）包含其上方图块的选项。
+假设水平滚动只能在主行中进行，而在第二行中的选项之间则不可能进行。在这种情况下， ``valid_pos_array`` 需要改变时，选择一个新的主瓦：
+
+- 对于第一个主磁贴： ``{0,0}，{0,1}，{1,0}`` 以禁用 ``{1,1}`` 选项磁贴
+- 对于第二个主磁贴： ``{0,0}，{1,0}，{1,1}`` 以禁用 ``{0,1}`` 选项磁贴
+
+
+设置瓷砖
+**********************************
+设置当前可见的图块使用： ``lv_tileview_set_tile_act(tileview, x_id, y_id, LV_ANIM_ON/OFF)``
+
+
+添加元素
+**********************************
+要添加元素，只需在Tileview上创建一个对象并将其手动定位到所需位置即可。
+
+``lv_tileview_add_element(tielview, element)`` 应该用来使Tileview滚动（拖动）其元素一个。例如，如果图块上有一个按钮，则需要将该按钮显式添加到Tileview中，以使用户也可以使用该按钮滚动Tileview。
+
+
+
+滚动传播
+**********************************
+页面状对象（如 ``列表(lv_list)`` ）的滚动传播功能在这里可以很好地使用。例如，可以有一个完整的 ``列表(lv_list)`` ，当列表到达最顶部或最底部时，用户将改为滚动图块视图。
+
+
+.. _列表(lv_list): http://lvgl.100ask.net/documentation/04_widgets/20_list.html
+
+
+
+动画时间
+**********************************
+平铺视图的动画时间可以使用 ``lv_tileview_set_anim_time(tileview, anim_time)`` 进行调整。
+
+在以下情况下应用动画
+
+- 使用 ``lv_tileview_set_tile_act`` 选择一个新图块
+- 当前磁贴稍微滚动然后释放（还原原始标题）
+- 当前磁贴滚动超过一半大小，然后释放（移至下一个磁贴）
+
+
+边缘闪光
+**********************************
+当滚动到达的图块视图击中无效位置或图块视图的末尾时，可以添加 "边缘闪光" 效果。
+
+使用 ``lv_tileview_set_edge_flash(tileview, true)`` 启用此功能。
+
+
+
+**********************************
+
+事件
+##################################
+除了 `通用事件`_ ，平铺视图还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_VALUE_CHANGED ** 当加载了带有滚动或 ``lv_tileview_set_act`` 的新图块时发送。将事件数据设置为 ``valid_pos_array`` 中新图块的索引（其类型为 ``uint32_t *`` ）
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+平铺视图可处理以下按键：
+
+- **LV_KEY_UP, LV_KEY_RIGHT** 将滑块的值增加1
+- **LV_KEY_DOWN, LV_KEY_LEFT** 将滑块的值减1
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+包含内容的平铺视图
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/33_tileview/01_lv_ex_tileview_1.png
+	   
+	  包含内容的平铺视图
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_TILEVIEW
+
+	void lv_ex_tileview_1(void)
+	{
+		static lv_point_t valid_pos[] = {{0,0}, {0, 1}, {1,1}};
+		lv_obj_t *tileview;
+		tileview = lv_tileview_create(lv_scr_act(), NULL);
+		lv_tileview_set_valid_positions(tileview, valid_pos, 3);
+		lv_tileview_set_edge_flash(tileview, true);
+
+		lv_obj_t * tile1 = lv_obj_create(tileview, NULL);
+		lv_obj_set_size(tile1, LV_HOR_RES, LV_VER_RES);
+		lv_tileview_add_element(tileview, tile1);
+
+		/*Tile1: just a label*/
+		lv_obj_t * label = lv_label_create(tile1, NULL);
+		lv_label_set_text(label, "Scroll down");
+		lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Tile2: a list*/
+		lv_obj_t * list = lv_list_create(tileview, NULL);
+		lv_obj_set_size(list, LV_HOR_RES, LV_VER_RES);
+		lv_obj_set_pos(list, 0, LV_VER_RES);
+		lv_list_set_scroll_propagation(list, true);
+		lv_list_set_scrollbar_mode(list, LV_SCROLLBAR_MODE_OFF);
+
+		lv_list_add_btn(list, NULL, "One");
+		lv_list_add_btn(list, NULL, "Two");
+		lv_list_add_btn(list, NULL, "Three");
+		lv_list_add_btn(list, NULL, "Four");
+		lv_list_add_btn(list, NULL, "Five");
+		lv_list_add_btn(list, NULL, "Six");
+		lv_list_add_btn(list, NULL, "Seven");
+		lv_list_add_btn(list, NULL, "Eight");
+
+		/*Tile3: a button*/
+		lv_obj_t * tile3 = lv_obj_create(tileview, tile1);
+		lv_obj_set_pos(tile3, LV_HOR_RES, LV_VER_RES);
+		lv_tileview_add_element(tileview, tile3);
+
+		lv_obj_t * btn = lv_btn_create(tile3, NULL);
+		lv_obj_align(btn, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_tileview_add_element(tileview, btn);
+		label = lv_label_create(btn, NULL);
+		lv_label_set_text(label, "No scroll up");
+	}
+
+	#endif
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,373 @@
+==================================
+画画(Drawing)
+==================================
+使用 LVGL，无需手动绘制任何内容。只需创建对象(如按钮和标签)，移动并更改它们，LVGL 就会刷新并重新绘制所需的内容。
+
+但是，对 LVGL 中的绘图方式有基本了解可能会很有用。
+
+基本概念是不要直接绘制到屏幕上，而是先绘制到内部缓冲区，然后在渲染准备好后将其复制到屏幕上。它具有两个主要优点：
+
+- **避免闪烁** 绘制用户界面的各层。例如，当绘制背景+按钮+文本时，每个“阶段”将在短时间内可见。
+- **让动画更快一些** 修改RAM中的缓冲区并最终一次写入一个像素，而不是直接在每次像素访问时直接读取/写入显示器。(例如，通过具有SPI接口的显示控制器)因此，它适用于多次重绘的像素(例如背景+按钮+文字)。
+
+
+缓冲类型
+##################################
+共有3种类型的缓冲区：
+
+
+1. **一个缓冲区** LVGL将屏幕的内容绘制到缓冲区中并将其发送到显示器。缓冲区可以小于屏幕。在这种情况下，较大的区域将被重画成多个部分。如果只有很小的区域发生变化(例如按下按钮)，则只会刷新那些区域。
+#. **两个非屏幕大小的缓冲区** 具有两个缓冲区的LVGL可以吸引到一个缓冲区中，而另一缓冲区的内容发送到后台显示。应该使用DMA或其他硬件将数据传输到显示器，以让CPU同时绘图。这样，显示的渲染和刷新并行处理。与 **一个缓冲区** 的情况类似，如果缓冲区小于要刷新的区域，LVGL将按块绘制显示内容
+#. **两个屏幕大小的缓冲区** 与两个非屏幕大小的缓冲区相反，LVGL将始终提供整个屏幕的内容，而不仅仅是块。这样，驱动程序可以简单地将帧缓冲区的地址更改为从LVGL接收的缓冲区。因此，当MCU具有 LCD/TFT 接口且帧缓冲区只是 RAM 中的一个位置时，此方法效果最佳。
+
+
+屏幕刷新机制
+##################################
+1. GUI上发生某些事情，需要重绘。例如，已按下按钮，更改了图表或发生了动画等。
+#. LVGL将更改后的对象的旧区域和新区域保存到称为无效区域缓冲区的缓冲区中。为了优化，在某些情况下，对象不会添加到缓冲区中：
+  
+  - 隐藏的对象未添加。
+  - 不添加完全超出其父对象的对象。
+  - 父区之外的区域将裁剪到父区。
+  - 未添加其他屏幕上的对象。
+
+#. 在每个 ``LV_DISP_DEF_REFR_PERIOD`` 中(在lv_conf.h中设置)：
+
+  - LVGL检查无效区域并加入相邻或相交的区域。
+  - 获取第一个连接区域，如果它小于显示缓冲区，则只需将区域的内容绘制到显示缓冲区即可。如果该区域不适合缓冲区，请在显示缓冲区上绘制尽可能多的线。
+  - 绘制区域后，从显示驱动程序调用flush_cb刷新显示。
+  - 如果该区域大于缓冲区，则也重新绘制其余部分。
+  - 对所有连接的区域执行相同的操作。
+
+重绘区域时，库会搜索覆盖要重绘区域的最顶层对象，然后从该对象开始绘制。例如，如果按钮的标签已更改，则库将看到足以在文本下方绘制按钮，并且也不需要绘制背景。
+
+关于绘制机制，缓冲区类型之间的差异如下：
+
+1. **一个缓冲区** - LVGL需要等待 ``lv_disp_flush_ready()`` (在 ``flush_cb`` 末尾调用)，然后才能开始重画下一部分。
+#. **两个非屏幕大小的缓冲区** - 当第一个缓冲区发送到 ``flush_cb`` 时，LVGL可以立即绘制到第二个缓冲区，因为刷新应由DMA(或类似硬件)在后台完成。
+#. **两个屏幕大小的缓冲区** - 调用 ``flush_cb`` 之后，如果显示为帧缓冲区，则第一个缓冲区。它的内容被复制到第二个缓冲区，所有更改都绘制在其顶部。
+
+
+蒙版(遮罩)
+##################################
+蒙版是LVGL绘图引擎的基本概念。要使用LVGL，不需要了解这里描述的机制，但是可能会对了解图纸在引擎盖下的工作方式感兴趣。
+
+要学习遮罩，让我们先学习绘画的步骤：
+
+1. 根据对象的样式创建绘制描述符(例如 ``lv_draw_rect_dsc_t`` )。它告诉绘图的参数，例如颜色，宽度，不透明度，字体，半径等。
+#. 使用初始化的描述符和其他一些参数调用draw函数。它将原始形状渲染到当前绘制缓冲区。
+#. 如果形状非常简单并且不需要遮罩，请转到＃5。其他创建所需的蒙版(例如，圆角的矩形蒙版)
+#. 将所有创建的蒙版应用一行或几行。它使用创建的遮罩的“形状”在遮罩缓冲区中创建0..255值。例如。如果根据掩码的参数设置为“线掩码”，则将缓冲区的一侧保持不变(默认为255)，并将其余部分设置为0以指示应将另一侧除去。
+#. 将图像或矩形混合到屏幕上。在混合蒙版(使某些像素透明或不透明)，混合模式(加性，减性等)期间，将处理不透明性。
+#. 从＃4开始重复。
+
+使用 蒙版 可创建几乎所有基本图元：
+
+- **字母** 从字母创建遮罩，并使用该遮罩绘制一个“字母色”矩形。
+- **线** 由4个“线遮罩”创建的线，以遮盖该线的左，右，顶部和底部，以获得完美垂直的线尾
+- **圆角矩形** 实时为圆角矩形的每一行创建一个遮罩，并根据该遮罩绘制一个普通的填充矩形。
+- **剪辑角** 以剪辑圆角上的溢出内容，并应用圆角矩形蒙版。
+- **矩形边框** 与圆角矩形相同，但内部也被遮罩
+- **圆弧绘制** 绘制了圆形边框，但应用了弧形遮罩。
+- **ARGB图像** 将alpha通道分离为一个蒙版，并且该图像被绘制为普通RGB图像。
+
+如以上＃3所述，在某些情况下，不需要面具：
+
+- 一个单色的，不是圆角的矩形
+- RGB图像
+
+LVGL 具有以下内置掩码类型，可以实时计算和应用：
+
+
+- **LV_DRAW_MASK_TYPE_LINE** 删除线的一侧(顶部，底部，左侧或右侧)。 ``lv_draw_line`` 使用其中的4个。本质上，每条(倾斜)线都通过形成一个矩形以4个线罩为边界。
+- **LV_DRAW_MASK_TYPE_RADIUS** 删除也可以具有半径的矩形的内部或外部。通过将半径设置为较大的值( ``LV_RADIUS_CIRCLE`` )，它还可用于创建圆
+- **LV_DRAW_MASK_TYPE_ANGLE** 删除圆扇形。 ``lv_draw_arc`` 使用它删除“空”扇区。
+- **LV_DRAW_MASK_TYPE_FADE** 创建垂直淡入淡出(更改不透明度)
+- **LV_DRAW_MASK_TYPE_MAP** 遮罩存储在数组中，并应用了必要的部分
+
+在绘制过程中会自动创建和删除蒙版，但是 `lv_objmask`_ 允许用户添加蒙版。这是一个例子：
+
+.. _lv_objmask: http://lvgl.100ask.net/documentation/04_widgets/23_objmask.html
+
+范例
+**********************************
+几个对象蒙版
+==================================
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/12_drawing/01_lv_ex_objmask_1.png
+	   
+	  几个对象蒙版
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../../lv_examples.h"
+	#if LV_USE_OBJMASK
+
+	void lv_ex_objmask_1(void)
+	{
+
+		/*Set a very visible color for the screen to clearly see what happens*/
+		lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex3(0xf33));
+
+		lv_obj_t * om = lv_objmask_create(lv_scr_act(), NULL);
+		lv_obj_set_size(om, 200, 200);
+		lv_obj_align(om, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_t * label = lv_label_create(om, NULL);
+		lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
+		lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
+		lv_obj_set_width(label, 180);
+		lv_label_set_text(label, "This label will be masked out. See how it works.");
+		lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);
+
+		lv_obj_t * cont = lv_cont_create(om, NULL);
+		lv_obj_set_size(cont, 180, 100);
+		lv_obj_set_drag(cont, true);
+		lv_obj_align(cont, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -10);
+
+		lv_obj_t * btn = lv_btn_create(cont, NULL);
+		lv_obj_align(btn, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_style_local_value_str(btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "Button");
+		//uint32_t t;
+
+		//lv_refr_now(NULL);
+		//t = lv_tick_get();
+		//while(lv_tick_elaps(t) < 1000);
+
+		lv_area_t a;
+		lv_draw_mask_radius_param_t r1;
+
+		a.x1 = 10;
+		a.y1 = 10;
+		a.x2 = 190;
+		a.y2 = 190;
+		lv_draw_mask_radius_init(&r1, &a, LV_RADIUS_CIRCLE, false);
+		lv_objmask_add_mask(om, &r1);
+
+		//lv_refr_now(NULL);
+		//t = lv_tick_get();
+		//while(lv_tick_elaps(t) < 1000);
+
+		a.x1 = 100;
+		a.y1 = 100;
+		a.x2 = 150;
+		a.y2 = 150;
+		lv_draw_mask_radius_init(&r1, &a, LV_RADIUS_CIRCLE, true);
+		lv_objmask_add_mask(om, &r1);
+
+		//lv_refr_now(NULL);
+		//t = lv_tick_get();
+		//while(lv_tick_elaps(t) < 1000);
+
+		lv_draw_mask_line_param_t l1;
+		lv_draw_mask_line_points_init(&l1, 0, 0, 100, 200, LV_DRAW_MASK_LINE_SIDE_TOP);
+		lv_objmask_add_mask(om, &l1);
+
+		//lv_refr_now(NULL);
+		//t = lv_tick_get();
+		//while(lv_tick_elaps(t) < 1000);
+
+		lv_draw_mask_fade_param_t f1;
+		a.x1 = 100;
+		a.y1 = 0;
+		a.x2 = 200;
+		a.y2 = 200;
+		lv_draw_mask_fade_init(&f1, &a, LV_OPA_TRANSP, 0, LV_OPA_COVER, 150);
+		lv_objmask_add_mask(om, &f1);
+	}
+
+	#endif
+
+
+
+文字遮罩
+==================================
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/12_drawing/02_lv_ex_objmask_2.png
+	   
+	  文字遮罩
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_OBJMASK
+
+	#define MASK_WIDTH 100
+	#define MASK_HEIGHT 50
+
+	void lv_ex_objmask_2(void)
+	{
+
+		/* Create the mask of a text by drawing it to a canvas*/
+		static lv_opa_t mask_map[MASK_WIDTH * MASK_HEIGHT];
+
+		/*Create a "8 bit alpha" canvas and clear it*/
+		lv_obj_t * canvas = lv_canvas_create(lv_scr_act(), NULL);
+		lv_canvas_set_buffer(canvas, mask_map, MASK_WIDTH, MASK_HEIGHT, LV_IMG_CF_ALPHA_8BIT);
+		lv_canvas_fill_bg(canvas, LV_COLOR_BLACK, LV_OPA_TRANSP);
+
+		/*Draw a label to the canvas. The result "image" will be used as mask*/
+		lv_draw_label_dsc_t label_dsc;
+		lv_draw_label_dsc_init(&label_dsc);
+		label_dsc.color = LV_COLOR_WHITE;
+		lv_canvas_draw_text(canvas, 5, 5, MASK_WIDTH, &label_dsc, "Text with gradient", LV_LABEL_ALIGN_CENTER);
+
+		/*The mask is reads the canvas is not required anymore*/
+		lv_obj_del(canvas);
+
+		/*Create an object mask which will use the created mask*/
+		lv_obj_t * om = lv_objmask_create(lv_scr_act(), NULL);
+		lv_obj_set_size(om, MASK_WIDTH, MASK_HEIGHT);
+		lv_obj_align(om, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Add the created mask map to the object mask*/
+		lv_draw_mask_map_param_t m;
+		lv_area_t a;
+		a.x1 = 0;
+		a.y1 = 0;
+		a.x2 = MASK_WIDTH - 1;
+		a.y2 = MASK_HEIGHT - 1;
+		lv_draw_mask_map_init(&m, &a, mask_map);
+		lv_objmask_add_mask(om, &m);
+
+		/*Create a style with gradient*/
+		static lv_style_t style_bg;
+		lv_style_init(&style_bg);
+		lv_style_set_bg_opa(&style_bg, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_RED);
+		lv_style_set_bg_grad_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_bg_grad_dir(&style_bg, LV_STATE_DEFAULT, LV_GRAD_DIR_HOR);
+
+		/* Create and object with the gradient style on the object mask.
+		 * The text will be masked from the gradient*/
+		lv_obj_t * bg = lv_obj_create(om, NULL);
+		lv_obj_reset_style_list(bg, LV_OBJ_PART_MAIN);
+		lv_obj_add_style(bg, LV_OBJ_PART_MAIN, &style_bg);
+		lv_obj_set_size(bg, MASK_WIDTH, MASK_HEIGHT);
+
+	}
+
+	#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

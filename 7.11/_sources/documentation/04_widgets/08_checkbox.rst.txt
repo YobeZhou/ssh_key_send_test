@@ -1,0 +1,141 @@
+==================================
+复选框(lv_cb)
+==================================
+
+概述
+##################################
+复选框(Checkbox)对象是从 Button 背景构建的，`Button`_ 背景还包含Button项目符号和 `Label`_ ，以实现经典的复选框。
+
+.. _Button: http://lvgl.100ask.net/documentation/04_widgets/04_btn.html
+.. _Label: http://lvgl.100ask.net/documentation/04_widgets/17_label.html
+
+零件和样式
+##################################
+该复选框的主要部分称为 ``LV_CHECKBOX_PART_BG`` 。它是“项目符号”及其旁边的文本的容器。背景使用所有典型的背景样式属性。
+
+项目符号是真正的 `基础对象(lv_obj)`_ ，可以用 ``LV_CHECKBOX_PART_BULLET`` 引用。项目符号会自动继承背景状态。因此，背景被按下时，项目符号也会进入按下状态。项目符号还使用所有典型的背景样式属性。
+
+标签没有专用部分。因为文本样式属性始终是继承的，所以可以在背景样式中设置其样式。
+
+.. _基础对象(lv_obj): http://lvgl.100ask.net/documentation/04_widgets/01_obj.html
+
+
+用法
+##################################
+
+文本
+**********************************
+可以通过 ``lv_checkbox_set_text(cb, "New text")`` 函数修改文本。它将动态分配文本。
+
+要设置静态文本，请使用 ``lv_checkbox_set_static_text(cb, txt)`` 。这样，将仅存储 ``txt`` 指针，并且在存在复选框时不应释放该指针。
+
+
+选中/取消选中
+**********************************
+可以通过 ``lv_checkbox_set_checked(cb, true/false)`` 手动选中/取消选中复选框。设置为 ``true`` 将选中该复选框，而设置为 ``false`` 将取消选中该复选框。
+
+禁用复选框
+**********************************
+要禁用复选框，调用 ``lv_checkbox_set_disabled(cb, true)`` .
+
+
+
+获取/设置复选框状态
+**********************************
+可以使用 ``lv_checkbox_get_state(cb)`` 函数获取Checkbox的当前状态，该函数返回当前状态。可以使用 ``lv_checkbox_set_state(cb, state)`` 设置复选框的当前状态。枚举 ``lv_btn_state_t`` 定义的可用状态为：
+
+- **LV_BTN_STATE_RELEASED**
+- **LV_BTN_STATE_PRESSED**
+- **LV_BTN_STATE_DISABLED**
+- **LV_BTN_STATE_CHECKED_RELEASED**
+- **LV_BTN_STATE_CHECKED_PRESSED**
+- **LV_BTN_STATE_CHECKED_DISABLED**
+
+
+
+事件
+##################################
+除了 `通用事件`_ ，复选框还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_VALUE_CHANGED** - 切换复选框时发送。
+
+
+请注意，与通用输入设备相关的事件（如LV_EVENT_PRESSED）也以非活动状态发送。需要使用lv_cb_is_inactive（cb）检查状态，以忽略非活动复选框中的事件。
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键
+##################################
+复选框可处理以下按键：
+
+- **LV_KEY_RIGHT/UP** - 如果启用了切换，则进入切换状态
+- **LV_KEY_LEFT/DOWN** - 如果启用了切换，则进入非切换状态
+
+请注意，与往常一样，LV_K​​EY_ENTER的状态会转换为LV_EVENT_PRESSED / PRESSING / RELEASED等。 
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单复选框
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/08_checkbox/lv_ex_checkbox_1.png
+	   
+	  一个简单的复选框
+
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_CHECKBOX
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("State: %s\n", lv_checkbox_is_checked(obj) ? "Checked" : "Unchecked");
+		}
+	}
+
+	void lv_ex_checkbox_1(void)
+	{
+		lv_obj_t * cb = lv_checkbox_create(lv_scr_act(), NULL);
+		lv_checkbox_set_text(cb, "I agree to terms and conditions.");
+		lv_obj_align(cb, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_event_cb(cb, event_handler);
+	}
+
+	#endif
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

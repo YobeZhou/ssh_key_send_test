@@ -1,0 +1,171 @@
+==================================
+页签(lv_tabview)
+==================================
+
+概述
+##################################
+页签对象可用于组织选项卡中的内容。
+
+
+零件和样式
+##################################
+Tab视图对象包含几个部分。主要是 ``LV_TABVIEW_PART_BG`` 。它是一个矩形容器，用于容纳Tab视图的其他部分。
+
+在背景上创建了2个重要的实际部分：
+
+- ``LV_TABVIEW_PART_BG_SCRL`` 这是 `页面(lv_page)`_ 的可滚动部分。它使选项卡的内容彼此相邻。页面的背景始终是透明的，不能从外部访问。
+- ``LV_TABVIEW_PART_TAB_BG`` 选项卡按钮是一个 `按钮矩阵(lv_btnmatrix)`_ 。单击按钮将 ``LV_TABVIEW_PART_BG_SCRL`` 滚动到相关选项卡的内容。可以通过 ``LV_TABVIEW_PART_TAB_BTN`` 访问选项卡按钮。选择选项卡时，按钮处于选中状态，可以使用 ``LV_STATE_CHECKED`` 设置样式。选项卡的按钮矩阵的高度是根据字体高度加上背景和按钮样式的填充来计算的。
+
+
+列出的所有部分均支持典型的背景样式属性和填充。
+
+``LV_TABVIEW_PART_TAB_BG`` 还有一个实际部分，即一个指标，称为 ``LV_TABVIEW_PART_INDIC`` 。它是当前选定选项卡下的一个类似矩形的细对象。当选项卡视图是动画到其它选项卡中的指示器也将被动画。它可以是使用典型背景样式属性的样式。 size样式属性将设置其厚度。
+
+添加新选项卡后，将在 ``LV_TABVIEW_PART_BG_SCRL`` 上为其创建一个页面，并将新按钮添加到 ``LV_TABVIEW_PART_TAB_BG`` 按钮矩阵。创建的页面可以用作普通页面，它们具有通常的页面部分。
+
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+.. _按钮矩阵(lv_btnmatrix): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+
+用法
+##################################
+
+添加标签
+**********************************
+可以使用 ``lv_tabview_add_tab(tabview, "Tab name")`` 添加新标签。它将返回指向可以创建选项卡内容的 `页面(lv_page)`_ 对象的指针。
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+选中标签
+**********************************
+通过下面的方法选中一标签：
+
+- 在按钮矩阵部分上单击它
+- 滑动
+- 使用 ``lv_tabview_set_tab_act(tabview, id, LV_ANIM_ON/OFF)`` 函数
+
+
+更改标签的名称
+**********************************
+要在运行时更改选项卡ID的名称（底层按钮矩阵的显示文本），可以使用函数 ``lv_tabview_set_tab_name(tabview, id, name)`` 。
+
+
+Tab按钮的位置
+**********************************
+默认情况下，选项卡选择器按钮位于“选项卡”视图的顶部。可以使用 ``lv_tabview_set_btns_pos(tabview, LV_TABVIEW_TAB_POS_TOP/BOTTOM/LEFT/RIGHT/NONE)`` 进行更改
+
+``LV_TABVIEW_TAB_POS_NONE`` 将隐藏选项卡。
+
+请注意，添加标签后，您无法将标签的位置从顶部或底部更改为左侧或右侧。
+
+
+动画时间
+**********************************
+动画时间由 ``lv_tabview_set_anim_time(tabview, anim_time_ms)`` 调整。加载新选项卡时使用。
+
+
+滚动传播
+**********************************
+由于选项卡的内容对象是一个Page，因此它可以从其他类似Page的对象接收滚动传播。
+例如，如果在选项卡的内容上创建了一个文本区域，并且滚动了该文本区域，但到达末尾，则滚动可以传播到内容页面。可以使用 ``lv_page/textarea_set_scroll_propagation(obj, true)``启用它。
+
+默认情况下，选项卡的内容页面已启用滚动传播，因此，当它们水平滚动时，滚动内容将传播到 ``LV_TABVIEW_PART_BG_SCRL`` ，这样页面将被滚动。
+
+可以使用 ``lv_page_set_scroll_propagation(tab_page, false)`` 禁用手动滑动。
+
+
+事件
+##################################
+除了 `通用事件`_ ，页签还支持以下 `特殊事件`_ ：
+ 
+- **LV_EVENT_VALUE_CHANGED** 通过滑动或单击选项卡按钮选择新选项卡时发送
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+复选框可处理以下按键：
+
+- **LV_KEY_RIGHT/LEFT** 选择一个标签
+- **LV_KEY_ENTER Change** 更改为所选标签
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单的页签
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/31_tabview/01_lv_ex_tabview_1.png
+	   
+	  简单的页签
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_TABVIEW
+
+	void lv_ex_tabview_1(void)
+	{
+		/*Create a Tab view object*/
+		lv_obj_t *tabview;
+		tabview = lv_tabview_create(lv_scr_act(), NULL);
+
+		/*Add 3 tabs (the tabs are page (lv_page) and can be scrolled*/
+		lv_obj_t *tab1 = lv_tabview_add_tab(tabview, "Tab 1");
+		lv_obj_t *tab2 = lv_tabview_add_tab(tabview, "Tab 2");
+		lv_obj_t *tab3 = lv_tabview_add_tab(tabview, "Tab 3");
+
+
+		/*Add content to the tabs*/
+		lv_obj_t * label = lv_label_create(tab1, NULL);
+		lv_label_set_text(label, "This the first tab\n\n"
+								 "If the content\n"
+								 "of a tab\n"
+								 "become too long\n"
+								 "the it \n"
+								 "automatically\n"
+								 "become\n"
+								 "scrollable.");
+
+		label = lv_label_create(tab2, NULL);
+		lv_label_set_text(label, "Second tab");
+
+		label = lv_label_create(tab3, NULL);
+		lv_label_set_text(label, "Third tab");
+	}
+	#endif
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1517 @@
+==================================
+基础对象(lv_obj)
+==================================
+
+概述
+##################################
+**基础对象** 实现了屏幕上小部件的基本属性，例如：
+
+- 座标
+- 父对象
+- 子对象
+- 主要风格
+- 属性，例如点击启用、拖动启用等。
+
+
+在面向对象的思想中，它是继承 LVGL 中所有其他对象的基类。这尤其有助于减少代码重复。
+
+Base 对象的功能也可以与其他小部件一起使用。例如 ``lv_obj_set_width(slider，100)`` 
+
+Base 对象可以直接用作简单的小部件。然后就是矩形。
+
+
+
+坐标
+##################################
+
+尺寸
+**********************************
+可以使用 ``lv_obj_set_width(obj，new_width)`` 和 ``lv_obj_set_height(obj，new_height)`` 在单个坐标轴方向(横向、纵向)上修改对象的大小，或者可以使用 ``lv_obj_set_size(obj，new_width，new_height)`` 同时修改两个坐标轴方向(横向及纵向)的大小。
+
+样式可以向对象添加边距。 Margin(边距)说 “我想要我周围的空间” 。那么我们可以设置对象的宽度： ``lv_obj_set_width_margin(obj，new_width)`` 或高度： ``lv_obj_set_height_margin(obj，new_height)`` 。更确切地讲是这样： ``new_width = left_margin + object_width + right_margin`` .
+
+要获取包含边距的宽度或高度，请使用 ``lv_obj_get_width/height_margin(obj)`` 。
+
+样式也可以向对象添加填充。填充的意思是 **我不要我的孩子们离我的身体太近，所以要保留这个空间** 。通过 ``lv_obj_set_width_fit(obj，new_width)`` 或 ``lv_obj_set_height_fit(obj，new_height)`` 设置需要填充减小的宽度或高度。
+
+可以以更精确的方式： ``new_width = left_pad + object_width + right_pad`` 。 要获得通过填充减少的宽度或高度，请使用 ``lv_obj_get_width/height_fit(obj)`` 。可以将其视为 **对象的有用大小** 。
+
+当其他窗口小部件使用布局或自动调整时，边距和填充变得很重要。
+
+
+位置
+**********************************
+可以使用 ``lv_obj_set_x(obj，new_x)`` 和 ``lv_obj_set_y(obj，new_y)`` 设置对象相对于父级的x和y坐标，或者同时使用lv_obj_set_pos(obj，new_x，new_y)设置相对于父级的x和y坐标。
+
+
+对齐
+**********************************
+可以使用 ``lv_obj_align(obj, obj_ref, LV_ALIGN_..., x_ofs, y_ofs)`` 将对象与另一个对象对齐。
+
+- ``obj`` 是要对齐的对象。
+- ``obj_ref`` 是参考对象。``obj`` 将与其对齐。如果 ``obj_ref = NULL`` ，则将使用 ``obj`` 的父级。 
+- 第三个参数是对齐方式的类型。这些是可能的选项：
+
+.. image:: http://photos.100ask.net/lvgl/04_widgets/01_obj/01_align.png
+	:scale: 100 %
+	:alt: LVGL中的对齐类型
+	:align: center
+
+对齐类型的构建类似于LV_ALIGN_OUT_TOP_MID。
+- 最后两个参数允许在对齐对象 **后** 将其移动指定数量的像素。
+
+例如，要在图像下方对齐文本：``lv_obj_align(text, image, LV_ALIGN_OUT_BOTTOM_MID, 0, 10)`` 。
+或在父级中间对齐文本： ``lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, 0)`` 
+
+``lv_obj_align_origo`` 的工作方式与 ``lv_obj_align`` 类似，但它使对象的中心对齐。
+
+例如， ``lv_obj_align_origo(btn, image, LV_ALIGN_OUT_BOTTOM_MID, 0, 0)`` 将使按钮的中心与图像底部对齐。
+
+如果在 ``lv_conf.h`` 中启用了 ``LV_USE_OBJ_REALIGN`` ，则路线的参数将保存在对象中。然后，只需调用 ``lv_obj_realign(obj)`` 即可重新对齐对象。等效于使用相同的参数再次调用 ``lv_obj_align`` 。
+
+如果对齐是通过 ``lv_obj_align_origo`` 进行的，则在重新对齐对象时将使用它。
+
+函数 ``lv_obj_align_x/y`` 和 ``lv_obj_align_origo_x/y`` 只能在一个轴上对齐。
+
+如果使用 ``lv_obj_set_auto_realign(obj, true)`` ，并且对象的大小在 ``lv_obj_set_width/height/size()`` 函数中更改，则对象将自动重新对齐。当将尺寸动画应用于对象并且需要保留原始位置时，这非常有用。
+
+(**请注意，屏幕的坐标无法更改。尝试在屏幕上使用这些功能将导致不确定的行为。**
+
+
+父子关系
+##################################
+可以使用 ``lv_obj_set_parent(obj，new_parent)`` 为对象设置新的父对象。要获取当前的父对象，请使用 ``lv_obj_get_parent(obj)`` 。
+
+要获取对象的子代，请使用 ``lv_obj_get_child(obj，child_prev)`` ( **从最后到第一** )或 ``lv_obj_get_child_back(obj，child_prev)`` ( **从第一到最后** )。 **要获得第一个子代** ，请将 ``NULL`` 作为第二个参数传递，并使用返回值遍历子代。如果没有更多的子级，该函数将返回 ``NULL`` 。例如：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * child = lv_obj_get_child(parent, NULL);
+	while(child) {
+		/*Do something with "child" */
+		child = lv_obj_get_child(parent, child);
+	}
+
+
+``lv_obj_count_children(obj)`` 告知对象上的子代数。
+
+``lv_obj_count_children_recursive(obj)`` 也会告知子代数，使用递归计算子代数。
+
+
+屏幕
+##################################
+创建了 ``lv_obj_t * screen = lv_obj_create(NULL，NULL)`` 之类的屏幕后，可以使用 ``lv_scr_load(screen)`` 加载它。  ``lv_scr_act()`` 函数提供了指向当前屏幕的指针。
+
+如果有更多的显示，那么我们就要知道这些功能，可以在最后创建的或明确选择的显示上运行(使用 ``lv_disp_set_default`` )。
+
+要获取对象的屏幕，请使用 ``lv_obj_get_screen(obj)`` 函数。
+
+
+层次
+##################################
+有两个自动生成的层：
+
+- 顶层 lv_layer_top()
+- 系统层 lv_layer_sys()
+
+它们独立于屏幕(lv_scr_act())，并且将显示在每个屏幕上。顶层位于屏幕上每个对象的上方，而系统层也位于顶层上方。可以将任何弹出窗口自由添加到顶层。但是，系统层仅限于 **系统级** 的内容(例如，鼠标光标将放在 ``lv_indev_set_cursor()`` 中)。
+
+层级关系： lv_scr_act() < lv_layer_top() < lv_layer_sys()
+
+``lv_layer_top()`` 和 ``lv_layer_sys()`` 函数提供了指向顶层或系统层的指针。
+
+可以使用 ``lv_obj_move_foreground(obj)`` 和 ``lv_obj_move_background(obj)`` 将对象置于前景或发送至背景。
+
+阅读 `对象层级(Layers)`_  部分，以了解有关图层的更多信息。
+
+
+.. _对象层级(Layers): http://lvgl.100ask.net/documentation/03_overview/02_Layers.html
+
+
+
+事件处理
+##################################
+要为对象设置事件回调，请使用 ``lv_obj_set_event_cb(obj, event_cb)`` ，
+
+要将事件手动发送到对象，请使用 ``lv_event_send(obj, LV_EVENT _..., data)`` 
+
+阅读 `事件概述`_ 以了解有关事件的更多信息。
+
+.. _事件概述: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+部件
+##################################
+小部件可以包含多个部分。例如，按钮仅具有主要部分，而滑块则由背景，指示器和旋钮组成。
+
+零件名称的构造类似于 ``LV_ + <TYPE> _PART_ <NAME>`` 。例如 ``LV_BTN_PART_MAIN`` 或 ``LV_SLIDER_PART_KNOB`` 通常在将样式添加到对象时使用零件。使用零件可以将不同的样式分配给对象的不同零件。
+
+要了解有关零件的更多信息，请阅读 `样式概述`_ 的相关部分。
+
+.. _样式概述: http://lvgl.100ask.net/documentation/03_overview/04_styles.html
+
+
+状态
+##################################
+对象可以处于以下状态的组合：
+
+- **LV_STATE_DEFAULT**  默认或正常状态
+- **LV_STATE_CHECKED**  选中或点击
+- **LV_STATE_FOCUSED**  通过键盘或编码器聚焦或通过触摸板/鼠标单击
+- **LV_STATE_EDITED**   由编码器编辑
+- **LV_STATE_HOVERED**  鼠标悬停(现在还不支持)
+- **LV_STATE_PRESSED**  按下
+- **LV_STATE_DISABLED** 禁用或无效
+
+
+当用户按下、释放、聚焦等对象时，状态通常由库自动检测更改。当然状态也可以手动检测更改。
+
+要完全覆盖当前状态，调用 ``lv_obj_set_state(obj, part, LV_STATE...)``
+
+要设置或清除某个状态(但不更改其他状态)，调用 ``lv_obj_add/clear_state(obj, part, LV_STATE_...)``
+
+可以组合使用状态值。例如： ``lv_obj_set_state(obj, part, LV_STATE_PRESSED | LV_PRESSED_CHECKED)`` .
+
+要了解有关状态的更多信息，请阅读 `样式概述`_ 的相关部分。
+
+.. _样式概述: http://lvgl.100ask.net/documentation/03_overview/04_styles.html 
+
+
+风格
+##################################
+确保首先阅读了解了 `样式概述`_ 部分内容。
+
+.. _样式概述: http://lvgl.100ask.net/documentation/03_overview/04_styles.html
+
+
+要将样式添加到对象，请使用 ``lv_obj_add_style(obj, part, &new_style)`` 函数。基础对象使用所有类似矩形的样式属性。
+
+要从对象中删除所有样式，请使用 ``lv_obj_reset_style_list(obj, part)``
+
+如果修改对象已使用的样式，为了刷新受影响的对象，可以使用每个对象在对象上使用 ``lv_obj_refresh_style(obj)`` 或使用 ``lv_obj_report_style_mod(＆style)`` 通知具有给定样式的所有对象。如果 ``lv_obj_report_style_mod`` 的参数为 ``NULL`` ，则将通知所有对象。
+
+属性
+##################################
+调用 ``lv_obj_set_...(obj, true/false)`` 可以启用/禁用一些属性：
+
+- **hidden** - 隐藏对象。它不会被绘制，输入设备会将其视为不存在。它的子项也将被隐藏。
+- **click** - 允许通过输入设备单击对象。如果禁用，则单击事件将传递到此事件后面的对象。 (默认情况下无法点击标签)
+- **top** - 如果启用，则单击此对象或其任何子级时，该对象将进入前台。
+- **drag** - 启用拖动(通过输入设备移动)
+- **drag_dir** - 启用仅在特定方向上拖动。可以是LV_DRAG_DIR_HOR / VER / ALL。
+- **drag_throw** - 通过拖动启用“投掷”，就像对象将具有动量一样
+- **drag_parent** - 如果启用，则对象的父对象将在拖动过程中移动。看起来就像拖动父级。递归检查，因此也可以传播给祖父母。
+- **parent_event** - 也将事件传播给父母。递归检查，因此也可以传播给祖父母。
+- **opa_scale_enable** - 启用不透明度缩放。请参见[＃opa-scale](Opa比例尺)部分。
+
+
+保护
+##################################
+库中有一些自动发生的特定操作。为防止一种或多种此类行为，可以保护对象免受它们侵害。存在以下保护：
+
+- **LV_PROTECT_NONE** 没有保护
+- **LV_PROTECT_POS** 防止自动定位(例如容器中的布局)
+- **LV_PROTECT_FOLLOW** 防止在自动排序(例如容器布局)中遵循该对象(“换行”)
+- **LV_PROTECT_PARENT** 防止自动更改父母。 (例如，页面将在背景上创建的子代移动到可滚动页面)
+- **LV_PROTECT_PRESS_LOST** 防止手指滑过对象时丢失。 (例如，如果按下某个按钮，则可以将其释放)
+- **LV_PROTECT_CLICK_FOCUS** 如果对象在“组”中并且启用了单击焦点，则阻止其自动聚焦。
+- **LV_PROTECT_CHILD_CHG** 禁用子对象更换信号。库内部使用
+
+lv_obj_add/clear_protect(obj, LV_PROTECT_...) 设置/清除保护。也可以使用保护类型的“或”值。
+
+组
+##################################
+一旦将对象添加到具有 ``lv_group_add_obj(group, obj)`` 的组中，则可以通过 ``lv_obj_get_group(obj)`` 获得该对象的当前组。
+
+lv_obj_is_focused(obj)告知对象当前是否集中在其组上。如果未将对象添加到组中，则将返回false。
+
+
+阅读 `输入设备概述`_ 以了解有关组的更多信息。
+
+.. _输入设备概述: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+扩展点击区域
+##################################
+默认情况下，只能在对象的坐标上单击对象，但是可以使用 ``lv_obj_set_ext_click_area(obj, left, right, top, bottom)`` 扩展该区域。左侧(left)/右侧(right)/顶部(top)/底部(bottom) 描述了可点击区域应在每个方向上超出默认范围的程度。
+
+前提是要在 ``lv_conf.h`` 使能 ``LV_USE_EXT_CLICK_AREA``  启用此功能。可能的值为：
+
+- **LV_EXT_CLICK_AREA_FULL** 将所有 4 个坐标存储为 ``lv_coord_t``
+- **LV_EXT_CLICK_AREA_TINY** 仅将水平和垂直坐标(使用 左/右和上/下 的较大值)存储为 ``uint8_t``
+- **LV_EXT_CLICK_AREA_OFF** 禁用此功能
+
+
+事件
+##################################
+仅 `通用事件`_ 是按对象类型发送的。
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键
+##################################
+对象类型不处理任何输入按键。
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+范例
+##################################
+
+具有自定义样式的基础对象
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/01_obj/02_base_object.png
+	   
+	  lvgl中基础对象演示
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+
+	void lv_ex_obj_1(void)
+	{
+		lv_obj_t * obj1;
+		obj1 = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_set_size(obj1, 100, 50);
+		lv_obj_align(obj1, NULL, LV_ALIGN_CENTER, -60, -30);
+
+		/*Copy the previous object and enable drag*/
+		lv_obj_t * obj2;
+		obj2 = lv_obj_create(lv_scr_act(), obj1);
+		lv_obj_align(obj2, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_drag(obj2, true);
+
+		static lv_style_t style_shadow;
+		lv_style_init(&style_shadow);
+		lv_style_set_shadow_width(&style_shadow, LV_STATE_DEFAULT, 10);
+		lv_style_set_shadow_spread(&style_shadow, LV_STATE_DEFAULT, 5);
+		lv_style_set_shadow_color(&style_shadow, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+
+		/*Copy the previous object (drag is already enabled)*/
+		lv_obj_t * obj3;
+		obj3 = lv_obj_create(lv_scr_act(), obj2);
+		lv_obj_add_style(obj3, LV_OBJ_PART_MAIN, &style_shadow);
+		lv_obj_align(obj3, NULL, LV_ALIGN_CENTER, 60, 30);
+	}
+
+
+相关API
+##################################
+
+Typedefs 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	Typedefs uint8_t lv_design_mode_t
+	Typedefs uint8_t lv_design_res_t
+	/* 设计回调用于在屏幕上绘制对象。它接受对象,遮罩区域以及绘制对象的方式。*/
+	Typedefs lv_design_res_t(* lv_design_cb_t)(struct _lv_obj_t * obj,constlv_area_t * clip_area,lv_design_mode_t mode)
+
+	/* 发送到对象的事件类型。*/ 
+	Typedefs uint8_t lv_event_t 
+
+	/* 事件回调。事件用于通知用户对该对象正在执行的某些操作。有关详细信息,请参见 lv_event_t。*/
+	Typedefs void (* lv_event_cb_t)(struct _lv_obj_t * obj,lv_event_t event )
+
+
+	Typedefs uint8_t lv_signal_t
+	Typedefs lv_res_t(* lv_signal_cb_t)(struct _lv_obj_t * obj,lv_signal_t sign,void * param )
+	Typedefs uint8_t lv_protect_t
+	Typedefs uint8_t lv_state_t
+	Typedefs struct _lv_obj_tlv_obj_t
+	Typedefs uint8_t lv_obj_part_t
+
+enums 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	enum [anonymous]
+	设计模式
+
+	值：
+	enumerator LV_DESIGN_DRAW_MAIN /* 绘制对象的主要部分 */
+	enumerator LV_DESIGN_DRAW_POST /* 在对象上绘画 */
+	enumerator LV_DESIGN_COVER_CHK /* 检查对象是否完全覆盖“ mask_p”区域 */
+
+
+	enum [anonymous]
+	设计结果
+	值：
+	enumerator LV_DESIGN_RES_OK        /* 准备好 */
+	enumerator LV_DESIGN_RES_COVER     /* LV_DESIGN_COVER_CHK 如果区域完全覆盖,则返回 */
+	enumerator LV_DESIGN_RES_NOT_COVER /* LV_DESIGN_COVER_CHK 如果未覆盖区域,则返回 */
+	enumerator LV_DESIGN_RES_MASKED    /* LV_DESIGN_COVER_CHK 如果区域被遮盖,则返回(子类也不会遮盖)*/
+
+
+	enum [anonymous]
+	值：
+	enumerator LV_EVENT_PRESSED             /* 该对象已被按下 */
+	enumerator LV_EVENT_PRESSING            /* 按下对象(按下时连续调用)*/
+	enumerator LV_EVENT_PRESS_LOST          /* 用户仍在按,但将光标/手指滑离对象 */
+	enumerator LV_EVENT_SHORT_CLICKED       /* 用户在短时间内按下对象,然后释放它。如果拖动则不调用。*/
+	enumerator LV_EVENT_LONG_PRESSED        /* 对象已被按下至少LV_INDEV_LONG_PRESS_TIME。如果拖动则不调用。*/
+	enumerator LV_EVENT_LONG_PRESSED_REPEAT /* LV_INDEV_LONG_PRESS_TIME每LV_INDEV_LONG_PRESS_REP_TIME毫秒调用一次。如果拖动则不调用。*/
+	enumerator LV_EVENT_CLICKED             /* 如果未拖动则调用释放(无论长按) */
+	enumerator LV_EVENT_RELEASED            /* 在对象释放后的每种情况下调用 */
+	enumerator LV_EVENT_DRAG_BEGIN
+	enumerator LV_EVENT_DRAG_END
+	enumerator LV_EVENT_DRAG_THROW_BEGIN
+	enumerator LV_EVENT_GESTURE  /* 对象已被手势 */
+	enumerator LV_EVENT_KEY
+	enumerator LV_EVENT_FOCUSED
+	enumerator LV_EVENT_DEFOCUSED
+	enumerator LV_EVENT_LEAVE
+	enumerator LV_EVENT_VALUE_CHANGED /* 对象的值已更改(即,滑块已移动) */ 
+	enumerator LV_EVENT_INSERT
+	enumerator LV_EVENT_REFRESH
+	enumerator LV_EVENT_APPLY   /* 单击“确定”,“应用”或类似的特定按钮 */
+	enumerator LV_EVENT_CANCEL  /* 单击了“关闭”,“取消”或类似的特定按钮 */
+	enumerator LV_EVENT_DELETE  /* 对象被删除 */
+	enumerator _LV_EVENT_LAST   /* 活动数量 */
+
+
+	enum [anonymous]
+	信号供对象本身使用或扩展对象的功能。应用程序应使用lv_obj_set_event_cb来通知对象上发生的事件。
+	值：
+	enumerator LV_SIGNAL_CLEANUP   /* 对象被删除 */
+	enumerator LV_SIGNAL_CHILD_CHG /* 子项已删除/添加 */
+	enumerator LV_SIGNAL_COORD_CHG /* 对象坐标/大小已更改 */
+	enumerator LV_SIGNAL_PARENT_SIZE_CHG /* 父类的大小已更改 */
+	enumerator LV_SIGNAL_STYLE_CHG       /* 对象的样式已更改 */
+	enumerator LV_SIGNAL_BASE_DIR_CHG    /* 基本目录已更改 */
+	enumerator LV_SIGNAL_REFR_EXT_DRAW_PAD /* 对象的额外填充已更改 */
+	enumerator LV_SIGNAL_GET_TYPELVGL      /* 需要检索对象的类型 */
+	enumerator LV_SIGNAL_GET_STYLE         /* 获取对象的样式 */
+	enumerator LV_SIGNAL_GET_STATE_DSC     /* 获取对象的状态 */
+	enumerator LV_SIGNAL_HIT_TEST          /* 命中测试 */
+	enumerator LV_SIGNAL_PRESSED           /* 该对象已被按下 */
+	enumerator LV_SIGNAL_PRESSING          /* 按下对象(按下时连续调用) */
+	enumerator LV_SIGNAL_PRESS_LOST        /* 用户仍在按,但将光标/手指滑离对象 */
+	enumerator LV_SIGNAL_RELEASED          /* 用户在短时间内按下对象,然后释放它。如果拖动则不调用。 */
+	enumerator LV_SIGNAL_LONG_PRESS        /* 对象已被按下至少LV_INDEV_LONG_PRESS_TIME。如果拖动则不调用。 */
+	enumerator LV_SIGNAL_LONG_PRESS_REP    /* LV_INDEV_LONG_PRESS_TIME每LV_INDEV_LONG_PRESS_REP_TIME毫秒调用一次。如果拖动则不调用。 */
+	enumerator LV_SIGNAL_DRAG_BEGIN
+	enumerator LV_SIGNAL_DRAG_THROW_BEGIN
+	enumerator LV_SIGNAL_DRAG_END
+	enumerator LV_SIGNAL_GESTURE  /* 对象已被手势 */
+	enumerator LV_SIGNAL_LEAVE    /* 通过输入设备单击或选择另一个对象 */
+	enumerator LV_SIGNAL_FOCUS
+	enumerator LV_SIGNAL_DEFOCUS
+	enumerator LV_SIGNAL_CONTROL
+	enumerator LV_SIGNAL_GET_EDITABLE
+
+	enum [anonymous]
+	值：
+	enumerator LV_PROTECT_NONE
+	enumerator LV_PROTECT_CHILD_CHG /* 禁用子类更换信号。被库使用 */
+	enumerator LV_PROTECT_PARENT    /* 防止自动更改父级(例如,在lv_page中) */
+	enumerator LV_PROTECT_POS       /* 防止自动定位(例如,在lv_cont布局中) */
+	enumerator LV_PROTECT_FOLLOW    /* 防止在自动排序中遵循对象(例如,在lv_cont PRETTY布局中) */
+	enumerator LV_PROTECT_PRESS_LOST  /* 如果indev按的是该对象,但在按时却扫了出去,请勿搜索其他对象。 */
+	enumerator LV_PROTECT_CLICK_FOCUS /* 单击以防止聚焦对象 */
+	enumerator LV_PROTECT_EVENT_TO_DISABLED /* 甚至将事件传递给禁用的对象 */
+
+
+	enum [anonymous]
+	值：
+	enumerator LV_STATE_DEFAULT  /* 默认 */
+	enumerator LV_STATE_CHECKED  /* 选中 */
+	enumerator LV_STATE_FOCUSED  /* 聚焦 */
+	enumerator LV_STATE_EDITED   /* 编辑 */
+	enumerator LV_STATE_HOVERED  /* 盘旋 */
+	enumerator LV_STATE_PRESSED  /* 按下 */
+	enumerator LV_STATE_DISABLED /* 禁用 */
+
+	enum [anonymous]
+	值：
+	enumerator LV_OBJ_PART_MAIN
+	enumerator _LV_OBJ_PART_VIRTUAL_LAST
+	enumerator _LV_OBJ_PART_REAL_LAST
+	enumerator LV_OBJ_PART_ALL
+
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	void lv_init( void )   /* LVGL初始化 */
+	void lv_deinit( void ) /*取消初始化“ lv”库当前仅在不使用自定义分配器或启用GC时实现。*/
+	lv_obj_t * lv_obj_create(lv_obj_t *parent,constlv_obj_t * copy)
+	功能：创建一个基本对象
+	返回：指向新对象的指针
+	形参：
+	parent：指向父对象的指针。如果为NULL,则将创建一个屏幕
+	copy：  指向基础对象的指针,如果不为NULL,则将从其复制新对象
+
+
+	lv_res_t lv_obj_del(lv_obj_t * obj )
+	功能：删除“ obj”及其所有子项
+	返回：LV_RES_INV,因为对象已删除
+	形参：
+	obj：指向要删除的对象的指针
+
+
+	void lv_obj_del_anim_ready_cb(lv_anim_t * a )
+	功能：动画就绪回调中易于使用的函数,可在动画就绪时删除对象
+	形参：
+	a：指向动画的指针
+
+
+	void lv_obj_del_async(struct _lv_obj_t * obj )
+	功能：辅助函数,用于异步删除对象。在无法直接在LV_EVENT_DELETE处理程序(即父级)中删除对象的情况下很有用。
+	形参：
+	obj：要删除的对象
+
+
+	void lv_obj_clean(lv_obj_t * obj )
+	功能：删除对象的所有子对象
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_invalidate_area(constlv_obj_t * obj,constlv_area_t *area)
+	功能：将对象的区域标记为void 。此区域将由“ lv_refr_task”重绘
+	形参：
+	obj：指向对象的指针
+	area：要重绘的区域
+
+
+	void lv_obj_invalidate(constlv_obj_t * obj )
+	功能：将对象标记为void ,因此将通过“ lv_refr_task”重绘其当前位置
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_area_is_visible(constlv_obj_t * obj,lv_area_t * area )
+	判断对象的某个区域现在是否可见(甚至部分可见)
+	返回:true：可见；假：不可见(隐藏,在父母之外,在其他屏幕上等)
+	形参：
+	obj：指向对象的指针
+	area：检查。该区域的可见部分将写回到这里。
+
+
+	bool lv_obj_is_visible(constlv_obj_t * obj )
+	功能：判断一个对象现在是否可见(甚至部分可见)
+	返回:true：可见；假：不可见(隐藏,在父母之外,在其他屏幕上等)
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_set_parent(lv_obj_t * obj,lv_obj_t *parent)
+	功能：为对象设置一个新的父对象。其相对位置将相同。
+	形参：
+	obj：指向对象的指针。不能是屏幕。
+	parent：指向新父对象的指针。(不能为NULL)
+
+
+	void lv_obj_move_foreground(lv_obj_t * obj )
+	功能：移动并反对前景
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_move_background(lv_obj_t * obj )
+	功能：移动并反对背景
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_set_pos(lv_obj_t * obj,lv_coord_t x,lv_coord_t y )
+	功能：设置对象的相对位置(相对于父对象)
+	形参：
+	obj：指向对象的指针
+	x：距父级左侧的新距离
+	y：距父级顶部的新距离
+
+
+	void lv_obj_set_x(lv_obj_t * obj,lv_coord_t x )
+	功能：设置对象的x坐标
+	形参：
+	obj：指向对象的指针
+	x：从父级到左侧的新距离
+
+
+	void lv_obj_set_y(lv_obj_t * obj,lv_coord_t y )
+	功能：设置对象的y坐标
+	形参：
+	obj：指向对象的指针
+	y：距父级顶部的新距离
+
+
+	void lv_obj_set_size(lv_obj_t * obj,lv_coord_t w,lv_coord_t h )
+	功能：设置对象的大小
+	形参：
+	obj：指向对象的指针
+	w：新宽度
+	h：新高度
+
+
+	void lv_obj_set_width(lv_obj_t * obj,lv_coord_t w )
+	功能：设置对象的宽度
+	形参：
+	obj：指向对象的指针
+	w：新宽度
+
+
+	void lv_obj_set_height(lv_obj_t * obj,lv_coord_t h )
+	功能：设定物件的高度
+	形参：
+	obj：指向对象的指针
+	h：新高度
+
+
+	void lv_obj_set_width_fit(lv_obj_t * obj,lv_coord_t w )
+	功能：设置通过左右填充减少的宽度。
+	形参：
+	obj：指向对象的指针
+	w：没有填充的宽度
+
+
+	void lv_obj_set_height_fit(lv_obj_t * obj,lv_coord_t h )
+	功能：设置通过顶部和底部填充减小的高度。
+	形参：
+	obj：指向对象的指针
+	h：不带衬垫的高度
+
+
+	void lv_obj_set_width_margin(lv_obj_t * obj,lv_coord_t w )
+	功能：通过考虑左边距和右边距来设置对象的宽度。物体的宽度为obj_w = w - margin_left - margin_right
+	形参：
+	obj：指向对象的指针
+	w：包括边距在内的新高度
+
+
+	void lv_obj_set_height_margin(lv_obj_t * obj,lv_coord_t h )
+	功能：通过考虑顶部和底部边距来设置对象的高度。物体高度将为obj_h = h - margin_top - margin_bottom
+	形参：
+	obj：指向对象的指针
+	h：包括边距在内的新高度
+
+
+	void lv_obj_align(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs,lv_coord_t y_ofs )
+	功能：将一个对象与另一个对象对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	x_ofs：对齐后的x坐标偏移
+	y_ofs：对齐后的y坐标偏移
+
+
+	void lv_obj_align_x(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs )
+	功能：将一个对象与另一个对象水平对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	x_ofs：对齐后的x坐标偏移
+
+
+	void lv_obj_align_y(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t y_ofs )
+	功能：将一个对象与另一个对象垂直对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	y_ofs：对齐后的y坐标偏移
+
+
+	void lv_obj_align_mid(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs,lv_coord_t y_ofs )
+	功能：将一个对象与另一个对象对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	x_ofs：对齐后的x坐标偏移
+	y_ofs：对齐后的y坐标偏移
+
+
+	void lv_obj_align_mid_x(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs )
+	功能：将对象的中点与另一个对象水平对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	x_ofs：对齐后的x坐标偏移
+
+
+	void lv_obj_align_mid_y(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t y_ofs )
+	功能：将对象的中点与另一个对象垂直对齐。
+	形参：
+	obj：指向要对齐的对象的指针
+	base：指向对象的指针(如果为NULL,则使用父对象)。'obj'将与其对齐。
+	align：对齐类型(请参见“ lv_align_t”enum )
+	y_ofs：对齐后的y坐标偏移
+
+
+	void lv_obj_realign(lv_obj_t * obj )
+	功能：根据最后一个lv_obj_align参数重新对齐对象。
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_set_auto_realign(lv_obj_t * obj,bool en )
+	功能：当对象的大小根据最后一个lv_obj_align参数更改时,启用对象的自动重新对齐。
+	形参：
+	obj：指向对象的指针
+	en：true：启用自动重新对齐；false：禁用自动重新对齐
+
+
+	void lv_obj_set_ext_click_area(lv_obj_t * OBJ,lv_coord_t left,lv_coord_t right,lv_coord_t top,lv_coord_t bottom)
+	功能：设置扩展的可点击区域的大小
+	形参：
+	obj：指向对象的指针
+	left：可扩展点击位于左侧[px]
+	right：可扩展点击位于右侧[px]
+	top：扩展的可点击位于顶部[px]
+	bottom：可扩展点击位于底部[px]
+
+
+	void lv_obj_add_style(lv_obj_t * obj,uint8_t part,lv_style_t * style )
+	功能：将新样式添加到对象的样式列表。
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	style：指向要添加样式的指针(仅会保存其指针)
+
+
+	void lv_obj_remove_style(lv_obj_t * obj,uint8_t part,lv_style_t * style )
+	功能：从对象的样式列表中删除样式。
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	style：指向要删除的样式的指针
+
+
+	void lv_obj_clean_style_list(lv_obj_t * obj,uint8_t part )
+	功能：将样式重置为默认(空)状态。释放所有已使用的内存,并取消待处理的相关转换。通常用于`LV_SIGN_CLEAN_UP。
+	形参：
+	obj：指向对象的指针
+	part：应重置样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+
+
+	void lv_obj_reset_style_list(lv_obj_t * obj,uint8_t part )
+	功能：将样式重置为默认(空)状态。释放所有已使用的内存,并取消待处理的相关转换。还通知对象有关样式更改的信息。
+	形参：
+	obj：指向对象的指针
+	part：应重置样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+
+
+	void lv_obj_refresh_style(lv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：通知对象(及其子对象)其样式已修改
+	形参：
+	obj：指向对象的指针
+	prop：LV_STYLE_PROP_ALL或LV_STYLE_...财产。它用于优化需要刷新的内容。
+
+
+	void lv_obj_report_style_mod( lv_style_t *style)
+	功能：修改样式时通知所有对象
+	形参：
+	style：指向样式的指针。仅具有这种样式的对象将被通知(NULL通知所有对象)
+
+	void _lv_obj_set_style_local_color(lv_obj_t * OBJ,uint8_t part,lv_style_property_t prop,lv_color_t the)
+	功能：在给定状态下设置对象的一部分的局部样式属性。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.由于性能原因,不会检查属性是否确实具有颜色类型
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：样式属性与状态或。例如LV_STYLE_BORDER_COLOR | (LV_STATE_PRESSED << LV_STYLE_STATE_POS)
+	the：要设置的值
+
+
+	void _lv_obj_set_style_local_int(lv_obj_t * OBJ,uint8_t part,lv_style_property_t prop,lv_style_int_t the)
+	功能：在给定状态下设置对象的一部分的局部样式属性。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.出于性能原因,不检查该属性是否确实具有整数类型
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：样式属性与状态或。例如LV_STYLE_BORDER_WIDTH | (LV_STATE_PRESSED << LV_STYLE_STATE_POS)
+	the：要设置的值
+
+
+	void _lv_obj_set_style_local_opa(lv_obj_t * obj,uint8_t part,lv_style_property_t prop,lv_opa_t opa )
+	功能：在给定状态下设置对象的一部分的局部样式属性。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.由于性能原因,不检查属性是否确实具有不透明度类型
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：样式属性与状态或。例如LV_STYLE_BORDER_OPA | (LV_STATE_PRESSED << LV_STYLE_STATE_POS)
+	the：要设置的值
+
+
+	void _lv_obj_set_style_local_ptr(lv_obj_t * obj,uint8_t type,lv_style_property_t prop,constvoid *the)
+	功能：在给定状态下设置对象的一部分的局部样式属性。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.出于性能原因,不检查该属性是否确实具有指针类型
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：样式属性与状态或。例如LV_STYLE_TEXT_FONT | (LV_STATE_PRESSED << LV_STYLE_STATE_POS)
+	the：要设置的值
+
+
+	bool lv_obj_remove_style_local_prop(lv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：从具有给定状态的对象的一部分中删除局部样式属性。
+	注意：
+	不应直接使用。请改用特定的属性删除功能。例如：lv_obj_style_remove_border_opa()
+	返回:true：已找到并删除了该属性；false：找不到该属性
+	形参：
+	obj：指向对象的指针
+	part：对象的应删除样式属性的部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：样式属性与状态或。例如LV_STYLE_TEXT_FONT | (LV_STATE_PRESSED << LV_STYLE_STATE_POS)
+
+
+	void _lv_obj_disable_style_caching(lv_obj_t * obj,bool dis )
+	功能：启用/禁用对象的样式缓存
+	形参：
+	obj：指向对象的指针
+	dis：true：禁用；false：启用(重新启用)
+
+
+	void lv_obj_set_hidden(lv_obj_t * obj,bool en )
+	功能：隐藏对象。它不会显示和单击。
+	形参：
+	obj：指向对象的指针
+	en：true：隐藏对象
+
+	void lv_obj_set_adv_hittest(lv_obj_t * obj,bool en )
+	功能：设置是否在对象上启用高级命中测试
+	形参：
+	obj：指向对象的指针
+	en：true：启用高级命中测试
+
+
+	void lv_obj_set_click(lv_obj_t * obj,bool en )
+	功能：启用或禁用对象单击
+	形参：
+	obj：指向对象的指针
+	en：true：使对象可点击
+
+
+	void lv_obj_set_top(lv_obj_t * obj,bool en )
+	功能：如果单击该对象或其任何子对象,则启用该对象
+	形参：
+	obj：指向对象的指针
+	en：true：启用自动顶部功能
+
+
+	void lv_obj_set_drag(lv_obj_t * obj,bool en )
+	功能：启用对象拖动
+	形参：
+	obj：指向对象的指针
+	en：true：使对象可拖动
+
+
+	void lv_obj_set_drag_dir(lv_obj_t * obj,lv_drag_dir_t drag_dir )
+	功能：设置可以拖动对象的方向
+	形参：
+	obj：指向对象的指针
+	drag_dir：允许的拖动方向的按位或
+
+
+	void lv_obj_set_drag_throw(lv_obj_t * obj,bool en )
+	功能：拖动后启用对象投掷
+	形参：
+	obj：指向对象的指针
+	en：true：启用拖动
+
+
+	void lv_obj_set_drag_parent(lv_obj_t * obj,bool en )
+	功能：启用将父项用于拖动相关的操作。如果尝试拖动对象,则将父对象移动
+	形参：
+	obj：指向对象的指针
+	en：true：为对象启用“拖动父对象”
+
+
+	void lv_obj_set_focus_parent(lv_obj_t * obj,bool en )
+	功能：启用以将父级用于焦点状态。当对象聚焦时,父级将获得状态(仅可见)
+	形参：
+	obj：指向对象的指针
+	en：true：为对象启用“焦点父对象”
+
+
+	void lv_obj_set_gesture_parent(lv_obj_t * obj,bool en )
+	功能：启用将父项用于手势相关操作。如果尝试手势对象,则将父对象移动
+	形参：
+	obj：指向对象的指针
+	en：true：为对象启用“手势父级”
+
+
+	void lv_obj_set_parent_event(lv_obj_t * obj,bool en )
+	功能：也将事件传播给父级
+	形参：
+	obj：指向对象的指针
+	en：true：启用事件传播
+
+
+	void lv_obj_set_base_dir(lv_obj_t * obj,lv_bidi_dir_t dir )
+	功能：设置对象的基本方向
+	注意：
+	仅在启用LV_USE_BIDI的情况下才有效。
+	形参：
+	obj：指向对象的指针
+	dir：新的基本方向。 LV_BIDI_DIR_LTR/RTL/AUTO/INHERIT
+
+
+	void lv_obj_add_protect(lv_obj_t * obj,uint8_t prot )
+	功能：在保护字段中设置一个或多个位
+	形参：
+	obj：指向对象的指针
+	prot：来自“或”的值 lv_protect_t
+
+
+	void lv_obj_clear_protect(lv_obj_t * obj,uint8_t prot )
+	功能：清除保护字段中的一个或多个位
+	形参：
+	obj：指向对象的指针
+	prot：来自“或”的值 lv_protect_t
+
+
+	void lv_obj_set_state(lv_obj_t * obj,lv_state_t state)
+	功能：设置对象的状态(完全覆盖)。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+	形参：
+	obj：指向对象的指针
+	state：新状态
+
+
+	void lv_obj_add_state(lv_obj_t * obj,lv_state_t state)
+	功能：将一个或多个给定状态添加到对象。其他状态位将保持不变。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+	形参：
+	obj：指向对象的指针
+	state：要添加的状态位。例如LV_STATE_PRESSED | LV_STATE_FOCUSED
+
+
+	void lv_obj_clear_state(lv_obj_t * obj,lv_state_t state)
+	功能：删除对象的给定状态。其他状态位将保持不变。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+	形参：
+	obj：指向对象的指针
+	state：要删除的状态位。例如LV_STATE_PRESSED | LV_STATE_FOCUSED
+
+
+	void lv_obj_finish_transitions(lv_obj_t * obj,uint8_t part )
+	功能：在对象的一部分上完成所有挂起的过渡
+	形参：
+	obj：指向对象的指针
+	part：对象的一部分,例如LV_BRN_PART_MAIN或LV_OBJ_PART_ALL所有部分
+
+
+	void lv_obj_set_event_cb(lv_obj_t * obj,lv_event_cb_t event_cb )
+	功能：为对象设置事件处理函数。用户用于对对象发生的事件做出反应。
+	形参：
+	obj：指向对象的指针
+	event_cb：新事件功能
+
+
+	lv_res_t lv_event_send(lv_obj_t * obj,lv_event_t event,constvoid * data)
+	功能：向对象发送事件
+	返回:LV_RES_OK：obj在事件中没有被删除；LV_RES_INV：obj在事件中被删除
+	形参：
+	obj：指向对象的指针
+	event：来自的事件类型lv_event_t。
+	data：取决于对象类型和事件的任意数据。(通常NULL)
+
+
+	lv_res_t lv_event_send_refresh(lv_obj_t * obj )
+	功能：将LV_EVENT_REFRESH事件发送到对象
+	返回:LV_RES_OK：成功,LV_RES_INV：对象由于该事件而变得void (例如,删除)。
+	形参：
+	obj：指向一个对象。(不能为NULL)
+
+
+	void lv_event_send_refresh_recursive(lv_obj_t * obj )
+	功能：将LV_EVENT_REFRESH事件发送给对象及其所有子对象
+	形参：
+	obj：指向一个对象的指针,或者为NULL以刷新所有显示的所有对象
+
+
+	lv_res_t lv_event_send_func(lv_event_cb_t event_xcb,lv_obj_t * obj,lv_event_t event,constvoid *data)
+	功能：使用对象,事件和数据调用事件函数。
+	返回:LV_RES_OK：obj在事件中没有被删除；LV_RES_INV：obj在事件中被删除
+	形参：
+	event_xcb：事件回调函数。如果NULL LV_RES_OK返回,则不执行任何操作。(参数名称中的“ x”表示它不是完全通用的函数,因为它不遵循约定)func_name(object, callback, ...)
+	obj：指向与事件关联的对象的指针(可以NULL简单地调用event_cb)
+	event： 一个事件
+	data：指向自定义数据的指针
+
+
+	constvoid * lv_event_get_data(void )
+	功能：获取data当前事件的参数
+	返回
+	该data参数
+
+	void lv_obj_set_signal_cb(lv_obj_t * obj,lv_signal_cb_t signal_cb )
+	功能：设置对象的信号功能。由库内部使用。始终在新信号中调用前一个信号功能。
+	形参：
+	obj：指向对象的指针
+	signal_cb：新信号功能
+
+
+	lv_res_t lv_signal_send(lv_obj_t * obj,lv_signal_t signal,void * param )
+	功能：向对象发送事件
+	返回:LV_RES_OK或LV_RES_INV
+	形参：
+	obj：指向对象的指针
+	event：来自的事件类型lv_event_t。
+
+
+	void lv_obj_set_design_cb(lv_obj_t * obj,lv_design_cb_t design_cb )
+	功能：为对象设置新的设计功能
+	形参：
+	obj：指向对象的指针
+	design_cb：新的设计功能
+
+
+	void * lv_obj_allocate_ext_attr(lv_obj_t * obj,uint16_t ext_size )
+	功能：分配一个新的分机。对象的数据
+	返回:指向分配的ext的指针
+	形参：
+	obj：指向对象的指针
+	ext_size：新分机的大小。数据
+
+
+	void lv_obj_refresh_ext_draw_pad(lv_obj_t * obj )
+	功能：向对象发送“ LV_SIGNAL_REFR_EXT_SIZE”信号以刷新扩展的绘制区域。lv_obj_invalidate(obj)此功能后,需要手动使对象void 。
+	形参：
+	obj：指向对象的指针
+
+
+	lv_obj_t * lv_obj_get_screen(constlv_obj_t * obj )
+	功能：返回对象的屏幕
+	返回:指向屏幕的指针
+	形参：
+	obj：指向对象的指针
+
+
+	lv_disp_t * lv_obj_get_disp(constlv_obj_t * obj )
+	功能：获取对象的显示
+	返回:指针对象的显示
+
+	lv_obj_t * lv_obj_get_parent(constlv_obj_t * obj )
+	功能：返回对象的父对象
+	返回:指向“ obj”的父对象的指针
+	形参：
+	obj：指向对象的指针
+
+
+	lv_obj_t * lv_obj_get_child(constlv_obj_t * obj,constlv_obj_t * child )
+	功能：遍历对象的子项(从“最新的,最后创建的”开始)
+	返回:'act_child'之后的子级；如果没有更多子级,则为NULL
+	形参：
+	obj：指向对象的指针
+	child：第一次调用时为NULL,以获取下一个子类,以后再返回上一个返回值
+
+
+	lv_obj_t * lv_obj_get_child_back(constlv_obj_t * obj,constlv_obj_t * child )
+	功能：遍历对象的子项(从“最早的”开始,首先创建)
+	返回:'act_child'之后的子级；如果没有更多子级,则为NULL
+	形参：
+	obj：指向对象的指针
+	child：第一次调用时为NULL,以获取下一个子类,以后再返回上一个返回值
+
+
+	uint16_t lv_obj_count_children(constlv_obj_t * obj )
+	功能：计算对象的子代(仅直接在“ obj”上的子代)
+	返回:'obj'的子代号
+	形参：
+	obj：指向对象的指针
+
+
+	uint16_t lv_obj_count_children_recursive(constlv_obj_t * obj )
+	功能：递归计算对象的子代
+	返回:'obj'的子代号
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_get_coords(constlv_obj_t * obj,lv_area_t * cords_p )
+	功能：将对象的坐标复制到区域
+	形参：
+	obj：指向对象的指针
+	cords_p：指向存储坐标的区域的指针
+
+
+	void lv_obj_get_inner_coords(constlv_obj_t * obj,lv_area_t * coords_p )
+	功能：减少由lv_obj_get_coords()对象的图形可用区域重试的区域。(没有边框的大小或其他额外的图形元素)
+	形参：
+	coords_p：将结果区域存储在此处
+
+
+	lv_coord_t lv_obj_get_x(constlv_obj_t * obj )
+	功能：获取对象的x坐标
+	返回:“ obj”到其父对象左侧的距离
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_y(constlv_obj_t * obj )
+	功能：获取对象的y坐标
+	返回:“ obj”到其父对象顶部的距离
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_width(constlv_obj_t * obj )
+	功能：获取对象的宽度
+	返回:宽度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_height(constlv_obj_t * obj )
+	功能：获取对象的高度
+	返回:高度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_width_fit(constlv_obj_t * obj )
+	功能：通过左右填充减少宽度。
+	返回:仍然适合容器的宽度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_height_fit(constlv_obj_t * obj )
+	功能：通过顶部底部填充减少高度。
+	返回:仍然适合容器的高度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_height_margin(lv_obj_t * obj )
+	功能：通过考虑顶部和底部边距来获取对象的高度。返回的高度将是obj_h + margin_top + margin_bottom
+	返回:包括您的边距在内的高度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_width_margin(lv_obj_t * obj )
+	功能：通过考虑左边距和右边距来获得对象的宽度。返回的宽度将是obj_w + margin_left + margin_right
+	返回:包括您的边距在内的高度
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_width_grid(lv_obj_t * obj,uint8_t div,uint8_t span )
+	功能：划分对象的宽度并获得给定列数的宽度。考虑填充。
+	返回:根据给定参数的宽度
+	形参：
+	obj：指向对象的指针
+	div：表示假设有多少列。如果为1,则宽度将设置为父级的宽度；如果为2,则只有父级宽度的一半-父级的内部填充；如果为3,则只有第三个父级宽度-2 *父级的内部填充
+	span：合并了多少列
+
+
+	lv_coord_t lv_obj_get_height_grid(lv_obj_t * obj,uint8_t div,uint8_t span )
+	功能：划分对象的高度并获得给定列数的宽度。考虑填充。
+	返回:根据给定参数的高度
+	形参：
+	obj：指向对象的指针
+	div：表示假设有多少行。如果为1,则将设置父级的高度；如果为2,则只有父级的一半高度-父级的内部填充；如果只有3,则只有第三级父级的高度-2 *父级的内部填充
+	span：合并了多少行
+
+
+	bool lv_obj_get_auto_realign(constlv_obj_t * obj )
+	功能：获取对象的自动重新对齐属性。
+	返回:true：启用自动重新对齐；false：禁用自动重新对齐
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_ext_click_pad_left(constlv_obj_t * obj )
+	功能：获取扩展的可点击区域的左侧填充
+	返回:扩展的左填充
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_ext_click_pad_right(constlv_obj_t * obj )
+	功能：获取扩展的可点击区域的正确填充
+	返回:扩展的右填充
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_ext_click_pad_top(constlv_obj_t * obj )
+	功能：获取扩展的可点击区域的顶部填充
+	返回:扩展的顶部填充
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_ext_click_pad_bottom(constlv_obj_t * obj )
+	功能：获取扩展的可点击区域的底部填充
+	返回:扩展的底部填充
+	形参：
+	obj：指向对象的指针
+
+
+	lv_coord_t lv_obj_get_ext_draw_pad(constlv_obj_t * obj )
+	功能：获取对象的扩展尺寸属性
+	返回:扩展尺寸属性
+	形参：
+	obj：指向对象的指针
+
+
+	lv_style_list_t * lv_obj_get_style_list(constlv_obj_t * obj,uint8_t部分)
+	功能：获取对象零件的样式列表。
+	返回:指向样式列表的指针。(可以NULL)
+	形参：
+	obj：指向对象的指针。
+	part：part应该获取样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+
+
+	lv_style_int_t _lv_obj_get_style_int(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+	返回:
+	给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_width()
+	2.出于性能原因,不检查该属性是否确实具有整数类型
+	形参：
+	obj：指向对象的指针
+	part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：要获取的属性。例如LV_STYLE_BORDER_WIDTH。对象的状态将在内部添加
+
+
+	lv_color_t _lv_obj_get_style_color(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+	返回:
+	给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_color()
+	2.由于性能原因,不会检查属性是否确实具有颜色类型
+	形参：
+	obj：指向对象的指针
+	part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：要获取的属性。例如LV_STYLE_BORDER_COLOR。对象的状态将在内部添加
+
+
+	lv_opa_t _lv_obj_get_style_opa(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+	返回:
+	给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.由于性能原因,不检查属性是否确实具有不透明度类型
+	形参：
+	obj：指向对象的指针
+	part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：要获取的属性。例如LV_STYLE_BORDER_OPA。对象的状态将在内部添加
+
+
+	constvoid * _lv_obj_get_style_ptr(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+	功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+	返回:
+	给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+	注意：
+	1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+	2.出于性能原因,不检查该属性是否确实具有指针类型
+	形参：
+	obj：指向对象的指针
+	part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+	prop：要获取的属性。例如LV_STYLE_TEXT_FONT。对象的状态将在内部添加
+
+
+	lv_style_t * lv_obj_get_local_style(lv_obj_t * obj,uint8_t part)
+	功能：获取对象部分的局部样式。
+	返回:
+	指向本地样式的指针(如果存在)NULL。
+	形参：
+	obj：指向对象的指针
+	part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+
+
+	bool lv_obj_get_hidden(constlv_obj_t * obj )
+	功能：获取对象的隐藏属性
+	返回:
+	true：对象被隐藏
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_adv_hittest(constlv_obj_t * obj )
+	功能：获取是否在对象上启用了高级命中测试
+	返回：
+	true：启用高级匹配测试
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_click(constlv_obj_t * obj )
+	功能：获取对象的点击启用属性
+	返回：
+	true：可点击对象
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_top(constlv_obj_t * obj )
+	功能：获取对象的顶部启用属性
+	返回：
+	true：启用自动顶部功能
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_drag(constlv_obj_t * obj )
+	功能：获取对象的拖动启用属性
+	返回：
+	true：对象可拖动
+	形参：
+	obj：指向对象的指针
+
+
+	lv_drag_dir_t lv_obj_get_drag_dir(constlv_obj_t * obj )
+	功能：获取可以拖动对象的方向
+	返回：
+	可以将对象拖入允许方向的按位或
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_drag_throw(constlv_obj_t * obj )
+	功能：获取对象的拖动启动属性
+	返回：
+	true：启用拖动
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_drag_parent(constlv_obj_t * obj )
+	功能：获取对象的拖动父级属性
+	返回：
+	true：启用拖动父级
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_focus_parent(constlv_obj_t * obj )
+	功能：获取对象的焦点父级属性
+	返回：
+	true：启用焦点父级
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_parent_event(constlv_obj_t * obj )
+	功能：获取对象的拖动父级属性
+	返回：
+	true：启用拖动父级
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_get_gesture_parent(constlv_obj_t * obj )
+	功能：获取对象的手势父级属性
+	返回：
+	true：启用手势父级
+	形参：
+	obj：指向对象的指针
+
+
+	lv_bidi_dir_t lv_obj_get_base_dir(constlv_obj_t * obj )
+	uint8_t lv_obj_get_protect(constlv_obj_t * obj )
+	功能：获取对象的保护字段
+	返回：
+	保护字段(“的”或值lv_protect_t)
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_is_protected(constlv_obj_t * obj,uint8_t prot )
+	功能：检查是否已设置给定保护位字段的至少一位
+	返回：
+	false：未设置任何给定位,true：至少设置了一位
+	形参：
+	obj：指向对象的指针
+	prot：保护要测试的位(的“或”值lv_protect_t)
+
+
+	lv_state_t lv_obj_get_state(constlv_obj_t * obj,uint8_t part)
+	lv_signal_cb_t lv_obj_get_signal_cb(constlv_obj_t * obj )
+	功能：获取对象的信号功能
+	返回:
+	信号功能
+	形参：
+	obj：指向对象的指针
+
+
+	lv_design_cb_t lv_obj_get_design_cb(constlv_obj_t * obj )
+	功能：获取对象的设计功能
+	返回:
+	设计功能
+	形参：
+	obj：指向对象的指针
+
+
+	lv_event_cb_t lv_obj_get_event_cb(constlv_obj_t * obj )
+	功能：获取对象的事件函数
+	返回:
+	事件功能
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_is_point_on_coords(lv_obj_t * obj,constlv_point_t *点)
+	功能：
+	检查给定的屏幕空间点是否在对象的坐标上。该方法主要用于高级命中测试算法,以检查该点是否在对象内(作为优化)。
+	形参：
+	obj：要检查的对象
+	point：屏幕空间点
+
+
+	bool lv_obj_hittest(lv_obj_t * obj,lv_point_t * point )
+	功能：对在屏幕空间中特定位置的对象进行命中测试。
+	返回:
+	如果对象被认为在该点之下,则返回true
+	形参：
+	obj：对象进行命中测试
+	point：屏幕空间点
+
+
+	void * lv_obj_get_ext_attr(constlv_obj_t * obj )
+	获取ext指针
+	返回:
+	ext指针,而不是动态版本用作ext-> data1,而不是da(ext)-> data1
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_get_type(constlv_obj_t * obj,lv_obj_type_t * buf )
+	功能：获取对象及其祖先类型。将其名称以type_buf当前类型开头。例如buf.type [0] =“ lv_btn”,buf.type [1] =“ lv_cont”,buf.type [2] =“ lv_obj”
+	形参：
+	obj：指向应获取类型的对象的指针
+	buf：指向用于lv_obj_type_t存储类型的缓冲区的指针
+
+
+	lv_obj_user_data_t lv_obj_get_user_data(constlv_obj_t * obj )
+	功能：获取对象的用户数据
+	返回:
+	用户数据
+	形参：
+	obj：指向对象的指针
+
+
+	lv_obj_user_data_t * lv_obj_get_user_data_ptr(constlv_obj_t * obj )
+	功能：获取指向对象的用户数据的指针
+	返回:
+	指向用户数据的指针
+	形参：
+	obj：指向对象的指针
+
+
+	void lv_obj_set_user_data(lv_obj_t * obj,lv_obj_user_data_t数据)
+	功能：设置对象的用户数据。数据将被复制。
+	形参：
+	obj：指向对象的指针
+	data： 用户数据
+
+
+	void * lv_obj_get_group(constlv_obj_t * obj )
+	功能：获取对象组
+	返回:
+	指向对象组的指针
+	形参：
+	obj：指向对象的指针
+
+
+	bool lv_obj_is_focused(constlv_obj_t * obj )
+	功能：判断对象是否是组的聚焦对象。
+	返回:
+	true：对象已聚焦,false：对象未聚焦或不在组中
+	形参：
+	obj：指向对象的指针
+
+
+	lv_obj_t * lv_obj_get_focused_obj(constlv_obj_t * obj )
+	功能：通过考虑获得真正专注的对象focus_parent。
+	返回:
+	真正聚焦的对象
+	形参：
+	obj：起始对象
+
+
+	lv_res_t lv_obj_handle_get_type_signal(lv_obj_type_t * buf,const char *name)
+	功能：用于信号回调中以处理LV_SIGNAL_GET_TYPE信号
+	返回:
+	LV_RES_OK
+	形参：
+	buf：的指针lv_obj_type_t。(param在信号回调中)
+	name：对象的名称。例如“ lv_btn”。(仅保存指针)
+
+
+	void lv_obj_init_draw_rect_dsc(lv_obj_t * obj,uint8_t type ,lv_draw_rect_dsc_t * draw_dsc )
+	功能：根据对象的样式初始化矩形描述符
+	注意：
+	仅设置相关字段。例如,是否将不评估其他边框属性。border width == 0
+	形参：
+	obj：指向对象的指针
+	type：样式类型。例如LV_OBJ_PART_MAIN,LV_BTN_SLIDER_KOB
+	draw_dsc：描述符的初始化
+
+
+	void lv_obj_init_draw_label_dsc(lv_obj_t * obj,uint8_t类型,lv_draw_label_dsc_t * draw_dsc )
+	void lv_obj_init_draw_img_dsc(lv_obj_t * obj,uint8_t part,lv_draw_img_dsc_t * draw_dsc )
+	void lv_obj_init_draw_line_dsc(lv_obj_t * obj,uint8_t part,lv_draw_line_dsc_t * draw_dsc )
+	lv_coord_t lv_obj_get_draw_rect_ext_pad_size(lv_obj_t * obj,uint8_t part )
+	功能：获取所需的额外大小(围绕对象部分)以绘制阴影,轮廓,值等。
+	形参：
+	obj：指向对象的指针
+	part：对象的一部分
+
+
+	void lv_obj_fade_in(lv_obj_t * obj,uint32_t时间,uint32_t延迟)
+	功能：使用opa_scale动画淡入(从透明到完全覆盖)对象及其所有子对象。
+	形参：
+	obj：淡入的对象
+	time：动画的持续时间[ms]
+	delay：等待动画开始播放[ms]
+
+
+	void lv_obj_fade_out(lv_obj_t * obj,uint32_t时间,uint32_t延迟)
+	功能：使用opa_scale动画淡出(从完全覆盖到透明)对象及其所有子对象。
+	形参：
+	obj：淡入的对象
+	time：动画的持续时间[ms]
+	delay：等待动画开始播放[ms]
+
+
+	bool lv_debug_check_obj_type(constlv_obj_t * obj,constchar * obj_type )
+	功能：检查是否有给定类型的对象
+	返回:
+	true：有效
+	形参：
+	obj：指向对象的指针
+	obj_type：对象的类型。(例如“ lv_btn”)
+
+
+	bool lv_debug_check_obj_valid(constlv_obj_t * obj )
+	功能：检查是否还有任何对象“处于活动状态”以及层次struct 的一部分
+	返回:
+	true：有效
+	形参：
+	obj：指向对象的指针
+	obj_type：对象的类型。(例如“ lv_btn”)
+
+

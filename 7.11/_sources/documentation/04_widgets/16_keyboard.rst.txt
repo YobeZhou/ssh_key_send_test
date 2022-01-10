@@ -1,0 +1,173 @@
+==================================
+键盘(lv_keyboard)
+==================================
+
+概述
+##################################
+Keyboard对象是特殊的 `按钮矩阵(lv_imgbtn)`_ ，具有预定义的按键映射和其他功能，以实现虚拟键盘来编写文本。
+
+.. _按钮矩阵(lv_imgbtn): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+
+零件和样式
+##################################
+类似于按钮matices，键盘包括2部分：
+
+- ``LV_KEYBOARD_PART_BG`` 这是主要部分，并使用了所有典型的背景属性
+- ``LV_KEYBOARD_PART_BTN`` 这是按钮的虚拟部分。它还使用所有典型的背景属性和文本属性。
+
+
+用法
+##################################
+
+模式
+**********************************
+键盘具有以下模式：
+
+- **LV_KEYBOARD_MODE_TEXT_LOWER** - 显示小写字母
+- **LV_KEYBOARD_MODE_TEXT_UPPER** - 显示大写字母
+- **LV_KEYBOARD_MODE_TEXT_SPECIAL** - 显示特殊字符
+- **LV_KEYBOARD_MODE_NUM** - 显示数字，+ /-号和小数点。
+
+
+文本模式( ``TEXT`` )的布局包含更改模式的按钮。
+
+要手动设置模式，请使用 ``lv_keyboard_set_mode(kb, mode)`` 。默认更多是 ``LV_KEYBOARD_MODE_TEXT_UPPER`` 。
+
+
+分配文本区域
+**********************************
+可以为键盘分配一个 `文本区域(Text area)`_ ，以将单击的字符自动放在此处。要分配文本区域，请使用 ``lv_keyboard_set_textarea(kb, ta)`` 。
+
+分配的文本区域的光标可以通过键盘进行管理：分配了键盘后，上一个文本区域的光标将被隐藏，并且将显示新的文本区域。当通过“确定”或“关闭”按钮关闭键盘时，光标也将被隐藏。游标管理器功能由 `` lv_keyboard_set_cursor_manage(kb, true)`` 启用。默认为不管理。
+
+.. _文本区域(Text area): documentation/04_widgets/32_textarea.html
+
+
+新的键盘布局
+**********************************
+可以使用 ``lv_keyboard_set_map(kb, map)`` 和 ``lv_keyboard_set_ctrl_map(kb, ctrl_map)`` 为键盘指定新的地图（布局）。了解有关 `按钮矩阵(lv_imgbtn)`_ 的更多信息。记住，使用以下关键字将具有与原始地图相同的效果：
+
+- **LV_SYMBOL_OK** - 应用.
+- **LV_SYMBOL_CLOSE - 关闭.
+- **LV_SYMBOL_BACKSPACE - 从左侧删除。
+- **LV_SYMBOL_LEFT - 向左移动光标。
+- **LV_SYMBOL_RIGHT - 向右移动光标。
+- **"ABC"** - 加载大写地图。
+- **"abc"** - 加载小写地图。
+- **"Enter"** - 换行.
+
+
+.. _按钮矩阵(lv_imgbtn): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+
+事件
+##################################
+除了 `通用事件`_ ，键盘还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_VALUE_CHANGED** - 按下/释放按钮时发送，或长按后重复发送。事件数据设置为按下/释放按钮的ID。
+- **LV_EVENT_APPLY** - OK按钮被点击
+- **LV_EVENT_CANCEL** - 关闭按钮被点击
+
+键盘具有一个默认的事件处理程序回调，称为lv_keyboard_def_event_cb。它处理按钮按下，地图更改，分配的文本区域等。可以将其完全替换为自定义事件处理程序，但是，可以在事件处理程序的开头调用lv_keyboard_def_event_cb来处理与以前相同的操作。
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键
+##################################
+键盘可处理一下以下按键：
+
+- **LV_KEY_RIGHT/UP/LEFT/RIGHT** - 要在按钮之间导航并选择一个。
+- **LV_KEY_ENTER** - 按下/释放所选按钮。
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+带文字区域的键盘
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/16_keyboard/01_lv_ex_keyboard_1.png
+	   
+	  带文字区域的键盘
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_KEYBOARD
+
+	static lv_obj_t * kb;
+	static lv_obj_t * ta;
+
+
+	static void kb_event_cb(lv_obj_t * keyboard, lv_event_t e)
+	{
+		lv_keyboard_def_event_cb(kb, e);
+		if(e == LV_EVENT_CANCEL) {
+			lv_keyboard_set_textarea(kb, NULL);
+			lv_obj_del(kb);
+			kb = NULL;
+		}
+	}
+
+	static void kb_create(void)
+	{
+		kb = lv_keyboard_create(lv_scr_act(), NULL);
+		lv_keyboard_set_cursor_manage(kb, true);
+		lv_obj_set_event_cb(kb, kb_event_cb);
+		lv_keyboard_set_textarea(kb, ta);
+
+	}
+
+	static void ta_event_cb(lv_obj_t * ta_local, lv_event_t e)
+	{
+		if(e == LV_EVENT_CLICKED && kb == NULL) {
+			kb_create();
+		}
+	}
+
+	void lv_ex_keyboard_1(void)
+	{
+
+		/*Create a text area. The keyboard will write here*/
+		ta  = lv_textarea_create(lv_scr_act(), NULL);
+		lv_obj_align(ta, NULL, LV_ALIGN_IN_TOP_MID, 0, LV_DPI / 16);
+		lv_obj_set_event_cb(ta, ta_event_cb);
+		lv_textarea_set_text(ta, "");
+		lv_coord_t max_h = LV_VER_RES / 2 - LV_DPI / 8;
+		if(lv_obj_get_height(ta) > max_h) lv_obj_set_height(ta, max_h);
+
+		kb_create();
+	}
+	#endif
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

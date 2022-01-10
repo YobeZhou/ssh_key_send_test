@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>输入设备接口 &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="心跳" href="05_tick.html" />
+    <link rel="prev" title="显示接口" href="03_display.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_display.html">显示接口</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">输入设备接口</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">输入设备的类型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">触摸板，鼠标或任何指针</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">触摸板或键盘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">编码器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">使用带有编码器逻辑的按钮</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">按键</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">其它功能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>输入设备接口</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/02_porting/04_indev.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>输入设备接口<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>输入设备的类型<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>要设置输入设备，必须初始化 <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_t</span></code> 变量：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_indev_drv_t</span> <span class="n">indev_drv</span><span class="p">;</span>
+<span class="linenos">2</span>    <span class="n">lv_indev_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>      <span class="cm">/*Basic initialization*/</span>
+<span class="linenos">3</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span><span class="p">...</span>                 <span class="cm">/*See below.*/</span>
+<span class="linenos">4</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span><span class="p">...</span>              <span class="cm">/*See below.*/</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span>    <span class="cm">/*Register the driver in LVGL and save the created input device object*/</span>
+<span class="linenos">7</span>    <span class="n">lv_indev_t</span> <span class="o">*</span> <span class="n">my_indev</span> <span class="o">=</span> <span class="n">lv_indev_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>类型</strong> (indev_drv.type)可以是：</p>
+<ul class="simple">
+<li><p><strong>LV_INDEV_TYPE_POINTER</strong> 触摸板或鼠标</p></li>
+<li><p><strong>LV_INDEV_TYPE_KEYPAD</strong> 键盘或小键盘</p></li>
+<li><p><strong>LV_INDEV_TYPE_ENCODER</strong> 带有左，右，推动选项的编码器</p></li>
+<li><p><strong>LV_INDEV_TYPE_BUTTON</strong> 外部按钮按下屏幕</p></li>
+</ul>
+<p><strong>read_cb</strong> (indev_drv.read_cb)是一个函数指针，将定期调用该函数指针以报告输入设备的当前状态。它还可以缓冲数据并在没有更多数据要读取时返回 <code class="docutils literal notranslate"><span class="pre">false</span></code> ，或者在缓冲区不为空时返回 <code class="docutils literal notranslate"><span class="pre">true</span></code> 。</p>
+<p>进一步了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">输入设备</a> 的更多信息。</p>
+</div>
+<div class="section" id="id4">
+<h2>触摸板，鼠标或任何指针<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>可以单击屏幕点的输入设备属于此类别。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_POINTER</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">my_input_read</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="p">...</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">bool</span> <span class="n">my_input_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span> <span class="o">*</span> <span class="n">drv</span><span class="p">,</span> <span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="n">data</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">touchpad_x</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">data</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">touchpad_y</span><span class="p">;</span>
+<span class="linenos">10</span>            <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_PR</span> <span class="n">or</span> <span class="n">LV_INDEV_STATE_REL</span><span class="p">;</span>
+<span class="linenos">11</span>            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="cm">/*No buffering now so no more data read*/</span>
+<span class="linenos">12</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>即使状态为 LV_INDEV_STATE_REL ，触摸板驱动程序也必须返回最后的 X/Y 坐标。
+</pre></div>
+</div>
+<p>要设置鼠标光标，请使用 <code class="docutils literal notranslate"><span class="pre">lv_indev_set_cursor(my_indev,&amp;img_cursor)</span></code> 。( <code class="docutils literal notranslate"><span class="pre">my_indev</span></code> 是 <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_register</span></code> 的返回值)键盘或键盘</p>
+</div>
+<div class="section" id="id5">
+<h2>触摸板或键盘<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>带有所有字母的完整键盘或带有一些导航按钮的简单键盘均属于此处。</p>
+<p>要使用键盘/触摸板：</p>
+<ul class="simple">
+<li><p>注册具有 LV_INDEV_TYPE_KEYPAD 类型的 read_cb 函数。</p></li>
+<li><p>在 lv_conf.h 中启用 LV_USE_GROUP</p></li>
+<li><p>必须创建一个对象组：lv_group_t * g = lv_group_create()，并且必须使用 lv_group_add_obj(g，obj) 向其中添加对象</p></li>
+<li><p>必须将创建的组分配给输入设备：lv_indev_set_group(my_indev，g)( my_indev 是 lv_indev_drv_register 的返回值)</p></li>
+<li><p>使用 LV_KEY _… 在组中的对象之间导航。有关可用的密钥，请参见 lv_core/lv_group.h。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_KEYPAD</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">keyboard_read</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="p">...</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">bool</span> <span class="n">keyboard_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span> <span class="o">*</span> <span class="n">drv</span><span class="p">,</span> <span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="linenos"> 7</span>      <span class="n">data</span><span class="o">-&gt;</span><span class="n">key</span> <span class="o">=</span> <span class="n">last_key</span><span class="p">();</span>            <span class="cm">/*Get the last pressed or released key*/</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>      <span class="k">if</span><span class="p">(</span><span class="n">key_pressed</span><span class="p">())</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_PR</span><span class="p">;</span>
+<span class="linenos">10</span>      <span class="k">else</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_REL</span><span class="p">;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="cm">/*No buffering now so no more data read*/</span>
+<span class="linenos">13</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>编码器<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>可以通过下面四种方式使用编码器：</p>
+<ol class="arabic simple">
+<li><p>按下按钮</p></li>
+<li><p>长按其按钮</p></li>
+<li><p>转左</p></li>
+<li><p>右转</p></li>
+</ol>
+<p>简而言之，编码器输入设备的工作方式如下：</p>
+<ul class="simple">
+<li><p>通过旋转编码器，可以专注于下一个/上一个对象。</p></li>
+<li><p>在简单对象(如按钮)上按下编码器时，将单击它。</p></li>
+<li><p>如果将编码器按在复杂的对象(如列表，消息框等)上，则该对象将进入编辑模式，从而转动编码器即可在对象内部导航。</p></li>
+<li><p>长按按钮，退出编辑模式。</p></li>
+</ul>
+<p>要使用编码器(类似于键盘)，应将对象添加到组中。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_ENCODER</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">encoder_read</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="p">...</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">bool</span> <span class="n">encoder_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span> <span class="o">*</span> <span class="n">drv</span><span class="p">,</span> <span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="linenos"> 7</span>      <span class="n">data</span><span class="o">-&gt;</span><span class="n">enc_diff</span> <span class="o">=</span> <span class="n">enc_get_new_moves</span><span class="p">();</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>      <span class="k">if</span><span class="p">(</span><span class="n">enc_pressed</span><span class="p">())</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_PR</span><span class="p">;</span>
+<span class="linenos">10</span>      <span class="k">else</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_REL</span><span class="p">;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="cm">/*No buffering now so no more data read*/</span>
+<span class="linenos">13</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="id7">
+<h3>使用带有编码器逻辑的按钮<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>除了标准的编码器行为外，您还可以利用其逻辑来使用按钮导航(聚焦)和编辑小部件。如果只有几个按钮可用，或者除编码器滚轮外还想使用其他按钮，这将特别方便。</p>
+<p>需要有3个可用的按钮：</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_ENTER</strong> 将模拟按下或推动编码器按钮</p></li>
+<li><p><strong>LV_KEY_LEFT</strong> 将向左模拟转向编码器</p></li>
+<li><p><strong>LV_KEY_RIGHT</strong> 将正确模拟转向编码器</p></li>
+<li><p>其他键将传递给焦点小部件</p></li>
+</ul>
+<p>如果按住这些键，它将模拟indev_drv.long_press_rep_time中指定的时间段内的编码器单击。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_ENCODER</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">encoder_with_keys_read</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="p">...</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">bool</span> <span class="n">encoder_with_keys_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span> <span class="o">*</span> <span class="n">drv</span><span class="p">,</span> <span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="linenos"> 7</span>      <span class="n">data</span><span class="o">-&gt;</span><span class="n">key</span> <span class="o">=</span> <span class="n">last_key</span><span class="p">();</span>            <span class="cm">/*Get the last pressed or released key*/</span>
+<span class="linenos"> 8</span>                                                                             <span class="cm">/* use LV_KEY_ENTER for encoder press */</span>
+<span class="linenos"> 9</span>      <span class="k">if</span><span class="p">(</span><span class="n">key_pressed</span><span class="p">())</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_PR</span><span class="p">;</span>
+<span class="linenos">10</span>      <span class="k">else</span> <span class="p">{</span>
+<span class="linenos">11</span>              <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_REL</span><span class="p">;</span>
+<span class="linenos">12</span>              <span class="cm">/* Optionally you can also use enc_diff, if you have encoder*/</span>
+<span class="linenos">13</span>              <span class="n">data</span><span class="o">-&gt;</span><span class="n">enc_diff</span> <span class="o">=</span> <span class="n">enc_get_new_moves</span><span class="p">();</span>
+<span class="linenos">14</span>      <span class="p">}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="cm">/*No buffering now so no more data read*/</span>
+<span class="linenos">17</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>按键<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>按钮是指屏幕旁边的外部“硬件”按钮，它们被分配给屏幕的特定坐标。如果按下按钮，它将模拟在指定坐标上的按下。 (类似于触摸板)</p>
+<p>使用 lv_indev_set_button_points(my_indev, points_array) 将按钮分配给坐标。points_array应该看起来像const lv_point_t points_array [] = {{12,30}，{60,90}，…}</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>points_array不能超出范围。将其声明为全局变量或函数内部的静态变量。
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_BUTTON</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">button_read</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="p">...</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">bool</span> <span class="n">button_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span> <span class="o">*</span> <span class="n">drv</span><span class="p">,</span> <span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="linenos"> 7</span>            <span class="k">static</span> <span class="kt">uint32_t</span> <span class="n">last_btn</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="cm">/*Store the last pressed button*/</span>
+<span class="linenos"> 8</span>            <span class="kt">int</span> <span class="n">btn_pr</span> <span class="o">=</span> <span class="n">my_btn_read</span><span class="p">();</span>     <span class="cm">/*Get the ID (0,1,2...) of the pressed button*/</span>
+<span class="linenos"> 9</span>            <span class="k">if</span><span class="p">(</span><span class="n">btn_pr</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>               <span class="cm">/*Is there a button press? (E.g. -1 indicated no button was pressed)*/</span>
+<span class="linenos">10</span>               <span class="n">last_btn</span> <span class="o">=</span> <span class="n">btn_pr</span><span class="p">;</span>           <span class="cm">/*Save the ID of the pressed button*/</span>
+<span class="linenos">11</span>               <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_PR</span><span class="p">;</span>  <span class="cm">/*Set the pressed state*/</span>
+<span class="linenos">12</span>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="linenos">13</span>               <span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">LV_INDEV_STATE_REL</span><span class="p">;</span> <span class="cm">/*Set the released state*/</span>
+<span class="linenos">14</span>            <span class="p">}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="n">data</span><span class="o">-&gt;</span><span class="n">btn</span> <span class="o">=</span> <span class="n">last_btn</span><span class="p">;</span>            <span class="cm">/*Save the last button*/</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>                    <span class="cm">/*No buffering now so no more data read*/</span>
+<span class="linenos">19</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>其它功能<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>除了 read_cb 之外，还可以在 lv_indev_drv_t 中指定 feedback_cb 回调。输入设备发送任何类型的事件时，都会调用feedback_cb。 (独立于其类型)。它允许为用户提供反馈，例如在LV_EVENT_CLICK上播放声音。</p>
+<p>可以在lv_conf.h中设置以下参数的默认值，但可以在lv_indev_drv_t中覆盖默认值：</p>
+<ul class="simple">
+<li><p><strong>拖拽限制(drag_limit)</strong> 实际拖动对象之前要滑动的像素数 drag_throw 拖曳速度降低[％]。更高的价值意味着更快的减速</p></li>
+<li><p><strong>(drag_throw)</strong> 拖曳速度降低[％]。更高的价值意味着更快的减速</p></li>
+<li><p><strong>(long_press_time)</strong> 按下时间发送 LV_EVENT_LONG_PRESSED (以毫秒为单位)</p></li>
+<li><p><strong>(long_press_rep_time)</strong> 发送 LV_EVENT_LONG_PRESSED_REPEAT 的时间间隔(以毫秒为单位)</p></li>
+<li><p><strong>(read_task)</strong> 指向读取输入设备的lv_task的指针。可以通过 <code class="docutils literal notranslate"><span class="pre">lv_task_...()</span></code> 函数更改其参数</p></li>
+</ul>
+<p>每个输入设备都与一个显示器关联。默认情况下，新的输入设备将添加到最后创建的或显式选择的显示设备(使用lv_disp_set_default())。相关的显示已存储，并且可以在驱动程序的显示字段中更改。</p>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="05_tick.html" class="btn btn-neutral float-right" title="心跳" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="03_display.html" class="btn btn-neutral float-left" title="显示接口" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

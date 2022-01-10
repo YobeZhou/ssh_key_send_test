@@ -1,0 +1,236 @@
+```eval_rst
+.. include:: /header.rst
+:github_url: |github_link_base|/examples.md
+```
+
+# Examples
+## Get started
+## Styles
+## Animations
+## Events
+## Layouts
+### Flex
+### Grid
+## Scrolling
+## Widgets
+### Base object
+### Arc
+#### Simple Arc
+```eval_rst
+.. lv_example:: widgets/arc/lv_example_arc_1
+```
+
+#### Loader with Arc
+```eval_rst
+.. lv_example:: widgets/arc/lv_example_arc_2
+```
+
+### Bar
+#### Simple Bar
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_1
+```
+
+#### Styling a bar
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_2
+```
+
+#### Temperature meter
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_3
+```
+
+#### Stripe pattern and range value
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_4
+```
+
+#### Bar with RTL and RTL base direction
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_5
+```
+
+#### Custom drawr to show the current value
+```eval_rst
+.. lv_example:: widgets/bar/lv_example_bar_6
+```
+
+### Button
+#### Simple Buttons
+```eval_rst
+.. lv_example:: widgets/btn/lv_example_btn_1
+```
+
+#### Styling buttons
+```eval_rst
+.. lv_example:: widgets/btn/lv_example_btn_2
+```
+
+#### Gummy button
+```eval_rst
+.. lv_example:: widgets/btn/lv_example_btn_3
+```
+
+### Button matrix
+#### Simple Button matrix
+```eval_rst
+.. lv_example:: widgets/btnmatrix/lv_example_btnmatrix_1
+```
+
+#### Custom buttons
+```eval_rst
+.. lv_example:: widgets/btnmatrix/lv_example_btnmatrix_2
+```
+
+#### Pagination
+```eval_rst
+.. lv_example:: widgets/btnmatrix/lv_example_btnmatrix_3
+```
+
+### Calendar
+#### Calendar with header
+```eval_rst
+.. lv_example:: widgets/calendar/lv_example_calendar_1
+```
+
+### Canvas
+#### Drawing on the Canvas and rotate
+```eval_rst
+.. lv_example:: widgets/canvas/lv_example_canvas_1
+```
+
+#### Transparent Canvas with chroma keying
+```eval_rst
+.. lv_example:: widgets/canvas/lv_example_canvas_2
+```
+
+### Chart
+### Checkbox
+#### Simple Checkboxes
+```eval_rst
+.. lv_example:: widgets/checkbox/lv_example_checkbox_1
+```
+
+### Colorwheel
+### Dropdown
+#### Simple Drop down list
+```eval_rst
+.. lv_example:: widgets/dropdown/lv_example_dropdown_1
+```
+
+#### Drop down in four directions
+```eval_rst
+.. lv_example:: widgets/dropdown/lv_example_dropdown_2
+```
+
+#### Menu
+```eval_rst
+.. lv_example:: widgets/dropdown/lv_example_dropdown_3
+```
+
+### Image
+#### Image from variable and symbol
+```eval_rst
+.. lv_example:: widgets/img/lv_example_img_1
+```
+
+#### Image recoloring
+```eval_rst
+.. lv_example:: widgets/img/lv_example_img_2
+```
+
+#### Rotate and zoom
+```eval_rst
+.. lv_example:: widgets/img/lv_example_img_3
+```
+
+#### Image offset and styling
+```eval_rst
+.. lv_example:: widgets/img/lv_example_img_4
+```
+
+### Image button
+### Keyboard
+### Label
+#### Line wrap, recoloring and scrolling
+```eval_rst
+.. lv_example:: widgets/label/lv_example_label_1
+```
+
+#### Text shadow
+```eval_rst
+.. lv_example:: widgets/label/lv_example_label_2
+```
+
+### LED
+### Line
+#### Simple Line
+```eval_rst
+.. lv_example:: widgets/line/lv_example_line_1
+```
+
+### List
+### Meter
+### Message box
+### Roller
+#### Simple Roller
+```eval_rst
+.. lv_example:: widgets/roller/lv_example_roller_1
+```
+
+#### Styling the roller
+```eval_rst
+.. lv_example:: widgets/roller/lv_example_roller_2
+```
+
+### Slider
+#### Simple Slider
+```eval_rst
+.. lv_example:: widgets/slider/lv_example_slider_1
+```
+
+#### Slider with custom style
+```eval_rst
+.. lv_example:: widgets/slider/lv_example_slider_2
+```
+
+#### Slider with extended drawer
+```eval_rst
+.. lv_example:: widgets/slider/lv_example_slider_3
+```
+
+### Span
+### Spinbox
+### Spinner
+### Switch
+### Table
+#### Simple table
+```eval_rst
+.. lv_example:: widgets/table/lv_example_table_1
+```
+
+#### Lightweighted list from table
+```eval_rst
+.. lv_example:: widgets/table/lv_example_table_2
+```
+
+### Tabview
+### Textarea
+#### Simple Text area
+```eval_rst
+.. lv_example:: widgets/textarea/lv_example_textarea_1
+```
+
+#### Text area with password field
+```eval_rst
+.. lv_example:: widgets/textarea/lv_example_textarea_2
+```
+
+#### Text auto-formatting
+```eval_rst
+.. lv_example:: widgets/textarea/lv_example_textarea_3
+```
+
+### Tabview
+### Window

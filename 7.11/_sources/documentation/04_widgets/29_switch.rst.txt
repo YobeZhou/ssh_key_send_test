@@ -1,0 +1,126 @@
+==================================
+开关(lv_switch)
+==================================
+
+概述
+##################################
+开关可用于打开/关闭某物。它看起来像一个小滑块。
+
+
+零件和样式
+##################################
+开关使用以下部分
+
+- ``LV_SWITCH_PART_BG`` : 主要部分
+- ``LV_SWITCH_PART_INDIC`` : 指标（虚拟部分）
+- ``LV_SWITCH_PART_KNOB`` : 旋钮（虚拟部分）
+
+零件和样式与 `滑杆(lv_slider)`_ 情况相同。阅读其文档以获取详细说明。
+
+.. _滑杆(lv_slider): http://lvgl.100ask.net/documentation/04_widgets/26_slider.html
+
+
+用法
+##################################
+
+变更状态
+**********************************
+可以通过单击或通过下面的函数更改开关的状态：
+
+- ``lv_switch_on(switch, LV_ANIM_ON/OFF)`` 开
+- ``lv_switch_off(switch, LV_ANIM_ON/OFF)`` 关
+- ``lv_switch_toggle(switch, LV_ANOM_ON/OFF)`` 切换开关的位置
+
+
+动画时间
+**********************************
+切换开关状态时的动画时间可以使用 ``lv_switch_set_anim_time(switch, anim_time)`` 进行调整。
+
+
+事件
+##################################
+除了 `通用事件`_ ，开关还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_VALUE_CHANGED** 在开关更改状态时发送。
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+开关可处理以下按键：
+
+- **LV_KEY_UP, LV_KEY_RIGHT** 打开滑块
+- **LV_KEY_DOWN, LV_KEY_LEFT** 关闭滑块
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单开关
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/29_switch/01_lv_ex_switch_1.png
+	   
+	  简单开关
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_SWITCH
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("State: %s\n", lv_switch_get_state(obj) ? "On" : "Off");
+		}
+	}
+
+	void lv_ex_switch_1(void)
+	{
+		/*Create a switch and apply the styles*/
+		lv_obj_t *sw1 = lv_switch_create(lv_scr_act(), NULL);
+		lv_obj_align(sw1, NULL, LV_ALIGN_CENTER, 0, -50);
+		lv_obj_set_event_cb(sw1, event_handler);
+
+		/*Copy the first switch and turn it ON*/
+		lv_obj_t *sw2 = lv_switch_create(lv_scr_act(), sw1);
+		lv_switch_on(sw2, LV_ANIM_ON);
+		lv_obj_align(sw2, NULL, LV_ALIGN_CENTER, 0, 50);
+	}
+
+	#endif
+
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

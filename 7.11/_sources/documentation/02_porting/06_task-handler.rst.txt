@@ -1,0 +1,32 @@
+==================================
+任务处理器(Task Handler)
+==================================
+要处理 LVGL 的任务，我们需要定期通过以下方式之一调用 lv_task_handler() ：
+
+- mian 函数中设置 while(1) 调用
+- 定期定时中断(低优先级然后是 lv_tick_inc()) 中调用
+- 定期执行的 OS 任务中调用
+
+计时并不严格，但应保持大约5毫秒以保持系统响应。
+
+
+范例：
+
+.. code-block:: c
+    :linenos:
+	
+	while(1) {
+	  lv_task_handler();
+	  my_delay_ms(5);
+	}
+
+
+
+要了解有关任务的更多信息，请参阅 `任务`_ 部分。
+
+.. _任务: http://weidongshan.gitee.io/lvgl_100ask_doc/documentation/03_overview/11_task.html
+
+
+
+
+

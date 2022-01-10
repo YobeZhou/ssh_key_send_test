@@ -1,0 +1,496 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>日历(lv_calendar) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="画布(lv_canvas)" href="07_canvas.html" />
+    <link rel="prev" title="按钮矩阵(lv_btnmatrix)" href="05_btnmatrix.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">日历(lv_calendar)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">当前日期</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">显示日期</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">高亮日期</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">日期名称</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">月份名称</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">简单日历示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>日历(lv_calendar)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/06_calendar.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-calendar">
+<h1>日历(lv_calendar)<a class="headerlink" href="#lv-calendar" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>Calendar对象是经典的日历，可以：</p>
+<ul class="simple">
+<li><p>突出显示当天</p></li>
+<li><p>突出显示任何用户定义的日期</p></li>
+<li><p>显示日期名称</p></li>
+<li><p>单击按钮进入下一个/上一个月</p></li>
+<li><p>突出显示点击的日子</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>零件和样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>日历的主要部分称为 <code class="docutils literal notranslate"><span class="pre">LV_CALENDAR_PART_BG</span></code> 。它使用典型的背景样式属性绘制背景。</p>
+<p>除以下虚拟部分外：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CALENDAR_PART_HEADER</span></code> 显示当前年和月名称的上部区域。它还具有用于移动下一个/上个月的按钮。它使用典型的背景属性以及填充来调整其大小和边距，以设置距日历顶部的距离和日历下方的日期。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CALENDAR_PART_DAY_NAMES</span></code> 在标题下方显示日期名称。它使用文本样式属性填充来与背景（左，右），标题（上）和日期（下）保持一定距离。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CALENDAR_PART_DATES</span></code> 显示从1..28 / 29/30/31开始的日期数字（取决于当月）。根据本部分中定义的状态来绘制状态的不同“状态”：</p>
+<ul>
+<li><p>正常日期：以 <code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> 样式绘制</p></li>
+<li><p>按日期范围：以 <code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code> 样式绘制</p></li>
+<li><p>今天：以 <code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code> 样式绘制</p></li>
+<li><p>高亮显示的日期：以 <code class="docutils literal notranslate"><span class="pre">LV_STATE_CHECKED</span></code> 样式绘制</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>用法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>概述<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>要在日历中设置和获取日期，使用 <code class="docutils literal notranslate"><span class="pre">lv_calendar_date_t</span></code> 类型，该类型是具有 <code class="docutils literal notranslate"><span class="pre">年</span></code> ， <code class="docutils literal notranslate"><span class="pre">月</span></code> 和 <code class="docutils literal notranslate"><span class="pre">日</span></code> 字段的结构。</p>
+</div>
+<div class="section" id="id5">
+<h3>当前日期<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>要设置当前日期（今天），请使用 <code class="docutils literal notranslate"><span class="pre">lv_calendar_set_today_date(calendar,</span> <span class="pre">&amp;today_date)</span></code> 函数。</p>
+</div>
+<div class="section" id="id6">
+<h3>显示日期<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>要设置显示日期，请使用 <code class="docutils literal notranslate"><span class="pre">lv_calendar_set_shown_date(calendar,</span> <span class="pre">&amp;shown_date)</span></code> ;</p>
+</div>
+<div class="section" id="id7">
+<h3>高亮日期<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>高亮显示的日期列表应存储在由 <code class="docutils literal notranslate"><span class="pre">lv_calendar_set_highlighted_dates(calendar,</span> <span class="pre">&amp;highlighted_dates)</span></code> 加载的 <code class="docutils literal notranslate"><span class="pre">lv_calendar_date_t</span></code> 数组中。</p>
+<p>仅将保存数组指针，因此数组应为静态或全局变量。</p>
+</div>
+<div class="section" id="id8">
+<h3>日期名称<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_calendar_set_day_names(calendar,</span> <span class="pre">day_names)</span></code> 来调整日期的名称，其中 <code class="docutils literal notranslate"><span class="pre">day_names</span></code> 类似于 <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*</span> <span class="pre">day_names[7]</span> <span class="pre">=</span> <span class="pre">{&quot;Su&quot;,</span> <span class="pre">&quot;Mo&quot;,</span> <span class="pre">...};</span></code></p>
+</div>
+<div class="section" id="id9">
+<h3>月份名称<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>与 <code class="docutils literal notranslate"><span class="pre">day_names</span></code> 相似，可以使用 <code class="docutils literal notranslate"><span class="pre">lv_calendar_set_month_names(calendar,</span> <span class="pre">month_names_array)</span></code> 设置月份名称。</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>事件<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>除了 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a> 外，日历还会发送以下特殊事件：当当前月份更改时，还会发送 <strong>LV_EVENT_VALUE_CHANGED</strong> 。</p>
+<p>在与输入设备相关的事件中， <code class="docutils literal notranslate"><span class="pre">lv_calendar_get_pressed_date(calendar)</span></code> 指示当前正在按下的日期，如果没有按下任何日期，则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多信息。</p>
+<p>按键
+##################################s
+对象类型不处理任何键。</p>
+<p>进一步了解 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a> 。</p>
+</div>
+<div class="section" id="id14">
+<h2>范例<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id15">
+<h3>简单日历示例<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id16">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/06_calendar/01_lv_ex_calendar.png" src="http://photos.100ask.net/lvgl/04_widgets/06_calendar/01_lv_ex_calendar.png" />
+<p class="caption"><span class="caption-text">可以选择日期的日历</span><a class="headerlink" href="#id16" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cp">#if LV_USE_CALENDAR</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">event_handler</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 9</span>                    <span class="n">lv_calendar_date_t</span> <span class="o">*</span> <span class="n">date</span> <span class="o">=</span> <span class="n">lv_calendar_get_pressed_date</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<span class="linenos">10</span>                    <span class="k">if</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">11</span>                            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Clicked date: %02d.%02d.%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">date</span><span class="o">-&gt;</span><span class="n">day</span><span class="p">,</span> <span class="n">date</span><span class="o">-&gt;</span><span class="n">month</span><span class="p">,</span> <span class="n">date</span><span class="o">-&gt;</span><span class="n">year</span><span class="p">);</span>
+<span class="linenos">12</span>                    <span class="p">}</span>
+<span class="linenos">13</span>            <span class="p">}</span>
+<span class="linenos">14</span>    <span class="p">}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="kt">void</span> <span class="nf">lv_ex_calendar_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">17</span>    <span class="p">{</span>
+<span class="linenos">18</span>            <span class="n">lv_obj_t</span>  <span class="o">*</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">lv_calendar_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="mi">235</span><span class="p">,</span> <span class="mi">235</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="cm">/*Make the date number smaller to be sure they fit into their area*/</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_set_style_local_text_font</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="n">LV_CALENDAR_PART_DATE</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">lv_theme_get_font_small</span><span class="p">());</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>            <span class="cm">/*Set today&#39;s date*/</span>
+<span class="linenos">27</span>            <span class="n">lv_calendar_date_t</span> <span class="n">today</span><span class="p">;</span>
+<span class="linenos">28</span>            <span class="n">today</span><span class="p">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2018</span><span class="p">;</span>
+<span class="linenos">29</span>            <span class="n">today</span><span class="p">.</span><span class="n">month</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">30</span>            <span class="n">today</span><span class="p">.</span><span class="n">day</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>            <span class="n">lv_calendar_set_today_date</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">today</span><span class="p">);</span>
+<span class="linenos">33</span>            <span class="n">lv_calendar_set_showed_date</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">today</span><span class="p">);</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>            <span class="cm">/*Highlight a few days*/</span>
+<span class="linenos">36</span>            <span class="k">static</span> <span class="n">lv_calendar_date_t</span> <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>       <span class="cm">/*Only its pointer will be saved so should be static*/</span>
+<span class="linenos">37</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2018</span><span class="p">;</span>
+<span class="linenos">38</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">month</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">39</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">day</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2018</span><span class="p">;</span>
+<span class="linenos">42</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">month</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">43</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">day</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2018</span><span class="p">;</span>
+<span class="linenos">46</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">month</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+<span class="linenos">47</span>            <span class="n">highlighted_days</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">day</span> <span class="o">=</span> <span class="mi">22</span><span class="p">;</span>
+<span class="linenos">48</span>
+<span class="linenos">49</span>            <span class="n">lv_calendar_set_highlighted_dates</span><span class="p">(</span><span class="n">calendar</span><span class="p">,</span> <span class="n">highlighted_days</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="linenos">50</span>    <span class="p">}</span>
+<span class="linenos">51</span>
+<span class="linenos">52</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="07_canvas.html" class="btn btn-neutral float-right" title="画布(lv_canvas)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="05_btnmatrix.html" class="btn btn-neutral float-left" title="按钮矩阵(lv_btnmatrix)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

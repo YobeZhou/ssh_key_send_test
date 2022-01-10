@@ -1,0 +1,135 @@
+==================================
+容器(lv_cont)
+==================================
+
+概述
+##################################
+容器本质上是具有布局和自动调整大小功能的 **基本对象** 。
+
+零件和样式
+##################################
+容器只有一个主要样式称为 ``LV_CONT_PART_MAIN`` ，它可以使用所有通常的bacground属性和填充来自动调整布局大小。
+
+
+用法
+##################################
+
+布局
+**********************************
+可以在容器上应用布局以自动订购其子代。布局间距来自样式的 ``填充(pad)`` 属性。可能的布局选项：
+
+- **LV_LAYOUT_OFF** - 不要对齐子代。
+- **LV_LAYOUT_CENTER** - 将子项与列中的中心对齐，并 ``padd_inner`` 在它们之间保持间距。
+- **LV_LAYOUT_COLUMN_LEFT** - 在左对齐的列中对齐子级。请 ``padd_left`` 在左边，空间 ``pad_top`` 空间的顶部和 ``pad_inner`` 孩子之间的空间。
+- **LV_LAYOUT_COLUMN_MID** - 在中心列中对齐子代。 ``padd_top`` 在顶部和 ``pad_inner`` 孩子之间保持空间。
+- **LV_LAYOUT_COLUMN_RIGHT** - 在右对齐的列中对齐子代。保持 ``padd_right`` 右边的 ``pad_top`` 空间，顶部的 ``pad_inner空间和孩子之间的空间。
+- **LV_LAYOUT_ROW_TOP** - 在顶部对齐的行中对齐子级。请pad_left在左边，空间pad_top空间的顶部和pad_inner`` 孩子之间的空间。
+- **LV_LAYOUT_ROW_MID** - 在居中的行中对齐子级。 ``pad_left`` 在左边和 ``pad_inner`` 孩子之间保持空间。
+- **LV_LAYOUT_ROW_BOTTOM** - 在底部对齐的行中对齐子级。请 ``pad_left`` 在左边，空间 ``pad_bottom`` 空间的底部和 ``pad_inner`` 孩子之间的空间。
+- **LV_LAYOUT_PRETTY_TOP** - 将作为连续多的对象可能（至少 ``pad_inner`` 空间和 ``pad_left/right`` 空间两侧）。在孩子之间的每一行中平均分配空间。如果这是连续不同身高的孩子，请对齐其上边缘。
+- **LV_LAYOUT_PRETTY_MID** - 与 ``LV_LAYOUT_PRETTY_MID`` 相同，但是如果此处的孩子连续排成不同的高度，则对齐他们的中线。
+- **LV_LAYOUT_PRETTY_BOTTOM** - 与 ··LV_LAYOUT_PRETTY_BOTTOM·· 相同， ··但是如果这是连续高度不同的子项，请对齐其底线。
+- **LV_LAYOUT_GRID** - 类似于 ``LV_LAYOUT_PRETTY`` 但不能平均划分水平空间，只是让它们之间的 ``pad_left/right`` 边缘和 ``pad_inner`` 空间分开。
+
+
+自动调整
+**********************************
+容器具有自动适应功能，可以根据其子代和/或父代自动更改容器的大小。存在以下选项：
+
+
+- **LV_FIT_NONE** - 不要自动更改大小。
+- **LV_FIT_TIGHT** - 将容器收缩包装在其所有子容器周围，同时 ``pad_top/bottom/left/right`` 在边缘保留空间。
+- **LV_FIT_PARENT** - 将大小设置为父项的大小减去 ``pad_top/bottom/left/right`` （来自父项的样式）空间。
+- **LV_FIT_MAX** - 使用 ``LV_FIT_PARENT`` 而不是父小， ``LV_FIT_TIGHT`` 时大。它将确保该容器至少是其父容器的大小。
+
+要为所有方向设置自动适合模式，请使用。要在水平和垂直方向上使用不同的自动拟合，请使用。要在所有四个方向上使用不同的自动拟合，请使用。lv_cont_set_fit(cont, LV_FIT_...)lv_cont_set_fit2(cont, hor_fit_type, ver_fit_type)lv_cont_set_fit4(cont, left_fit_type, right_fit_type, top_fit_type, bottom_fit_type)
+
+
+
+事件
+##################################
+仅 `通用事件`_ 是按对象类型发送的。
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键
+##################################
+对象类型不处理任何键。
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+容器示例
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/10_cont/01_lc_ex_cont_1.png
+	   
+	  简单的容器示例
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_CONT
+
+	void lv_ex_cont_1(void)
+	{
+		lv_obj_t * cont;
+
+		cont = lv_cont_create(lv_scr_act(), NULL);
+		lv_obj_set_auto_realign(cont, true);                    /*Auto realign when the size changes*/
+		lv_obj_align_origo(cont, NULL, LV_ALIGN_CENTER, 0, 0);  /*This parametrs will be sued when realigned*/
+		lv_cont_set_fit(cont, LV_FIT_TIGHT);
+		lv_cont_set_layout(cont, LV_LAYOUT_COLUMN_MID);
+
+		lv_obj_t * label;
+		label = lv_label_create(cont, NULL);
+		lv_label_set_text(label, "Short text");
+
+		/*Refresh and pause here for a while to see how `fit` works*/
+		uint32_t t;
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 500);
+
+		label = lv_label_create(cont, NULL);
+		lv_label_set_text(label, "It is a long text");
+
+		/*Wait here too*/
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 500);
+
+		label = lv_label_create(cont, NULL);
+		lv_label_set_text(label, "Here is an even longer text");
+	}
+
+	#endif
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

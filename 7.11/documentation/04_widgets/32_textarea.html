@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>文本框(lv_textarea) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="平铺视图(lv_tileview)" href="33_tileview.html" />
+    <link rel="prev" title="页签(lv_tabview)" href="31_tabview.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文本框(lv_textarea)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">添加文字</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">占位符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">删除字符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">移动光标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">隐藏光标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">光标闪烁时间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">单行模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">密码模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">文字对齐</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">字符过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">最大文字长度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">长文本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">选择文字</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">滚动条</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">滚动传播</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">边缘闪烁</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">按键处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">简单的文本框</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">密码模式的文本区域</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">文字自动格式化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>文本框(lv_textarea)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/32_textarea.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-textarea">
+<h1>文本框(lv_textarea)<a class="headerlink" href="#lv-textarea" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>文本框是一个带有标签和光标的 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(lv_page)</a> 。可以在其中添加文本或字符。长行被换行，并且当文本变得足够长时，可以滚动文本区域。</p>
+</div>
+<div class="section" id="id2">
+<h2>零件和样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>文本框与 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(lv_page)</a> 具有相同的部分。期望 <code class="docutils literal notranslate"><span class="pre">LV_PAGE_PART_SCRL</span></code> ，因为它不能被引用并且始终是透明的。请参阅该页面的详细文档。</p>
+<p>除了Page部分之外，还存在虚拟 <code class="docutils literal notranslate"><span class="pre">`LV_TEXTAREA_PART_CURSOR</span></code> 部分来绘制光标。光标的区域始终是当前字符的边界框。可以通过在 <code class="docutils literal notranslate"><span class="pre">LV_TEXTAREA_PART_CURSOR</span></code> 的样式中添加背景色和背景色来创建块光标。创建行光标使光标透明并设置border_side属性。</p>
+</div>
+<div class="section" id="id4">
+<h2>用法<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>添加文字<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>可以使用以下命令将文本或字符插入当前光标的位置：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_add_char(textarea,</span> <span class="pre">'c')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_add_text(textarea,</span> <span class="pre">&quot;insert</span> <span class="pre">this</span> <span class="pre">text&quot;)</span></code></p></li>
+</ul>
+<p>要添加宽字符，例如 <code class="docutils literal notranslate"><span class="pre">'á'</span></code> , <code class="docutils literal notranslate"><span class="pre">'ß'</span></code> 或 CJK 字符(中日韩统一表意文字)，请使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_add_text(ta,</span> <span class="pre">&quot;á&quot;)</span></code> 。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_textarea_set_text(ta,</span> <span class="pre">&quot;New</span> <span class="pre">text&quot;)</span></code> 更改整个文本。</p>
+</div>
+<div class="section" id="id6">
+<h3>占位符<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_placeholder_text(ta,</span> <span class="pre">&quot;Placeholder</span> <span class="pre">text&quot;)</span></code> 指定一个占位符文本-当“文本”区域为空时显示。</p>
+</div>
+<div class="section" id="id7">
+<h3>删除字符<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>要从当前光标位置的左侧删除字符，请使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_del_char(textarea)</span></code></p>
+<p>要从右边删除，请使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_del_char(textarea)</span></code></p>
+</div>
+<div class="section" id="id8">
+<h3>移动光标<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_cursor_pos(textarea,</span> <span class="pre">10)</span></code> 直接修改光标位置。 <code class="docutils literal notranslate"><span class="pre">0</span></code> 位置表示“在第一个字符之前”， <code class="docutils literal notranslate"><span class="pre">LV_TA_CURSOR_LAST</span></code> 表示“在最后一个字符之后”</p>
+<p>可以使用</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_cursor_right(textarea)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_cursor_left(textarea)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_cursor_up(textarea)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_textarea_cursor_down(textarea)</span></code></p></li>
+</ul>
+<p>如果调用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_cursor_click_pos(textarea,</span> <span class="pre">true)</span></code> ，则光标将跳至单击“文本”区域的位置。</p>
+</div>
+<div class="section" id="id9">
+<h3>隐藏光标<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_cursor_hidden(textarea,</span> <span class="pre">true)</span></code> 隐藏光标。</p>
+</div>
+<div class="section" id="id10">
+<h3>光标闪烁时间<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>光标的闪烁时间可以通过 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_cursor_blink_time(textarea,</span> <span class="pre">time_ms)</span></code> 进行调整。</p>
+</div>
+<div class="section" id="id11">
+<h3>单行模式<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>可以将“文本”区域配置为以 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_one_line(ta,</span> <span class="pre">true)</span></code> 为一行。在此模式下，高度自动设置为仅显示一行，忽略换行符，并且禁用自动换行。</p>
+</div>
+<div class="section" id="id12">
+<h3>密码模式<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>文本区域支持可以通过 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_pwd_mode(textarea,</span> <span class="pre">true)</span></code> 启用的密码模式。</p>
+<p>如果字体中存在 <code class="docutils literal notranslate"><span class="pre">•</span></code> ( <a class="reference external" href="http://www.fileformat.info/info/unicode/char/2022/index.htm">Bullet,U+2022</a> ) 字符，则一段时间后或输入新字符后，输入的字符将转换为该字符。如果 <code class="docutils literal notranslate"><span class="pre">•</span></code> 不存在，将使用 <code class="docutils literal notranslate"><span class="pre">*</span></code> 。</p>
+<p>在密码模式下 <code class="docutils literal notranslate"><span class="pre">lv_textarea_get_text(textarea)</span></code> 给出真实文本，而不是项目符号字符。</p>
+<p>可见时间可以使用lv_textarea_set_pwd_show_time（textarea，time_ms）进行调整。</p>
+</div>
+<div class="section" id="id13">
+<h3>文字对齐<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_text_align(textarea,</span> <span class="pre">LV_LABEL_ALIGN_LET/CENTER/RIGHT)</span></code> 将文本左，中或右对齐。</p>
+<p>在单行模式下，仅当文本保持对齐时才能水平滚动文本。</p>
+</div>
+<div class="section" id="id14">
+<h3>字符过滤<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_textarae_set_accepted_chars(ta,</span> <span class="pre">&quot;0123456789.+-&quot;)</span></code> 设置可接受字符的列表。其他字符将被忽略。</p>
+</div>
+<div class="section" id="id15">
+<h3>最大文字长度<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>最大字符数可以通过 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_max_length(textarea,</span> <span class="pre">max_char_num)</span></code> 进行限制</p>
+</div>
+<div class="section" id="id16">
+<h3>长文本<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>如果“文本”区域中的文本很长（例如&gt; 20k个字符），则其滚动和绘制速度可能会很慢。但是，通过在 lv_conf.h 中启用 <code class="docutils literal notranslate"><span class="pre">LV_LABEL_LONG_TXT_HINT</span> <span class="pre">1</span></code> 可以极大地改善它。
+它将保存一些有关标签的信息，以加快其绘制速度。使用 <code class="docutils literal notranslate"><span class="pre">LV_LABEL_LONG_TXT_HINT</span></code> ，滚动和绘图将与使用“普通”短文本一样快。</p>
+</div>
+<div class="section" id="id17">
+<h3>选择文字<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>如果通过 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_text_sel(textarea,</span> <span class="pre">true)</span></code> 启用，则可以选择一部分文本。就像用鼠标在PC上选择文本时一样。</p>
+</div>
+<div class="section" id="id18">
+<h3>滚动条<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>可以根据 <code class="docutils literal notranslate"><span class="pre">lv_textarea_set_scrollbar_mode(textarea,</span> <span class="pre">LV_SCRLBAR_MODE_...)</span></code> 设置的不同策略显示滚动条。在Page对象中了解更多信息。</p>
+</div>
+<div class="section" id="id19">
+<h3>滚动传播<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<p>当“文本”区域在另一个可滚动对象（如“页面”）上滚动并且滚动已到达“文本”区域的边缘时，滚动可以传播到父对象。也就是说，当“文本”区域可以进一步滚动时，父级将被滚动。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_ta_set_scroll_propagation(ta,</span> <span class="pre">true)</span></code> 启用它。</p>
+<p>在 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(lv_page)</a> 对象中了解更多信息。</p>
+</div>
+<div class="section" id="id21">
+<h3>边缘闪烁<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h3>
+<p>当“文本”区域滚动到边缘时，如果通过 <code class="docutils literal notranslate"><span class="pre">lv_ta_set_edge_flash(ta,</span> <span class="pre">true)</span></code> 启用，则可以显示类似Flash动画的圆圈</p>
+</div>
+</div>
+<div class="section" id="id22">
+<h2>事件<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h2>
+<p>除了 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a> ，文本框还支持以下 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7">特殊事件</a> ：</p>
+<ul class="simple">
+<li><p><strong>LV_EVENT_INSERT</strong> 在插入字符或文本之前发送。事件数据是计划插入的文本。lv_ta_set_insert_replace（ta，“新文本”）替换要插入的文本。新文本不能位于局部变量中，该局部变量会在事件回调存在时被销毁。 “”表示请勿插入任何内容。</p></li>
+<li><p><strong>LV_EVENT_VALUE_CHANGED</strong> 当文本区域的内容已更改时。</p></li>
+<li><p><strong>LV_EVENT_APPLY</strong> 当LV_KEY_ENTER发送到处于单行模式的文本区域时。</p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多内容。</p>
+</div>
+<div class="section" id="id26">
+<h2>按键处理<a class="headerlink" href="#id26" title="永久链接至标题">¶</a></h2>
+<p>文本框可处理以下按键：</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_UP/DOWN/LEFT/RIGHT</strong> 移动光标</p></li>
+<li><p><strong>Any character</strong> 将字符添加到当前光标位置</p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a>  的更多内容。</p>
+</div>
+<div class="section" id="id28">
+<h2>范例<a class="headerlink" href="#id28" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id29">
+<h3>简单的文本框<a class="headerlink" href="#id29" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id32">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/32_textarea/01_lv_ex_textarea_1.png" src="http://photos.100ask.net/lvgl/04_widgets/32_textarea/01_lv_ex_textarea_1.png" />
+<p class="caption"><span class="caption-text">简单的文本框</span><a class="headerlink" href="#id32" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_TEXTAREA</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta1</span><span class="p">;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">event_handler</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="p">{</span>
+<span class="linenos"> 9</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">10</span>                    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Value: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">lv_textarea_get_text</span><span class="p">(</span><span class="n">obj</span><span class="p">));</span>
+<span class="linenos">11</span>            <span class="p">}</span>
+<span class="linenos">12</span>            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_LONG_PRESSED_REPEAT</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">13</span>                    <span class="cm">/*For simple test: Long press the Text are to add the text below*/</span>
+<span class="linenos">14</span>                    <span class="k">const</span> <span class="kt">char</span>  <span class="o">*</span> <span class="n">txt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">You can scroll it if the text is long enough.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="linenos">15</span>                    <span class="k">static</span> <span class="kt">uint16_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">16</span>                    <span class="k">if</span><span class="p">(</span><span class="n">txt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">17</span>                            <span class="n">lv_textarea_add_char</span><span class="p">(</span><span class="n">ta1</span><span class="p">,</span> <span class="n">txt</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="linenos">18</span>                            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="linenos">19</span>                    <span class="p">}</span>
+<span class="linenos">20</span>            <span class="p">}</span>
+<span class="linenos">21</span>    <span class="p">}</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="kt">void</span> <span class="nf">lv_ex_textarea_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">24</span>    <span class="p">{</span>
+<span class="linenos">25</span>            <span class="n">ta1</span> <span class="o">=</span> <span class="n">lv_textarea_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">ta1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="linenos">27</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">ta1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">28</span>            <span class="n">lv_textarea_set_text</span><span class="p">(</span><span class="n">ta1</span><span class="p">,</span> <span class="s">&quot;A text in a Text Area&quot;</span><span class="p">);</span>    <span class="cm">/*Set an initial text*/</span>
+<span class="linenos">29</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">ta1</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">30</span>    <span class="p">}</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id30">
+<h3>密码模式的文本区域<a class="headerlink" href="#id30" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id33">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/32_textarea/02_lv_ex_textarea_2.png" src="http://photos.100ask.net/lvgl/04_widgets/32_textarea/02_lv_ex_textarea_2.png" />
+<p class="caption"><span class="caption-text">简单的文本框</span><a class="headerlink" href="#id33" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_TEXTAREA &amp;&amp; LV_USE_KEYBOARD</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">ta_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="k">static</span> <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">kb</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="kt">void</span> <span class="nf">lv_ex_textarea_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">10</span>    <span class="p">{</span>
+<span class="linenos">11</span>            <span class="cm">/* Create the password box */</span>
+<span class="linenos">12</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">pwd_ta</span> <span class="o">=</span> <span class="n">lv_textarea_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_textarea_set_text</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_textarea_set_pwd_mode</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_textarea_set_one_line</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_textarea_set_cursor_hidden</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_set_width</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="n">LV_HOR_RES</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">pwd_ta</span><span class="p">,</span> <span class="n">ta_event_cb</span><span class="p">);</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>            <span class="cm">/* Create a label and position it above the text box */</span>
+<span class="linenos">22</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">pwd_label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">pwd_label</span><span class="p">,</span> <span class="s">&quot;Password:&quot;</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">pwd_label</span><span class="p">,</span> <span class="n">pwd_ta</span><span class="p">,</span> <span class="n">LV_ALIGN_OUT_TOP_LEFT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>            <span class="cm">/* Create the one-line mode text area */</span>
+<span class="linenos">27</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">oneline_ta</span> <span class="o">=</span> <span class="n">lv_textarea_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="n">pwd_ta</span><span class="p">);</span>
+<span class="linenos">28</span>            <span class="n">lv_textarea_set_pwd_mode</span><span class="p">(</span><span class="n">oneline_ta</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_textarea_set_cursor_hidden</span><span class="p">(</span><span class="n">oneline_ta</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">30</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">oneline_ta</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_IN_TOP_RIGHT</span><span class="p">,</span> <span class="mi">-5</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>            <span class="cm">/* Create a label and position it above the text box */</span>
+<span class="linenos">34</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">oneline_label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">35</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">oneline_label</span><span class="p">,</span> <span class="s">&quot;Text:&quot;</span><span class="p">);</span>
+<span class="linenos">36</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">oneline_label</span><span class="p">,</span> <span class="n">oneline_ta</span><span class="p">,</span> <span class="n">LV_ALIGN_OUT_TOP_LEFT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>            <span class="cm">/* Create a keyboard */</span>
+<span class="linenos">39</span>            <span class="n">kb</span> <span class="o">=</span> <span class="n">lv_keyboard_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">40</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span>  <span class="n">LV_HOR_RES</span><span class="p">,</span> <span class="n">LV_VER_RES</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span>            <span class="n">lv_keyboard_set_textarea</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">pwd_ta</span><span class="p">);</span> <span class="cm">/* Focus it on one of the text areas to start */</span>
+<span class="linenos">43</span>            <span class="n">lv_keyboard_set_cursor_manage</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span> <span class="cm">/* Automatically show/hide cursors on text areas */</span>
+<span class="linenos">44</span>    <span class="p">}</span>
+<span class="linenos">45</span>
+<span class="linenos">46</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">ta_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos">47</span>    <span class="p">{</span>
+<span class="linenos">48</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_CLICKED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">49</span>                    <span class="cm">/* Focus on the clicked text area */</span>
+<span class="linenos">50</span>                    <span class="k">if</span><span class="p">(</span><span class="n">kb</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+<span class="linenos">51</span>                            <span class="n">lv_keyboard_set_textarea</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">ta</span><span class="p">);</span>
+<span class="linenos">52</span>            <span class="p">}</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_INSERT</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">55</span>                    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">lv_event_get_data</span><span class="p">();</span>
+<span class="linenos">56</span>                    <span class="k">if</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">57</span>                            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Ready</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">58</span>                    <span class="p">}</span>
+<span class="linenos">59</span>            <span class="p">}</span>
+<span class="linenos">60</span>    <span class="p">}</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id31">
+<h3>文字自动格式化<a class="headerlink" href="#id31" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id34">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/32_textarea/03_lv_ex_textarea_3.png" src="http://photos.100ask.net/lvgl/04_widgets/32_textarea/03_lv_ex_textarea_3.png" />
+<p class="caption"><span class="caption-text">文字自动格式化</span><a class="headerlink" href="#id34" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_TEXTAREA &amp;&amp; LV_USE_KEYBOARD</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">ta_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="k">static</span> <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">kb</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="cm">/**</span>
+<span class="linenos">10</span><span class="cm">     * Automatically format text like a clock. E.g. &quot;12:34&quot;</span>
+<span class="linenos">11</span><span class="cm">     * Add the &#39;:&#39; automatically.</span>
+<span class="linenos">12</span><span class="cm">     */</span>
+<span class="linenos">13</span>    <span class="kt">void</span> <span class="nf">lv_ex_textarea_3</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">14</span>    <span class="p">{</span>
+<span class="linenos">15</span>            <span class="cm">/* Create the text area */</span>
+<span class="linenos">16</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta</span> <span class="o">=</span> <span class="n">lv_textarea_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="n">ta_event_cb</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_textarea_set_accepted_chars</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="s">&quot;0123456789:&quot;</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_textarea_set_max_length</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_textarea_set_one_line</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_textarea_set_text</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="cm">/*Create a custom map for the keyboard*/</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>            <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">kb_map</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos">27</span>                              <span class="s">&quot;1&quot;</span><span class="p">,</span><span class="s">&quot;2&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="p">,</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="linenos">28</span>                              <span class="s">&quot;4&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="linenos">29</span>                              <span class="s">&quot;7&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">,</span> <span class="n">LV_SYMBOL_BACKSPACE</span> <span class="p">,</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="linenos">30</span>                              <span class="s">&quot;0&quot;</span><span class="p">,</span><span class="n">LV_SYMBOL_LEFT</span><span class="p">,</span><span class="n">LV_SYMBOL_RIGHT</span><span class="p">,</span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span>
+<span class="linenos">31</span>            <span class="p">};</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>            <span class="k">static</span> <span class="k">const</span> <span class="n">lv_btnmatrix_ctrl_t</span> <span class="n">kb_ctrl</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos">34</span>                       <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_HIDDEN</span><span class="p">,</span>
+<span class="linenos">35</span>                       <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_HIDDEN</span><span class="p">,</span>
+<span class="linenos">36</span>                       <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span>
+<span class="linenos">37</span>                       <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_NO_REPEAT</span><span class="p">,</span> <span class="n">LV_BTNMATRIX_CTRL_HIDDEN</span><span class="p">,</span>
+<span class="linenos">38</span>            <span class="p">};</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>            <span class="cm">/* Create a keyboard*/</span>
+<span class="linenos">41</span>            <span class="n">kb</span> <span class="o">=</span> <span class="n">lv_keyboard_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">42</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span>  <span class="n">LV_HOR_RES</span><span class="p">,</span> <span class="n">LV_VER_RES</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">43</span>            <span class="n">lv_keyboard_set_mode</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">LV_KEYBOARD_MODE_NUM</span><span class="p">);</span>
+<span class="linenos">44</span>            <span class="n">lv_keyboard_set_map</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">LV_KEYBOARD_MODE_NUM</span><span class="p">,</span> <span class="n">kb_map</span><span class="p">);</span>
+<span class="linenos">45</span>            <span class="n">lv_keyboard_set_ctrl_map</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">LV_KEYBOARD_MODE_NUM</span><span class="p">,</span><span class="n">kb_ctrl</span><span class="p">);</span>
+<span class="linenos">46</span>            <span class="n">lv_keyboard_set_textarea</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">ta</span><span class="p">);</span>
+<span class="linenos">47</span>    <span class="p">}</span>
+<span class="linenos">48</span>
+<span class="linenos">49</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">ta_event_cb</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">ta</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos">50</span>    <span class="p">{</span>
+<span class="linenos">51</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">52</span>                    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">lv_textarea_get_text</span><span class="p">(</span><span class="n">ta</span><span class="p">);</span>
+<span class="linenos">53</span>                    <span class="k">if</span><span class="p">(</span><span class="n">txt</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;:&#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">54</span>                            <span class="n">lv_textarea_del_char</span><span class="p">(</span><span class="n">ta</span><span class="p">);</span>
+<span class="linenos">55</span>                    <span class="p">}</span>
+<span class="linenos">56</span>                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span> <span class="o">&amp;&amp;</span>
+<span class="linenos">57</span>                            <span class="n">txt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">txt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span> <span class="o">&amp;&amp;</span>
+<span class="linenos">58</span>                            <span class="n">txt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">59</span>                    <span class="p">{</span>
+<span class="linenos">60</span>                            <span class="n">lv_textarea_set_cursor_pos</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">61</span>                            <span class="n">lv_textarea_add_char</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="sc">&#39;:&#39;</span><span class="p">);</span>
+<span class="linenos">62</span>                    <span class="p">}</span>
+<span class="linenos">63</span>            <span class="p">}</span>
+<span class="linenos">64</span>    <span class="p">}</span>
+<span class="linenos">65</span>
+<span class="linenos">66</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="33_tileview.html" class="btn btn-neutral float-right" title="平铺视图(lv_tileview)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="31_tabview.html" class="btn btn-neutral float-left" title="页签(lv_tabview)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

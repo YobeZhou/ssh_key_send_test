@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>什么是Lvgl？ &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="系统框架" href="../02_porting/01_sys.html" />
+    <link rel="prev" title="🎨百问网LVGL中文教程手册文档" href="../../index.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">什么是Lvgl？</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">获取离线教程文档</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">主要特性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">硬件要求</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">源码布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">LVGL更新发行规则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">LVGL仓库分支说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">发布周期</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">版本标签</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">变更日志</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">版本兼容</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>什么是Lvgl？</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/01_intro/intro.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lvgl">
+<h1>什么是Lvgl？<a class="headerlink" href="#lvgl" title="永久链接至标题">¶</a></h1>
+<div class="figure align-default">
+<img alt="http://photos.100ask.net/lvgl/01_intro/01_logo_lvgl.png" src="http://photos.100ask.net/lvgl/01_intro/01_logo_lvgl.png" />
+</div>
+<p>LVGL(轻巧而多功能的图形库)是一个免费的开放源代码图形库，它提供创建具有易于使用的图形元素，精美的视觉效果和低内存占用的嵌入式GUI所需的一切。</p>
+<div class="section" id="id1">
+<h2>获取离线教程文档<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://lvgl.100ask.net/">认准百问网lvgl官方在线站点</a></p></li>
+<li><p><a class="reference external" href="http://download.100ask.org/gui/lvgl/100ask_lvgl.html">点我下载百问网lvgl系列教程配套资料</a></p></li>
+<li><p><a class="reference external" href="https://100ask-lvgl-doc.readthedocs.io/_/downloads/zh/latest/pdf/">点我下载百问网lvgl系列教程pdf格式文档</a></p></li>
+<li><p><a class="reference external" href="https://100ask-lvgl-doc.readthedocs.io/_/downloads/zh/latest/htmlzip/">点我下载百问网lvgl系列教程html格式文档</a></p></li>
+<li><p><a class="reference external" href="https://100ask-lvgl-doc.readthedocs.io/_/downloads/zh/latest/epub/">点我下载百问网lvgl系列教程epub格式文档</a></p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>主要特性<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>功能强大的构建块，例如按钮，图表，列表，滑块，图像等。</p></li>
+<li><p>带有动画，抗锯齿，不透明，平滑滚动的高级图形</p></li>
+<li><p>各种输入设备，例如触摸板，鼠标，键盘，编码器等</p></li>
+<li><p>支持UTF-8编码的多语言</p></li>
+<li><p>多显示器支持，如TFT，单色显示器</p></li>
+<li><p>完全可定制的图形元素</p></li>
+<li><p>独立于任何微控制器或显示器使用的硬件</p></li>
+<li><p>可扩展以使用很少的内存(64 kB闪存，16 kB RAM)进行操作</p></li>
+<li><p>操作系统，支持外部存储器和GPU，但不是必需的</p></li>
+<li><p>单帧缓冲区操作，即使具有高级图形效果</p></li>
+<li><p>用C语言编写，以实现最大的兼容性(与C ++兼容)</p></li>
+<li><p>模拟器可在没有嵌入式硬件的PC上进行嵌入式GUI设计</p></li>
+<li><p>可移植到MicroPython</p></li>
+<li><p>可快速上手的教程、示例、主题</p></li>
+<li><p>丰富的文档教程</p></li>
+<li><p>在MIT许可下免费和开源</p></li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h2>硬件要求<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>基本上，每个现代控制器(肯定必须要能够驱动显示器)都适合运行LVGL。LVGL的最低运行要求很低：</p>
+<ul class="simple">
+<li><p>16、32或64位微控制器或处理器</p></li>
+<li><p>最低 16 MHz 时钟频率</p></li>
+<li><p>Flash/ROM:：对于非常重要的组件要求 &gt;64 kB(建议 &gt; 180 kB)</p></li>
+<li><p>RAM</p>
+<ul>
+<li><p>静态 RAM 使用量：~2 kB，取决于所使用的功能和对象类型</p></li>
+<li><p>堆栈： &gt; 2kB(建议 &gt; 8 kB)</p></li>
+<li><p>动态数据(堆)：&gt; 2 KB(如果使用多个对象，则建议 &gt; 16 kB)。由 lv_conf.h 中的 LV_MEM_SIZE 宏进行设置。</p></li>
+<li><p>显示缓冲区：&gt; “水平分辨率”像素(建议 &gt; 10× “水平分辨率” )</p></li>
+<li><p>MCU 或外部显示控制器中的一帧缓冲区</p></li>
+</ul>
+</li>
+<li><p>C99或更高版本的编译器</p></li>
+<li><p>具备基本的C(或C ++)知识：指针，结构，回调…</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请注意，内存使用情况可能会因具体的体系结构、编译器和构建选项而异。
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>源码布局<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p><strong>./lvgl</strong> 库本身</p></li>
+<li><p><strong>./lv_drivers</strong> 显示和输入设备驱动程序</p></li>
+<li><p><strong>./lv_examples</strong> 示例和演示</p></li>
+<li><p>lvgl官方文档网站(<a class="reference external" href="https://docs.lvgl.io">https://docs.lvgl.io</a>)</p></li>
+<li><p>lvgl官方博客博客站点(<a class="reference external" href="https://blog.lvgl.io">https://blog.lvgl.io</a>)</p></li>
+<li><p>sim在线模拟器网站(<a class="reference external" href="https://sim.lvgl.io">https://sim.lvgl.io</a>)</p></li>
+<li><p>lv_sim _… 适用于各种 IDE 和平台的模拟器项目</p></li>
+<li><p>lv_port _… 移植到其他开发板</p></li>
+<li><p>lv_binding _… 绑定到其他语言</p></li>
+<li><p>lv _…移植到其他平台</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>其中，lvgl，lv_examples和lv_drivers是最受维护、关注的核心存储库。
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="http://photos.100ask.net/lvgl/01_intro/02_lvgl_repository_layout.png" src="http://photos.100ask.net/lvgl/01_intro/02_lvgl_repository_layout.png" />
+</div>
+</div>
+<div class="section" id="id7">
+<h2>LVGL更新发行规则<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>lvgl核心存储库遵循语义版本控制规则：</p>
+<ul>
+<li><p>不兼容的API的主要版本更改。例如。 v5.0.0，v6.0.0</p></li>
+<li><p>次要版本，用于新的但向后兼容的功能。例如。 v6.1.0，v6.2.0</p></li>
+<li><p>修补程序版本，用于向后兼容的错误修复。例如。 v6.1.1，v6.1.2</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>LVGL仓库分支说明<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>核心存储库至少具有以下分支：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">master</span></code> 分支，最新版本，补丁直接在这里合并。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code> 分支，开发人员在此处合并新功能，直到将它们合并到 <code class="docutils literal notranslate"><span class="pre">master</span></code> 分支为止。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">release/vX</span></code> 分支，主要版本的稳定版本</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>发布周期<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>LVGL有2周的发布周期。在每月的第一个和第三个 <strong>星期二</strong> ：</p>
+<ol class="arabic simple">
+<li><p>(基于新功能)从 <code class="docutils literal notranslate"><span class="pre">master</span></code> 分支创建 主要、次要或错误修复 的版本</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">master</span></code> 分支合并到 <code class="docutils literal notranslate"><span class="pre">release/vX</span></code> 中</p></li>
+<li><p>发布后立即将 <code class="docutils literal notranslate"><span class="pre">dev</span></code> 分支合并到 <code class="docutils literal notranslate"><span class="pre">master</span></code> 分支</p></li>
+<li><p>在接下来的2周内，测试 <code class="docutils literal notranslate"><span class="pre">master</span></code> 分支的新功能</p></li>
+<li><p>错误修复直接合并到 <code class="docutils literal notranslate"><span class="pre">master</span></code> 中</p></li>
+<li><p>2周后，再从第一步重新开始迭代</p></li>
+</ol>
+</div>
+<div class="section" id="id10">
+<h2>版本标签<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>每个版本都会创建 vx.Y.Z 之类的标签，如： v7.9.0 。</p>
+</div>
+<div class="section" id="id11">
+<h2>变更日志<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>版本更改记录在 ./lvgl/CHANGELOG.md 中。</p>
+</div>
+<div class="section" id="id12">
+<h2>版本兼容<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<p>在核心存储库中，每个主要版本都有一个分支(例如 release/v6 )。该主要版本的所有次要版本和修补程序版本都在此处合并</p>
+<p>这样就可以添加稳定的较旧版本，而无需打扰较新的版本</p>
+<p>所有主要版本的官方支持周期为1年。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../02_porting/01_sys.html" class="btn btn-neutral float-right" title="系统框架" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../index.html" class="btn btn-neutral float-left" title="🎨百问网LVGL中文教程手册文档" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

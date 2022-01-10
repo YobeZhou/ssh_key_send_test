@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>画画(Drawing) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="基础对象(lv_obj)" href="../04_widgets/01_obj.html" />
+    <link rel="prev" title="任务(Task)" href="11_task.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">画画(Drawing)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">缓冲类型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">屏幕刷新机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">蒙版(遮罩)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">范例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">几个对象蒙版</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">文字遮罩</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>画画(Drawing)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/12_drawing.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="drawing">
+<h1>画画(Drawing)<a class="headerlink" href="#drawing" title="永久链接至标题">¶</a></h1>
+<p>使用 LVGL，无需手动绘制任何内容。只需创建对象(如按钮和标签)，移动并更改它们，LVGL 就会刷新并重新绘制所需的内容。</p>
+<p>但是，对 LVGL 中的绘图方式有基本了解可能会很有用。</p>
+<p>基本概念是不要直接绘制到屏幕上，而是先绘制到内部缓冲区，然后在渲染准备好后将其复制到屏幕上。它具有两个主要优点：</p>
+<ul class="simple">
+<li><p><strong>避免闪烁</strong> 绘制用户界面的各层。例如，当绘制背景+按钮+文本时，每个“阶段”将在短时间内可见。</p></li>
+<li><p><strong>让动画更快一些</strong> 修改RAM中的缓冲区并最终一次写入一个像素，而不是直接在每次像素访问时直接读取/写入显示器。(例如，通过具有SPI接口的显示控制器)因此，它适用于多次重绘的像素(例如背景+按钮+文字)。</p></li>
+</ul>
+<div class="section" id="id1">
+<h2>缓冲类型<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>共有3种类型的缓冲区：</p>
+<ol class="arabic simple">
+<li><p><strong>一个缓冲区</strong> LVGL将屏幕的内容绘制到缓冲区中并将其发送到显示器。缓冲区可以小于屏幕。在这种情况下，较大的区域将被重画成多个部分。如果只有很小的区域发生变化(例如按下按钮)，则只会刷新那些区域。</p></li>
+<li><p><strong>两个非屏幕大小的缓冲区</strong> 具有两个缓冲区的LVGL可以吸引到一个缓冲区中，而另一缓冲区的内容发送到后台显示。应该使用DMA或其他硬件将数据传输到显示器，以让CPU同时绘图。这样，显示的渲染和刷新并行处理。与 <strong>一个缓冲区</strong> 的情况类似，如果缓冲区小于要刷新的区域，LVGL将按块绘制显示内容</p></li>
+<li><p><strong>两个屏幕大小的缓冲区</strong> 与两个非屏幕大小的缓冲区相反，LVGL将始终提供整个屏幕的内容，而不仅仅是块。这样，驱动程序可以简单地将帧缓冲区的地址更改为从LVGL接收的缓冲区。因此，当MCU具有 LCD/TFT 接口且帧缓冲区只是 RAM 中的一个位置时，此方法效果最佳。</p></li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>屏幕刷新机制<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>GUI上发生某些事情，需要重绘。例如，已按下按钮，更改了图表或发生了动画等。</p></li>
+<li><p>LVGL将更改后的对象的旧区域和新区域保存到称为无效区域缓冲区的缓冲区中。为了优化，在某些情况下，对象不会添加到缓冲区中：</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>隐藏的对象未添加。</p></li>
+<li><p>不添加完全超出其父对象的对象。</p></li>
+<li><p>父区之外的区域将裁剪到父区。</p></li>
+<li><p>未添加其他屏幕上的对象。</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>在每个 <code class="docutils literal notranslate"><span class="pre">LV_DISP_DEF_REFR_PERIOD</span></code> 中(在lv_conf.h中设置)：</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>LVGL检查无效区域并加入相邻或相交的区域。</p></li>
+<li><p>获取第一个连接区域，如果它小于显示缓冲区，则只需将区域的内容绘制到显示缓冲区即可。如果该区域不适合缓冲区，请在显示缓冲区上绘制尽可能多的线。</p></li>
+<li><p>绘制区域后，从显示驱动程序调用flush_cb刷新显示。</p></li>
+<li><p>如果该区域大于缓冲区，则也重新绘制其余部分。</p></li>
+<li><p>对所有连接的区域执行相同的操作。</p></li>
+</ul>
+</div></blockquote>
+<p>重绘区域时，库会搜索覆盖要重绘区域的最顶层对象，然后从该对象开始绘制。例如，如果按钮的标签已更改，则库将看到足以在文本下方绘制按钮，并且也不需要绘制背景。</p>
+<p>关于绘制机制，缓冲区类型之间的差异如下：</p>
+<ol class="arabic simple">
+<li><p><strong>一个缓冲区</strong> - LVGL需要等待 <code class="docutils literal notranslate"><span class="pre">lv_disp_flush_ready()</span></code> (在 <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> 末尾调用)，然后才能开始重画下一部分。</p></li>
+<li><p><strong>两个非屏幕大小的缓冲区</strong> - 当第一个缓冲区发送到 <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> 时，LVGL可以立即绘制到第二个缓冲区，因为刷新应由DMA(或类似硬件)在后台完成。</p></li>
+<li><p><strong>两个屏幕大小的缓冲区</strong> - 调用 <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> 之后，如果显示为帧缓冲区，则第一个缓冲区。它的内容被复制到第二个缓冲区，所有更改都绘制在其顶部。</p></li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>蒙版(遮罩)<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>蒙版是LVGL绘图引擎的基本概念。要使用LVGL，不需要了解这里描述的机制，但是可能会对了解图纸在引擎盖下的工作方式感兴趣。</p>
+<p>要学习遮罩，让我们先学习绘画的步骤：</p>
+<ol class="arabic simple">
+<li><p>根据对象的样式创建绘制描述符(例如 <code class="docutils literal notranslate"><span class="pre">lv_draw_rect_dsc_t</span></code> )。它告诉绘图的参数，例如颜色，宽度，不透明度，字体，半径等。</p></li>
+<li><p>使用初始化的描述符和其他一些参数调用draw函数。它将原始形状渲染到当前绘制缓冲区。</p></li>
+<li><p>如果形状非常简单并且不需要遮罩，请转到＃5。其他创建所需的蒙版(例如，圆角的矩形蒙版)</p></li>
+<li><p>将所有创建的蒙版应用一行或几行。它使用创建的遮罩的“形状”在遮罩缓冲区中创建0..255值。例如。如果根据掩码的参数设置为“线掩码”，则将缓冲区的一侧保持不变(默认为255)，并将其余部分设置为0以指示应将另一侧除去。</p></li>
+<li><p>将图像或矩形混合到屏幕上。在混合蒙版(使某些像素透明或不透明)，混合模式(加性，减性等)期间，将处理不透明性。</p></li>
+<li><p>从＃4开始重复。</p></li>
+</ol>
+<p>使用 蒙版 可创建几乎所有基本图元：</p>
+<ul class="simple">
+<li><p><strong>字母</strong> 从字母创建遮罩，并使用该遮罩绘制一个“字母色”矩形。</p></li>
+<li><p><strong>线</strong> 由4个“线遮罩”创建的线，以遮盖该线的左，右，顶部和底部，以获得完美垂直的线尾</p></li>
+<li><p><strong>圆角矩形</strong> 实时为圆角矩形的每一行创建一个遮罩，并根据该遮罩绘制一个普通的填充矩形。</p></li>
+<li><p><strong>剪辑角</strong> 以剪辑圆角上的溢出内容，并应用圆角矩形蒙版。</p></li>
+<li><p><strong>矩形边框</strong> 与圆角矩形相同，但内部也被遮罩</p></li>
+<li><p><strong>圆弧绘制</strong> 绘制了圆形边框，但应用了弧形遮罩。</p></li>
+<li><p><strong>ARGB图像</strong> 将alpha通道分离为一个蒙版，并且该图像被绘制为普通RGB图像。</p></li>
+</ul>
+<p>如以上＃3所述，在某些情况下，不需要面具：</p>
+<ul class="simple">
+<li><p>一个单色的，不是圆角的矩形</p></li>
+<li><p>RGB图像</p></li>
+</ul>
+<p>LVGL 具有以下内置掩码类型，可以实时计算和应用：</p>
+<ul class="simple">
+<li><p><strong>LV_DRAW_MASK_TYPE_LINE</strong> 删除线的一侧(顶部，底部，左侧或右侧)。 <code class="docutils literal notranslate"><span class="pre">lv_draw_line</span></code> 使用其中的4个。本质上，每条(倾斜)线都通过形成一个矩形以4个线罩为边界。</p></li>
+<li><p><strong>LV_DRAW_MASK_TYPE_RADIUS</strong> 删除也可以具有半径的矩形的内部或外部。通过将半径设置为较大的值( <code class="docutils literal notranslate"><span class="pre">LV_RADIUS_CIRCLE</span></code> )，它还可用于创建圆</p></li>
+<li><p><strong>LV_DRAW_MASK_TYPE_ANGLE</strong> 删除圆扇形。 <code class="docutils literal notranslate"><span class="pre">lv_draw_arc</span></code> 使用它删除“空”扇区。</p></li>
+<li><p><strong>LV_DRAW_MASK_TYPE_FADE</strong> 创建垂直淡入淡出(更改不透明度)</p></li>
+<li><p><strong>LV_DRAW_MASK_TYPE_MAP</strong> 遮罩存储在数组中，并应用了必要的部分</p></li>
+</ul>
+<p>在绘制过程中会自动创建和删除蒙版，但是 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/23_objmask.html">lv_objmask</a> 允许用户添加蒙版。这是一个例子：</p>
+<div class="section" id="id4">
+<h3>范例<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id5">
+<h4>几个对象蒙版<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h4>
+<div class="figure align-default" id="id7">
+<img alt="http://photos.100ask.net/lvgl/03_overview/12_drawing/01_lv_ex_objmask_1.png" src="http://photos.100ask.net/lvgl/03_overview/12_drawing/01_lv_ex_objmask_1.png" />
+<p class="caption"><span class="caption-text">几个对象蒙版</span><a class="headerlink" href="#id7" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_OBJMASK</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="kt">void</span> <span class="nf">lv_ex_objmask_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="p">{</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>            <span class="cm">/*Set a very visible color for the screen to clearly see what happens*/</span>
+<span class="linenos"> 8</span>            <span class="n">lv_obj_set_style_local_bg_color</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">lv_color_hex3</span><span class="p">(</span><span class="mh">0xf33</span><span class="p">));</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">om</span> <span class="o">=</span> <span class="n">lv_objmask_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">11</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_label_set_long_mode</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">LV_LABEL_LONG_BREAK</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_label_set_align</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">LV_LABEL_ALIGN_CENTER</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_obj_set_width</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">180</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;This label will be masked out. See how it works.&quot;</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_IN_TOP_MID</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">cont</span> <span class="o">=</span> <span class="n">lv_cont_create</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="linenos">22</span>            <span class="n">lv_obj_set_drag</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_IN_BOTTOM_MID</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">-10</span><span class="p">);</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">btn</span> <span class="o">=</span> <span class="n">lv_btn_create</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">27</span>            <span class="n">lv_obj_set_style_local_value_str</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="s">&quot;Button&quot;</span><span class="p">);</span>
+<span class="linenos">28</span>            <span class="c1">//uint32_t t;</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>            <span class="c1">//lv_refr_now(NULL);</span>
+<span class="linenos">31</span>            <span class="c1">//t = lv_tick_get();</span>
+<span class="linenos">32</span>            <span class="c1">//while(lv_tick_elaps(t) &lt; 1000);</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="n">lv_area_t</span> <span class="n">a</span><span class="p">;</span>
+<span class="linenos">35</span>            <span class="n">lv_draw_mask_radius_param_t</span> <span class="n">r1</span><span class="p">;</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>            <span class="n">a</span><span class="p">.</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">38</span>            <span class="n">a</span><span class="p">.</span><span class="n">y1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">39</span>            <span class="n">a</span><span class="p">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mi">190</span><span class="p">;</span>
+<span class="linenos">40</span>            <span class="n">a</span><span class="p">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mi">190</span><span class="p">;</span>
+<span class="linenos">41</span>            <span class="n">lv_draw_mask_radius_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">LV_RADIUS_CIRCLE</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+<span class="linenos">42</span>            <span class="n">lv_objmask_add_mask</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r1</span><span class="p">);</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>            <span class="c1">//lv_refr_now(NULL);</span>
+<span class="linenos">45</span>            <span class="c1">//t = lv_tick_get();</span>
+<span class="linenos">46</span>            <span class="c1">//while(lv_tick_elaps(t) &lt; 1000);</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>            <span class="n">a</span><span class="p">.</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="linenos">49</span>            <span class="n">a</span><span class="p">.</span><span class="n">y1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="linenos">50</span>            <span class="n">a</span><span class="p">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
+<span class="linenos">51</span>            <span class="n">a</span><span class="p">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
+<span class="linenos">52</span>            <span class="n">lv_draw_mask_radius_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">LV_RADIUS_CIRCLE</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">53</span>            <span class="n">lv_objmask_add_mask</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r1</span><span class="p">);</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span>            <span class="c1">//lv_refr_now(NULL);</span>
+<span class="linenos">56</span>            <span class="c1">//t = lv_tick_get();</span>
+<span class="linenos">57</span>            <span class="c1">//while(lv_tick_elaps(t) &lt; 1000);</span>
+<span class="linenos">58</span>
+<span class="linenos">59</span>            <span class="n">lv_draw_mask_line_param_t</span> <span class="n">l1</span><span class="p">;</span>
+<span class="linenos">60</span>            <span class="n">lv_draw_mask_line_points_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">l1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">LV_DRAW_MASK_LINE_SIDE_TOP</span><span class="p">);</span>
+<span class="linenos">61</span>            <span class="n">lv_objmask_add_mask</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">l1</span><span class="p">);</span>
+<span class="linenos">62</span>
+<span class="linenos">63</span>            <span class="c1">//lv_refr_now(NULL);</span>
+<span class="linenos">64</span>            <span class="c1">//t = lv_tick_get();</span>
+<span class="linenos">65</span>            <span class="c1">//while(lv_tick_elaps(t) &lt; 1000);</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span>            <span class="n">lv_draw_mask_fade_param_t</span> <span class="n">f1</span><span class="p">;</span>
+<span class="linenos">68</span>            <span class="n">a</span><span class="p">.</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="linenos">69</span>            <span class="n">a</span><span class="p">.</span><span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">70</span>            <span class="n">a</span><span class="p">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="linenos">71</span>            <span class="n">a</span><span class="p">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="linenos">72</span>            <span class="n">lv_draw_mask_fade_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">LV_OPA_TRANSP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+<span class="linenos">73</span>            <span class="n">lv_objmask_add_mask</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">f1</span><span class="p">);</span>
+<span class="linenos">74</span>    <span class="p">}</span>
+<span class="linenos">75</span>
+<span class="linenos">76</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h4>文字遮罩<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h4>
+<div class="figure align-default" id="id8">
+<img alt="http://photos.100ask.net/lvgl/03_overview/12_drawing/02_lv_ex_objmask_2.png" src="http://photos.100ask.net/lvgl/03_overview/12_drawing/02_lv_ex_objmask_2.png" />
+<p class="caption"><span class="caption-text">文字遮罩</span><a class="headerlink" href="#id8" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_OBJMASK</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cp">#define MASK_WIDTH 100</span>
+<span class="linenos"> 5</span>    <span class="cp">#define MASK_HEIGHT 50</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="kt">void</span> <span class="nf">lv_ex_objmask_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="p">{</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>            <span class="cm">/* Create the mask of a text by drawing it to a canvas*/</span>
+<span class="linenos">11</span>            <span class="k">static</span> <span class="n">lv_opa_t</span> <span class="n">mask_map</span><span class="p">[</span><span class="n">MASK_WIDTH</span> <span class="o">*</span> <span class="n">MASK_HEIGHT</span><span class="p">];</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>            <span class="cm">/*Create a &quot;8 bit alpha&quot; canvas and clear it*/</span>
+<span class="linenos">14</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">canvas</span> <span class="o">=</span> <span class="n">lv_canvas_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_canvas_set_buffer</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">mask_map</span><span class="p">,</span> <span class="n">MASK_WIDTH</span><span class="p">,</span> <span class="n">MASK_HEIGHT</span><span class="p">,</span> <span class="n">LV_IMG_CF_ALPHA_8BIT</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_canvas_fill_bg</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">LV_COLOR_BLACK</span><span class="p">,</span> <span class="n">LV_OPA_TRANSP</span><span class="p">);</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>            <span class="cm">/*Draw a label to the canvas. The result &quot;image&quot; will be used as mask*/</span>
+<span class="linenos">19</span>            <span class="n">lv_draw_label_dsc_t</span> <span class="n">label_dsc</span><span class="p">;</span>
+<span class="linenos">20</span>            <span class="n">lv_draw_label_dsc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">label_dsc</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">label_dsc</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">LV_COLOR_WHITE</span><span class="p">;</span>
+<span class="linenos">22</span>            <span class="n">lv_canvas_draw_text</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">MASK_WIDTH</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">label_dsc</span><span class="p">,</span> <span class="s">&quot;Text with gradient&quot;</span><span class="p">,</span> <span class="n">LV_LABEL_ALIGN_CENTER</span><span class="p">);</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="cm">/*The mask is reads the canvas is not required anymore*/</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_del</span><span class="p">(</span><span class="n">canvas</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/*Create an object mask which will use the created mask*/</span>
+<span class="linenos">28</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">om</span> <span class="o">=</span> <span class="n">lv_objmask_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="n">MASK_WIDTH</span><span class="p">,</span> <span class="n">MASK_HEIGHT</span><span class="p">);</span>
+<span class="linenos">30</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>            <span class="cm">/*Add the created mask map to the object mask*/</span>
+<span class="linenos">33</span>            <span class="n">lv_draw_mask_map_param_t</span> <span class="n">m</span><span class="p">;</span>
+<span class="linenos">34</span>            <span class="n">lv_area_t</span> <span class="n">a</span><span class="p">;</span>
+<span class="linenos">35</span>            <span class="n">a</span><span class="p">.</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">36</span>            <span class="n">a</span><span class="p">.</span><span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">37</span>            <span class="n">a</span><span class="p">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">MASK_WIDTH</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="linenos">38</span>            <span class="n">a</span><span class="p">.</span><span class="n">y2</span> <span class="o">=</span> <span class="n">MASK_HEIGHT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="linenos">39</span>            <span class="n">lv_draw_mask_map_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">mask_map</span><span class="p">);</span>
+<span class="linenos">40</span>            <span class="n">lv_objmask_add_mask</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span>            <span class="cm">/*Create a style with gradient*/</span>
+<span class="linenos">43</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style_bg</span><span class="p">;</span>
+<span class="linenos">44</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_bg</span><span class="p">);</span>
+<span class="linenos">45</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_bg</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">46</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_bg</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">47</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_bg</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">48</span>            <span class="n">lv_style_set_bg_grad_dir</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_bg</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_GRAD_DIR_HOR</span><span class="p">);</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>            <span class="cm">/* Create and object with the gradient style on the object mask.</span>
+<span class="linenos">51</span><span class="cm">             * The text will be masked from the gradient*/</span>
+<span class="linenos">52</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">om</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">53</span>            <span class="n">lv_obj_reset_style_list</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">);</span>
+<span class="linenos">54</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style_bg</span><span class="p">);</span>
+<span class="linenos">55</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">MASK_WIDTH</span><span class="p">,</span> <span class="n">MASK_HEIGHT</span><span class="p">);</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span>    <span class="p">}</span>
+<span class="linenos">58</span>
+<span class="linenos">59</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../04_widgets/01_obj.html" class="btn btn-neutral float-right" title="基础对象(lv_obj)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="11_task.html" class="btn btn-neutral float-left" title="任务(Task)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

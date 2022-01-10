@@ -1,0 +1,184 @@
+==================================
+表格(lv_table)
+==================================
+
+概述
+##################################
+像往常一样，表格是从包含文本的行，列和单元格构建的。
+
+表格对象的权重非常轻，因为仅存储了文本。没有为单元创建任何实际对象，但它们是动态绘制的。
+
+
+零件和样式
+##################################
+表格的主要部分称为 ``LV_TABLE_PART_BG`` 。它是一个类似于背景的矩形，并使用所有典型的背景样式属性。
+
+对于单元，有4个虚拟部分。每个单元格都有类型(1, 2, ... 16)，该类型指示要在其上应用哪个部分的样式。单元格部分可以由 ``LV_TABLE_PART_CELL1 + x`` 引用，其中 ``x`` 在 ``0..15`` 之间。
+
+可以在lv_conf.h中通过 ``LV_TABLE_CELL_STYLE_CNT`` 调整单元格类型的数量。默认情况下为4。默认的4种单元格类型部分也使用专用名称进行引用：
+
+- ``LV_TABLE_PART_CELL1``
+- ``LV_TABLE_PART_CELL2``
+- ``LV_TABLE_PART_CELL3``
+- ``LV_TABLE_PART_CELL4``
+
+单元格还使用所有典型的背景样式属性。如果单元格内容中有换行符( ``\n`` )，则在换行符后将使用线条样式属性绘制水平分隔线。
+
+单元格中的文本样式是从单元格部分或背景部分继承的。
+
+
+用法
+##################################
+
+行(row)和列(column)
+**********************************
+要设置行数和列数，请使用 ``lv_table_set_row_cnt(table, row_cnt)`` 和 ``lv_table_set_col_cnt(table, col_cnt)`` 
+
+
+宽度(width)和高度(height)
+**********************************
+列的宽度可以使用 ``lv_table_set_col_width(table, col_id, width)`` 设置。 Table对象的总宽度将设置为列宽的总和。
+
+高度是根据单元格样式（字体，填充等）和行数自动计算的。
+
+
+设定单元格数值类型
+**********************************
+单元格只能存储文本，因此在将数字显示在表格中之前，需要将数字转换为文本。
+
+``lv_table_set_cell_value(table, row, col, "Content")`` 。文本由表保存，因此它甚至可以是局部变量。
+
+可以在 ``"Value\n60.3"`` 之类的文本中使用换行符。
+
+
+对齐
+**********************************
+可以使用 ``lv_table_set_cell_align(table, row, col, LV_LABEL_ALIGN_LEFT/CENTER/RIGHT)`` 调整单元格中的文本对齐方式。
+
+
+单元格类型(cell_type)
+**********************************
+可以使用4种不同的单元格类型。每个都有自己的风格。
+
+单元格类型可用于添加不同的样式，例如：
+
+- 表头
+- 第一栏
+- 突出显示一个单元格
+- 等等
+
+可以使用 ``lv_table_set_cell_type(table, row, col, type)`` 选择类型， ``类型(type)`` 可以为1、2、3或4，对应上面的四种类型。
+
+
+合并单元格
+**********************************
+单元格可以与 ``lv_table_set_cell_merge_right(table, col, row, true)`` 水平合并。要合并更多相邻的单元格，请对每个单元格应用此功能。
+
+
+裁剪文字
+**********************************
+默认情况下，文字会自动换行以适合单元格的宽度，并且单元格的高度会自动设置。要禁用此功能并保持文本原样，请启用 ``lv_table_set_cell_crop(table, row, col, true)`` 。
+
+
+滚动
+**********************************
+使表格可滚动放置在 `页面(lv_page)`_ 上
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+
+事件
+##################################
+仅支持 `通用事件`_  
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+对象类型不处理任何键。 
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+
+范例
+##################################
+
+简单的表格
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/30_table/01_lv_ex_table_1.png
+	   
+	  简单的表格
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_TABLE
+
+	void lv_ex_table_1(void)
+	{
+		lv_obj_t * table = lv_table_create(lv_scr_act(), NULL);
+		lv_table_set_col_cnt(table, 2);
+		lv_table_set_row_cnt(table, 4);
+		lv_obj_align(table, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Make the cells of the first row center aligned */
+		lv_table_set_cell_align(table, 0, 0, LV_LABEL_ALIGN_CENTER);
+		lv_table_set_cell_align(table, 0, 1, LV_LABEL_ALIGN_CENTER);
+
+		/*Align the price values to the right in the 2nd column*/
+		lv_table_set_cell_align(table, 1, 1, LV_LABEL_ALIGN_RIGHT);
+		lv_table_set_cell_align(table, 2, 1, LV_LABEL_ALIGN_RIGHT);
+		lv_table_set_cell_align(table, 3, 1, LV_LABEL_ALIGN_RIGHT);
+
+		lv_table_set_cell_type(table, 0, 0, 2);
+		lv_table_set_cell_type(table, 0, 1, 2);
+
+
+		/*Fill the first column*/
+		lv_table_set_cell_value(table, 0, 0, "Name");
+		lv_table_set_cell_value(table, 1, 0, "Apple");
+		lv_table_set_cell_value(table, 2, 0, "Banana");
+		lv_table_set_cell_value(table, 3, 0, "Citron");
+
+		/*Fill the second column*/
+		lv_table_set_cell_value(table, 0, 1, "Price");
+		lv_table_set_cell_value(table, 1, 1, "$7");
+		lv_table_set_cell_value(table, 2, 1, "$4");
+		lv_table_set_cell_value(table, 3, 1, "$6");
+
+		lv_table_ext_t * ext = lv_obj_get_ext_attr(table);
+		ext->row_h[0] = 20;
+	}
+
+	#endif
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

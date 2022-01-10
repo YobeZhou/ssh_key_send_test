@@ -1,0 +1,273 @@
+==================================
+消息框(lv_msdbox)
+==================================
+
+概述
+##################################
+消息框充当弹出窗口。它们由背景容器，标签和按钮的 `按钮矩阵(lv_imgbtn)`_ 构建而成。
+
+文本将自动分成多行（具有 ``LV_LABEL_LONG_MODE_BREAK`` ），高度将自动设置为包含文本和按钮（ ``LV_FIT_TIGHT`` 垂直放置）-
+
+.. _按钮矩阵(lv_imgbtn): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+零件和样式
+##################################
+消息框的主要部分称为 ``LV_MSGBOX_PART_MAIN`` ，它使用所有典型的背景样式属性。使用填充会增加侧面的空间。pad_inner将在文本和按钮之间添加空格。标签样式属性会影响文本样式。
+
+
+按钮部分与 `按钮矩阵(lv_imgbtn)`_ 的情况相同：
+
+- ``LV_MSGBOX_PART_BTN_BG`` 按钮的背景
+- ``LV_MSGBOX_PART_BTN`` 按钮
+
+.. _按钮矩阵(lv_imgbtn): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+
+用法
+##################################
+
+设置文本
+**********************************
+要设置文本，请使用 ``lv_msgbox_set_text(msgbox, "My text")`` 函数。不仅将保存文本指针，而且文本也可以位于局部变量中。
+
+
+添加按钮
+**********************************
+要添加按钮，请使用 ``lv_msgbox_add_btns(msgbox, btn_str)`` 函数。需要指定按钮的文本，例如 ``const char * btn_str[] = {"Apply", "Close", ""}`` 。有关更多信息，请访问Button矩阵文档。
+
+仅当首次调用 ``lv_msgbox_add_btns()`` 时，才会创建 `按钮矩阵(lv_imgbtn)`_。
+
+.. _按钮矩阵(lv_imgbtn): http://lvgl.100ask.net/documentation/04_widgets/05_btnmatrix.html
+
+
+自动关闭
+**********************************
+使用 ``lv_msgbox_start_auto_close(mbox, delay)`` 可以在动画 ``延迟(delay)`` 了几毫秒后自动关闭消息框。 ``lv_mbox_stop_auto_close(mbox)`` 函数停止启动的自动关闭。
+
+关闭动画的持续时间可以通过 ``lv_mbox_set_anim_time(mbox, anim_time)`` 设置。
+
+
+事件
+##################################
+除了 `通用事件`_ ，复选框还支持以下 `特殊事件`_ ：
+
+
+- **LV_EVENT_VALUE_CHANGED** 单击按钮时发送。事件数据设置为单击按钮的ID。
+
+消息框具有一个默认的事件回调，当单击按钮时，该事件回调将自行关闭。
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+消息框可处理以下按键：
+
+- **LV_KEY_RIGHT/DOWN** 选择下一个按钮
+- **LV_KEY_LEFT/TOP** 选择上一个按钮
+- **LV_KEY_ENTER** 单击选定的按钮
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单消息框
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/22_msgbox/01_lv_msgbox_1.png
+	   
+	  简单消息框
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_MSGBOX
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("Button: %s\n", lv_msgbox_get_active_btn_text(obj));
+		}
+	}
+
+	void lv_ex_msgbox_1(void)
+	{
+		static const char * btns[] ={"Apply", "Close", ""};
+
+		lv_obj_t * mbox1 = lv_msgbox_create(lv_scr_act(), NULL);
+		lv_msgbox_set_text(mbox1, "A message box with two buttons.");
+		lv_msgbox_add_btns(mbox1, btns);
+		lv_obj_set_width(mbox1, 200);
+		lv_obj_set_event_cb(mbox1, event_handler);
+		lv_obj_align(mbox1, NULL, LV_ALIGN_CENTER, 0, 0); /*Align to the corner*/
+	}
+
+	#endif
+
+
+模态
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/22_msgbox/02_lv_msgbox_2.png
+	   
+	  模态
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../../lv_examples.h"
+	#if LV_USE_MSGBOX
+
+	static void mbox_event_cb(lv_obj_t *obj, lv_event_t evt);
+	static void btn_event_cb(lv_obj_t *btn, lv_event_t evt);
+	static void opa_anim(void * bg, lv_anim_value_t v);
+
+	static lv_obj_t *mbox, *info;
+	static lv_style_t style_modal;
+
+	static const char welcome_info[] = "Welcome to the modal message box demo!\n"
+			"Press the button to display a message box.";
+
+	static const char in_msg_info[] = "Notice that you cannot touch "
+			"the button again while the message box is open.";
+
+	void lv_ex_msgbox_2(void)
+	{
+		lv_style_init(&style_modal);
+		lv_style_set_bg_color(&style_modal, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+
+		/* Create a button, then set its position and event callback */
+		lv_obj_t *btn = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_set_size(btn, 200, 60);
+		lv_obj_set_event_cb(btn, btn_event_cb);
+		lv_obj_align(btn, NULL, LV_ALIGN_IN_TOP_LEFT, 20, 20);
+
+		/* Create a label on the button */
+		lv_obj_t *label = lv_label_create(btn, NULL);
+		lv_label_set_text(label, "Display a message box!");
+
+		/* Create an informative label on the screen */
+		info = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(info, welcome_info);
+		lv_label_set_long_mode(info, LV_LABEL_LONG_BREAK); /* Make sure text will wrap */
+		lv_obj_set_width(info, LV_HOR_RES - 10);
+		lv_obj_align(info, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 5, -5);
+
+	}
+
+	static void mbox_event_cb(lv_obj_t *obj, lv_event_t evt)
+	{
+		if(evt == LV_EVENT_DELETE && obj == mbox) {
+			/* Delete the parent modal background */
+			lv_obj_del_async(lv_obj_get_parent(mbox));
+			mbox = NULL; /* happens before object is actually deleted! */
+			lv_label_set_text(info, welcome_info);
+		} else if(evt == LV_EVENT_VALUE_CHANGED) {
+			/* A button was clicked */
+			lv_msgbox_start_auto_close(mbox, 0);
+		}
+	}
+
+	static void btn_event_cb(lv_obj_t *btn, lv_event_t evt)
+	{
+		if(evt == LV_EVENT_CLICKED) {
+			/* Create a full-screen background */
+
+			/* Create a base object for the modal background */
+			lv_obj_t *obj = lv_obj_create(lv_scr_act(), NULL);
+			lv_obj_reset_style_list(obj, LV_OBJ_PART_MAIN);
+			lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style_modal);
+			lv_obj_set_pos(obj, 0, 0);
+			lv_obj_set_size(obj, LV_HOR_RES, LV_VER_RES);
+
+			static const char * btns2[] = {"Ok", "Cancel", ""};
+
+			/* Create the message box as a child of the modal background */
+			mbox = lv_msgbox_create(obj, NULL);
+			lv_msgbox_add_btns(mbox, btns2);
+			lv_msgbox_set_text(mbox, "Hello world!");
+			lv_obj_align(mbox, NULL, LV_ALIGN_CENTER, 0, 0);
+			lv_obj_set_event_cb(mbox, mbox_event_cb);
+
+			/* Fade the message box in with an animation */
+			lv_anim_t a;
+			lv_anim_init(&a);
+			lv_anim_set_var(&a, obj);
+			lv_anim_set_time(&a, 500);
+			lv_anim_set_values(&a, LV_OPA_TRANSP, LV_OPA_50);
+			lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)opa_anim);
+			lv_anim_start(&a);
+
+			lv_label_set_text(info, in_msg_info);
+			lv_obj_align(info, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 5, -5);
+		}
+	}
+
+	static void opa_anim(void * bg, lv_anim_value_t v)
+	{
+		lv_obj_set_style_local_bg_opa(bg, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, v);
+	}
+
+	#endif	
+	
+
+相关API
+##################################
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * lv_objmask_create(lv_obj_t * par，constlv_obj_t *copy)
+	创建对象遮罩对象
+	返回：
+	指向创建的对象掩码的指针
+	形参：
+	par：指向对象的指针，它将是新对象蒙版的父对象
+	copy：指向对象掩码对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	lv_objmask_mask_t * lv_objmask_add_mask(lv_obj_t * objmask，void *param)
+	添加面膜
+	返回：
+	指向添加的蒙版的指针
+	形参：
+	objmask：指向对象遮罩对象的指针
+	param：初始化的mask参数
+
+
+	void lv_objmask_update_mask(lv_obj_t * objmask，lv_objmask_mask_t * mask，void * param )
+	更新已创建的蒙版
+	形参：
+	objmask：指向对象遮罩对象的指针
+	mask：指向创建的遮罩的指针(由返回：lv_objmask_add_mask)
+	param：初始化的mask参数(由初始化lv_draw_mask_line/angle/.../_init)
+
+
+	void lv_objmask_remove_mask(lv_obj_t * objmask，lv_objmask_mask_t * mask )
+	取下口罩
+	形参：
+	objmask：指向对象遮罩对象的指针
+	mask：指向创建的遮罩的指针(由返回：lv_objmask_add_mask)如果NULL通过，则将删除所
+
+

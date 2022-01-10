@@ -1,0 +1,1239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>样式(Styles) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>样式(Styles)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/04_Styles.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="styles">
+<h1>样式(Styles)<a class="headerlink" href="#styles" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>简介<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>样式用于设置对象的外观。 lvgl 中的样式在很大程度上受到 CSS 的启发。简而言之，概念如下：</p>
+<ul class="simple">
+<li><p>样式是 <code class="docutils literal notranslate"><span class="pre">lv_style_t</span></code> 变量，可以保存属性，例如边框宽度，文本颜色等。它类似于 CSS 中的类。</p></li>
+<li><p>并非必须指定所有属性。未指定的属性将使用默认值。</p></li>
+<li><p>可以将样式分配给对象以更改其外观。</p></li>
+<li><p>样式可以被任意数量的对象使用。</p></li>
+<li><p>样式可以级联，也就是可以将多个样式分配给一个对象，并且每种样式可以具有不同的属性。例如，style_btn 可能会导致默认的灰色按钮，并且 style_btn_red 只能添加一个 background-color=red 以覆盖背景色</p></li>
+<li><p>后面添加的样式具有更高的优先级。这意味着，如果以两种样式指定属性，则将使用后面添加的样式。</p></li>
+<li><p>如果未在当前对象中指定样式，则某些属性(例如，文本颜色)默认从父对象继承。</p></li>
+<li><p>对象具有比“普通”样式更高优先级的局部样式。</p></li>
+<li><p>与 CSS (伪类描述不同的状态，例如： hover )不同，在 lvgl 中，将属性分配给给定的状态。(即“类”与状态无关，但是每个属性都有一个状态)</p></li>
+<li><p>当对象更改状态时可以使用转场过渡效果。</p></li>
+</ul>
+</div>
+<div class="section" id="states">
+<h2>样式的状态(States)<a class="headerlink" href="#states" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p><strong>LV_STATE_DEFAULT</strong> (0x00)：正常，已释放</p></li>
+<li><p><strong>LV_STATE_CHECKED</strong> (0x01)：切换或选中</p></li>
+<li><p><strong>LV_STATE_FOCUSED</strong> (0x02)：通过键盘或编码器聚焦或通过触摸板/鼠标单击</p></li>
+<li><p><strong>LV_STATE_EDITED</strong>  (0x04)：由编码器编辑</p></li>
+<li><p><strong>LV_STATE_HOVERED</strong> (0x08)：鼠标悬停(现在不支持)</p></li>
+<li><p><strong>LV_STATE_PRESSED</strong> (0x10)：已按下</p></li>
+<li><p><strong>LV_STATE_DISABLED</strong> (0x20)：禁用或 void</p></li>
+</ul>
+<p>可以将状态进行组合使用，如： <code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span> <span class="pre">|</span> <span class="pre">LV_STATE_PRESSED</span></code></p>
+<p>可以在每种状态和状态组合中定义样式的属性。例如，为默认和按下状态设置不同的背景颜色。如果未在状态中定义属性，则将使用最佳匹配状态的属性。通常，它表示带有 <code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> 状态的属性。如果即使对于默认状态也未设置该属性，则将使用默认值。</p>
+<p>但是，“最佳匹配状态的属性”到底是什么意思？优先级由其值显示(请阅读上面：”样式的状态(States)“)。 <strong>值越大，优先级越高</strong> 。
+为了确定要使用哪个属性，我们举一个例子。让我们来看看背景色是怎样定义的：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> : white</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code> : gray</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code> : red</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>默认情况下，对象处于默认状态，因此很简单：该属性在对象的当前状态中定义为白色</p></li>
+<li><p>按下对象时，有2个相关属性：默认为白色(默认与每个状态有关)和按下为灰色。按下状态的优先级为0x10，高于默认状态的0x00优先级，因此将使用灰色。</p></li>
+<li><p>当物体聚焦时，会发生与按下状态相同的事情，并且将使用红色。(焦点状态的优先级高于默认状态)。</p></li>
+<li><p>聚焦并按下对象时，灰色和红色都可以使用，但是按下状态的优先级高于聚焦，因此将使用灰色。</p></li>
+<li><p>可以为设置例如玫瑰色。在这种情况下，此组合状态的优先级为0x02 + 0x10 = 0x12，该优先级高于按下状态的优先级，因此将使用玫瑰色。LV_STATE_PRESSED | LV_STATE_FOCUSED</p></li>
+<li><p>选中对象后，没有属性可以设置此状态的背景色。因此，在缺少更好的选择的情况下，对象在默认状态的属性中仍为白色。</p></li>
+</ol>
+<p>注意事项：</p>
+<ul class="simple">
+<li><p>如果要为所有状态设置属性(例如红色背景色)，只需将其设置为默认状态即可。如果对象找不到其当前状态的属性，它将回退到默认状态的属性。</p></li>
+<li><p>使用ORed状态来描述复杂情况的属性。(例如，按+选中+集中)</p></li>
+<li><p>对不同的状态使用不同的样式元素可能是一个好主意。例如，很难找到释放，按下，选中+按下，聚焦，聚焦+按下，聚焦+按下+选中 等状态的背景颜色。相反，例如，将背景色用于按下和选中状态，并使用不同的边框颜色指示聚焦状态。</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>级联样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>不需要将所有属性设置为一种样式。可以向对象添加更多样式，然后让后来添加的样式修改或扩展其他样式的属性。例如，创建常规的灰色按钮样式，并为仅设置新的背景色的红色按钮创建新的样式。</p>
+<p>在CSS中，所有使用的类都像 <code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">class=&quot;.btn</span> <span class="pre">.btn-red&quot;&gt;</span></code> 一样列出，这是相同的概念。</p>
+<p><strong>较晚添加的样式优先于较早的样式。</strong> 因此，在上面的灰色/红色按钮示例中，应首先添加常规按钮样式，然后再添加红色样式。
+但是，仍然要优先考虑优先级问题。因此，让我们研究以下情况：</p>
+<ul class="simple">
+<li><p>基本的按钮样式定义了默认状态为深灰色和按下状态为浅灰色</p></li>
+<li><p>红色按钮样式仅在默认状态下将背景色定义为红色</p></li>
+</ul>
+<p>在这种情况下，释放按钮时(它处于默认状态)它将是红色的，因为在最后添加的样式(红色样式)中找到了完美的匹配。按下按钮时，浅灰色是更好的搭配，因为它完美地描述了当前状态，因此按钮将是浅灰色的。</p>
+</div>
+<div class="section" id="id3">
+<h2>样式继承<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>某些属性(通常与文本相关)可以从父对象的样式继承。仅当未以对象的样式(即使在默认状态下)设置给定属性时，才应用继承。</p>
+<p>在这种情况下，如果该属性是可继承的，则该属性的值也将在父级中搜索，直到一部分可以告诉该属性的值为止。父母会用自己的状态来说明价值。按下按钮后，文字颜色就从这里来，将使用按下的文字颜色。</p>
+</div>
+<div class="section" id="parts">
+<h2>零件(Parts)的样式<a class="headerlink" href="#parts" title="永久链接至标题">¶</a></h2>
+<p>对象可以具有自己样式的零件。例如，页面包含四个部分(Parts)：</p>
+<ul class="simple">
+<li><p>背景(Background)</p></li>
+<li><p>可卷动(Scrollable)</p></li>
+<li><p>滚动条(Scrollable)</p></li>
+<li><p>边缘闪光(Edge flash)</p></li>
+</ul>
+<p>对象零件有三种类型：主要(main)，虚拟(virtual)和真实(real)。</p>
+<p>主要(main)部分通常是对象的背景和最大部分。某些对象只有一个主要部分。例如，一个按钮只有一个背景。</p>
+<p>虚拟(virtual)小部件是实时绘制到主体小部件的其他小部件。它们后面没有“真实”对象。例如，页面的滚动条不是真实的对象，仅在绘制页面背景时才绘制。虚拟小部件始终具有与主要小部件相同的状态。如果可以继承该属性，则在转到父级之前还将考虑主体部分。</p>
+<p>真实(real)小部件是由主对象创建和管理的真实对象。例如，页面的可滚动部分是真实对象。实际小部件的状态可能与主要小部件的状态不同。</p>
+</div>
+<div class="section" id="id4">
+<h2>初始化样式并设置、获取属性<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>样式存储在 <code class="docutils literal notranslate"><span class="pre">lv_style_t</span></code> 变量中。样式变量应为 <strong>static</strong> 、 <strong>全局</strong> 或 <strong>动态分配</strong> 。
+也就是说，它们不能是函数中的局部变量，在函数存在时销毁。
+在使用样式之前，应使用 <code class="docutils literal notranslate"><span class="pre">lv_style_init(&amp;my_style)</span></code> 进行初始化 。
+初始化后，我们就可以设置样式的属性。
+属性集函数如下所示：<code class="docutils literal notranslate"><span class="pre">lv_style_set_&lt;property_name&gt;(&amp;style,</span> <span class="pre">&lt;state&gt;,</span> <span class="pre">&lt;value&gt;);</span></code>
+例如，上面提到的示例如下所示：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style1</span><span class="p">;</span>
+<span class="linenos">2</span><span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">);</span>
+<span class="linenos">3</span><span class="n">lv_style_set_size</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="linenos">4</span><span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">5</span><span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">lv_color_hex3</span><span class="p">(</span><span class="mh">0xeee</span><span class="p">));</span>
+<span class="linenos">6</span><span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_RADIUS_CIRCLE</span><span class="p">);</span>
+<span class="linenos">7</span><span class="n">lv_style_set_pad_right</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>可以使用 lv_style_copy(＆style_destination，＆style_source) 复制样式。复制后，仍然可以自由添加属性。</p>
+<p>要删除样式的属性，请使用：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_style_remove_prop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STYLE_BG_COLOR</span> <span class="o">|</span> <span class="p">(</span><span class="n">LV_STATE_PRESSED</span> <span class="o">&lt;&lt;</span> <span class="n">LV_STYLE_STATE_POS</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>要从给定状态的样式中获取值，可以使用以下原型的功能：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">_lv_style_get_color</span><span class="o">/</span><span class="kt">int</span><span class="o">/</span><span class="n">opa</span><span class="o">/</span><span class="n">ptr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">prop</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">result</span> <span class="n">buf</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>这样将选择最匹配的属性，并返回其优先级。如果找不到该属性，将返回 <code class="docutils literal notranslate"><span class="pre">-1</span></code> 。</p>
+<p>函数的形式 (…color/int/opa/ptr) 应根据 <code class="docutils literal notranslate"><span class="pre">&lt;prop&gt;</span></code> 的类型使用。</p>
+<p>例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_color_t</span> <span class="n">color</span><span class="p">;</span>
+<span class="linenos">2</span>    <span class="kt">int16_t</span> <span class="n">res</span><span class="p">;</span>
+<span class="linenos">3</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">_lv_style_get_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span>  <span class="n">LV_STYLE_BG_COLOR</span> <span class="o">|</span> <span class="p">(</span><span class="n">LV_STATE_PRESSED</span> <span class="o">&lt;&lt;</span> <span class="n">LV_STYLE_STATE_POS</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">color</span><span class="p">);</span>
+<span class="linenos">4</span>    <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">5</span>      <span class="c1">//the bg_color is loaded into `color`</span>
+<span class="linenos">6</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<p>要重置样式(释放所有数据)，调用：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_style_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>管理样式列表<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>样式本身不能发挥作用。只有将其分配给对象使用才能生效。对象的每个部分都存储一个样式列表，该列表是已分配样式的列表。</p>
+<p>调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_add_style(obj,</span> <span class="pre">&lt;part&gt;,</span> <span class="pre">&amp;style);</span></code> 将样式添加到对象，例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">btn</span><span class="p">);</span>      <span class="cm">/*Default button style*/</span>
+<span class="linenos">2</span>    <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">btn_red</span><span class="p">);</span>  <span class="cm">/*Overwrite only a some colors to red*/</span>
+</pre></div>
+</div>
+<p>调用下面的函数重置对象样式列表：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_reset_style_list</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">part</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>如果已经分配给对象的样式发生更改(即，其属性之一设置为新值)，则应通过以下方式通知使用该样式的对象：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_refresh_style</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要刷新所有零件和属性，调用：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_refresh_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_ALL</span><span class="p">,</span> <span class="n">LV_STYLE_PROP_ALL</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要获取属性的最终值，包括级联，继承，局部样式和过渡(请参见下文)，可以使用以下类似的函数获取：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_get_style_</span><span class="o">&lt;</span><span class="n">property_name</span><span class="o">&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">part</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>这些函数使用对象的当前状态，如果没有更好的候选者，则返回默认值。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_color_t</span> <span class="n">color</span> <span class="o">=</span> <span class="n">lv_obj_get_style_bg_color</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>本地风格<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>在对象的样式列表中，也可以存储所谓的局部属性。其与 CSS 的 <code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">style=&quot;color:red&quot;&gt;</span></code> 概念相同。局部样式与普通样式相同，但是它仅属于给定的对象， <strong>不能与其他对象共享</strong> 。要设置本地属性，请使用函数：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_set_style_local_</span><span class="o">&lt;</span><span class="n">property_name</span><span class="o">&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">part</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">state</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>例如</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_set_style_local_bg_color</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>样式过渡<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>默认情况下，当对象更改状态(例如，按下状态)时，会立即设置新状态下的新属性。但是，通过过渡，可以在状态改变时播放过渡动画。例如：在按下按钮后，可以在300毫秒内将其背景色设置为所按下的颜色。</p>
+<p>过渡的参数存储在样式中。可以设置：</p>
+<ul class="simple">
+<li><p>过渡时间</p></li>
+<li><p>开始过渡之前的延迟</p></li>
+<li><p>动画路径(也称为计时功能)</p></li>
+<li><p>要设置动画的属性</p></li>
+</ul>
+<p>可以为每个状态定义过渡属性。例如，将500 ms过渡时间设置为默认状态将意味着当对象进入默认状态时，将应用500 ms过渡时间。在按下状态下设置100 ms过渡时间将意味着在进入按下状态时100 ms过渡时间。因此，此示例配置将导致快速进入印刷机状态而缓慢回到默认状态。</p>
+</div>
+<div class="section" id="id8">
+<h2>样式属性<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>样式中可以使用以下属性：</p>
+<div class="section" id="id9">
+<h3>混合属性<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p><strong>radius(lv_style_int_t)</strong>：                    设置背景的半径。0：无半径，LV_RADIUS_CIRCLE：最大半径。默认值：0。</p></li>
+<li><p><strong>clip_corner(bool)</strong>：                                 为true可以将溢出的内容剪切到圆角(半径&gt; 0)上。默认值：false。</p></li>
+<li><p><strong>size(lv_style_int_t)</strong>：                      小部件内部元素的大小。是否使用此属性，请参见窗口小部件的文档。默认值：。LV_DPI / 20</p></li>
+<li><p><strong>transform_width (lv_style_int_t)</strong>： 使用此值使对象在两侧更宽。默认值：0。</p></li>
+<li><p><strong>transform_height (lv_style_int_t)</strong>：使用此值使对象在两侧都较高。默认值：0。</p></li>
+<li><p><strong>transform_angle (lv_style_int_t)</strong>： 旋转类似图像的对象。它的uinit为0.1度，对于45度使用450。默认值：0。</p></li>
+<li><p><strong>transform_zoom (lv_style_int_t)</strong>：   缩放类似图像的对象。LV_IMG_ZOOM_NONE正常大小为256(或)，一半为128，一半为512，等等。默认值：LV_IMG_ZOOM_NONE。</p></li>
+<li><p><strong>opa_scale(lv_style_int_t)</strong>：                 继承。按此比例缩小对象的所有不透明度值。由于继承了子对象，因此也会受到影响。默认值：LV_OPA_COVER。</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>填充和边距属性<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>填充可在边缘的内侧设置空间。意思是“我不要我的孩子们离我的身体太近，所以要保留这个空间”。填充内部设置了孩子之间的“差距”。 边距在边缘的外侧设置空间。意思是“我想要我周围的空间”。
+如果启用了布局或 自动调整，则这些属性通常由Container对象使用。但是，其他小部件也使用它们来设置间距。有关详细信息，请参见 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/01_obj.html">小部件(widgets)</a> 的文档。</p>
+<ul class="simple">
+<li><p><strong>pad_top(lv_style_int_t)</strong>：                  在顶部设置填充。默认值：0。</p></li>
+<li><p><strong>pad_bottom(lv_style_int_t)</strong>：               在底部设置填充。默认值：0。</p></li>
+<li><p><strong>pad_left(lv_style_int_t)</strong>：         在左侧设置填充。默认值：0。</p></li>
+<li><p><strong>pad_right(lv_style_int_t)</strong>：                在右侧设置填充。默认值：0。</p></li>
+<li><p><strong>pad_inner(lv_style_int_t)</strong>：                设置子对象之间对象内部的填充。默认值：0。</p></li>
+<li><p><strong>margin_top(lv_style_int_t)</strong>：               在顶部设置边距。默认值：0。</p></li>
+<li><p><strong>margin_bottom(lv_style_int_t)</strong>：    在底部设置边距。默认值：0。</p></li>
+<li><p><strong>margin_left(lv_style_int_t)</strong>：              在左边设置边距。默认值：0。</p></li>
+<li><p><strong>margin_right(lv_style_int_t)</strong>：     在右边设置边距。默认值：0。</p></li>
+</ul>
+</div>
+<div class="section" id="id11">
+<h3>背景属性<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>背景是一个简单的矩形，可以具有渐变和半径舍入。</p>
+<ul class="simple">
+<li><p><strong>bg_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：                      指定背景的颜色。默认值：<strong>LV_COLOR_WHITE</strong>。</p></li>
+<li><p><strong>bg_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：                          指定背景的不透明度。默认值：<strong>LV_OPA_TRANSP</strong>。</p></li>
+<li><p><strong>bg_grad_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：         指定背景渐变的颜色。右侧或底部的颜色是： <strong>bg_grad_dir != LV_GRAD_DIR_NONE</strong>。默认值： <strong>LV_COLOR_WHITE</strong></p></li>
+<li><p><strong>bg_main_stop</strong> ( <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> )：                     指定渐变应从何处开始。0：最左/最上位置，255：最右/最下位置。默认值：0。</p></li>
+<li><p><strong>bg_grad_stop</strong> ( <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> )：                     指定渐变应在何处停止。0：最左/最上位置，255：最右/最下位置。预设值：255。</p></li>
+<li><p><strong>bg_grad_dir</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_grad_dir_t</span></code> )：                指定渐变的方向。可以是 <strong>LV_GRAD_DIR_NONE/HOR/VER</strong>。默认值：<strong>LV_GRAD_DIR_NONE</strong>。</p></li>
+<li><p><strong>bg_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：    将混合模式设置为背景。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE)</strong>。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id25">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_1.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_1.png" />
+<p class="caption"><span class="caption-text">渐变的矩形背景</span><a class="headerlink" href="#id25" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the background style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>            <span class="cm">/*Make a gradient*/</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_style_set_bg_grad_dir</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_GRAD_DIR_VER</span><span class="p">);</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>            <span class="cm">/*Shift the gradient to the bottom*/</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_bg_main_stop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_bg_grad_stop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">192</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">27</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>边框属性<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>边框绘制在背景顶部。它具有圆角 <code class="docutils literal notranslate"><span class="pre">半径</span></code> 。</p>
+<ul class="simple">
+<li><p><strong>border_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：                  指定边框的颜色。默认值：<strong>LV_COLOR_BLACK</strong>。</p></li>
+<li><p><strong>border_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：                              指定边框的不透明度。默认值：<strong>LV_OPA_COVER</strong>。</p></li>
+<li><p><strong>border_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：              设置边框的宽度。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>border_side</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_border_side_t</span></code> )：             指定要绘制边框的哪一侧。可以是 <strong>LV_BORDER_SIDE_NONE/LEFT/RIGHT/TOP/BOTTOM/FULL</strong> 。ORed值也是可能的。默认值： <strong>LV_BORDER_SIDE_FULL</strong> 。</p></li>
+<li><p><strong>border_post</strong> ( <code class="docutils literal notranslate"><span class="pre">bool</span></code> )：                                 如果true在绘制完所有子级之后绘制边框。默认值：<strong>false</strong>。</p></li>
+<li><p><strong>border_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：        设置边框的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值： <strong>LV_BLEND_MODE_NORMAL</strong></p></li>
+</ul>
+<div class="figure align-default" id="id26">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_2.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_2.png" />
+<p class="caption"><span class="caption-text">设置圆角边框</span><a class="headerlink" href="#id26" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the border style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add border to the bottom+right*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_border_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_50</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_border_side</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_BORDER_SIDE_BOTTOM</span> <span class="o">|</span> <span class="n">LV_BORDER_SIDE_RIGHT</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">26</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>轮廓属性<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>轮廓类似于边框，但绘制在对象外部。</p>
+<ul class="simple">
+<li><p><strong>outline_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：指定轮廓的颜色。默认值： <strong>LV_COLOR_BLACK</strong> 。</p></li>
+<li><p><strong>outline_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：指定轮廓的不透明度。默认值：<strong>LV_OPA_COVER</strong>。</p></li>
+<li><p><strong>outline_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：设置轮廓的宽度。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>outline_pad</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：设置对象和轮廓之间的空间。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>outline_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置轮廓的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值： <strong>LV_BLEND_MODE_NORMAL</strong> 。</p></li>
+</ul>
+<div class="figure align-default" id="id27">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_3.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_3.png" />
+<p class="caption"><span class="caption-text">设置轮廓</span><a class="headerlink" href="#id27" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the outline style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_3</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add outline*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_outline_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_outline_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_outline_pad</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">22</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">25</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id14">
+<h3>阴影属性<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>阴影是对象下方的模糊区域。</p>
+<ul class="simple">
+<li><p><strong>shadow_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：指定阴影的颜色。默认值： <strong>LV_COLOR_BLACK</strong>。</p></li>
+<li><p><strong>shadow_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：指定阴影的不透明度。默认值：<strong>LV_OPA_TRANSP</strong>。</p></li>
+<li><p><strong>shadow_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：设置轮廓的宽度(模糊大小)。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>shadow_ofs_x</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：设置阴影的X偏移量。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>shadow_ofs_y</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：设置阴影的Y偏移量。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>shadow_spread</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：在每个方向上使阴影大于背景的值达到此值。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>shadow_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置阴影的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong> 。默认值：<strong>LV_BLEND_MODE_NOR</strong></p></li>
+</ul>
+<div class="figure align-default" id="id28">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_4.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_4.png" />
+<p class="caption"><span class="caption-text">设置阴影</span><a class="headerlink" href="#id28" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the Shadow style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_4</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add a shadow*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_shadow_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_shadow_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_shadow_ofs_x</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_shadow_ofs_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">26</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>图案属性<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>图案是在背景中间绘制或重复以填充整个背景的图像(或符号)。</p>
+<ul class="simple">
+<li><p><strong>pattern_image</strong> (<code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">void</span> <span class="pre">*</span></code>)：指向 <strong>lv_img_dsc_t</strong> 变量的指针，图像文件或符号的路径。默认值：<strong>NULL</strong> 。</p></li>
+<li><p><strong>pattern_opa</strong> (<code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code>) ：指定图案的不透明度。默认值： <strong>LV_OPA_COVER</strong> 。</p></li>
+<li><p><strong>pattern_recolor</strong> (<code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code>) ：将此颜色混合到图案图像中。如果是符号(文本)，它将是文本颜色。默认值： <strong>LV_COLOR_BLACK</strong> 。</p></li>
+<li><p><strong>pattern_recolor_opa</strong> (<code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code>) ：重新着色的强度。默认值： <strong>LV_OPA_TRANSP</strong> (不重新着色)。</p></li>
+<li><p><strong>pattern_repeat</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>)： <code class="docutils literal notranslate"><span class="pre">true</span></code> 图案将作为马赛克重复。 <strong>false</strong> ：将图案放置在背景中间。默认值： <strong>false</strong> 。</p></li>
+<li><p><strong>pattern_blend_mode</strong> (<code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code>) ：设置图案的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id29">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_5.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_5.png" />
+<p class="caption"><span class="caption-text">设置图案</span><a class="headerlink" href="#id29" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the pattern style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_5</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add a repeating pattern*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_pattern_image</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_SYMBOL_OK</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_pattern_recolor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_pattern_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_50</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_pattern_repeat</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">26</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id16">
+<h3>数值属性<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>值是绘制到背景的任意文本。它可以是创建标签对象的轻量级替代。</p>
+<ul class="simple">
+<li><p><strong>value_str</strong> ( <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*</span></code> )：指向要显示的文本的指针。仅保存指针！(不要将局部变量与 lv_style_set_value_str 一起使用，而应使用静态，全局或动态分配的数据)。默认值： <strong>NULL</strong></p></li>
+<li><p><strong>value_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：文本的颜色。默认值：<strong>LV_COLOR_BLACK</strong>。</p></li>
+<li><p><strong>value_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：文本的不透明度。默认值：<strong>LV_OPA_COVER</strong>。</p></li>
+<li><p><strong>value_font</strong> ( <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_font_t</span> <span class="pre">*</span></code> )**：指向文本字体的指针。默认值：<strong>NULL</strong></p></li>
+<li><p><strong>value_letter_space</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：文本的字母空间。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>value_line_space</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：文本的行距。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>value_align</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_align_t</span></code> )：文本的对齐方式。可以是 <strong>LV_ALIGN_…</strong> 。默认值：<strong>LV_ALIGN_CENTER</strong>。</p></li>
+<li><p><strong>value_ofs_x</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：与路线原始位置的X偏移量。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>value_ofs_y</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：从路线的原始位置偏移Y。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>value_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置文本的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id30">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_6.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_6.png" />
+<p class="caption"><span class="caption-text">设置图案</span><a class="headerlink" href="#id30" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the value style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_6</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add a value text properties*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_value_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_value_align</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_ALIGN_IN_BOTTOM_RIGHT</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_value_ofs_x</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_value_ofs_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/*Add a value text to the local style. This way every object can have different text*/</span>
+<span class="linenos">28</span>            <span class="n">lv_obj_set_style_local_value_str</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="s">&quot;Text&quot;</span><span class="p">);</span>
+<span class="linenos">29</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id17">
+<h3>文字属性<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>文本对象的属性。</p>
+<ul class="simple">
+<li><p><strong>text_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：文本的颜色。默认值：<strong>LV_COLOR_BLACK</strong> 。</p></li>
+<li><p><strong>text_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：文本的不透明度。默认值：<strong>LV_OPA_COVER</strong> 。</p></li>
+<li><p><strong>text_font</strong> ( <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_font_t</span> <span class="pre">*</span></code> )：指向文本字体的指针。默认值：。<strong>NULL</strong></p></li>
+<li><p><strong>text_letter_space</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：文本的字母空间。默认值：<strong>0</strong> 。</p></li>
+<li><p><strong>text_line_space</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：文本的行距。默认值：<strong>0</strong> 。</p></li>
+<li><p><strong>text_decor</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_text_decor_t</span></code> )：添加文字修饰。可以是 <strong>LV_TEXT_DECOR_NONE/UNDERLINE/STRIKETHROUGH</strong>  。默认值：<strong>LV_TEXT_DECOR_NONE</strong>。</p></li>
+<li><p><strong>text_sel_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：设置文本选择的背景色。默认值：<strong>LV_COLOR_BLACK</strong></p></li>
+<li><p><strong>text_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置文本的混合模式。可以**LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE** 。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id31">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_7.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_7.png" />
+<p class="caption"><span class="caption-text">设置文字</span><a class="headerlink" href="#id31" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the text style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_7</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_pad_top</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_pad_bottom</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_pad_left</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_pad_right</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="n">lv_style_set_text_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_style_set_text_letter_space</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_style_set_text_line_space</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_style_set_text_decor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_TEXT_DECOR_UNDERLINE</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">28</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_LABEL_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">30</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;Text of</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">31</span>                                                            <span class="s">&quot;a label&quot;</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">33</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id18">
+<h3>线属性<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>线的属性。</p>
+<ul class="simple">
+<li><p><strong>line_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：线条的颜色。默认值：<strong>LV_COLOR_BLACK</strong></p></li>
+<li><p><strong>line_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：直线的不透明度。默认值：<strong>LV_OPA_COVER</strong></p></li>
+<li><p><strong>line_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：线的宽度。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>line_dash_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：破折号的宽度。仅对水平或垂直线绘制虚线。<strong>0</strong>：禁用破折号。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>line_dash_gap</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：两条虚线之间的间隙。仅对水平或垂直线绘制虚线。<strong>0</strong>：禁用破折号。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>line_rounded</strong> ( <code class="docutils literal notranslate"><span class="pre">bool</span></code> )：<strong>true</strong>：绘制圆角的线尾。默认值：<strong>false</strong>。</p></li>
+<li><p><strong>line_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置线条的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id32">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_8.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_8.png" />
+<p class="caption"><span class="caption-text">设置线条</span><a class="headerlink" href="#id32" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the line style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_8</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="n">lv_style_set_line_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_GRAY</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_line_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_line_rounded</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">14</span>    <span class="cp">#if LV_USE_LINE</span>
+<span class="linenos">15</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">16</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_line_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_LINE_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>            <span class="k">static</span> <span class="n">lv_point_t</span> <span class="n">p</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">},</span> <span class="p">{</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">}};</span>
+<span class="linenos">20</span>            <span class="n">lv_line_set_points</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">23</span>    <span class="cp">#endif</span>
+<span class="linenos">24</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>图象属性<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<p>图像的属性。</p>
+<ul class="simple">
+<li><p><strong>image_recolor</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：将此颜色混合到图案图像中。如果是符号(文本)，它将是文本颜色。默认值： <strong>LV_COLOR_BLACK</strong></p></li>
+<li><p><strong>image_recolor_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：重新着色的强度。默认值：( <strong>LV_OPA_TRANSP</strong> 不重新着色)。默认值： <strong>LV_OPA_TRANSP</strong></p></li>
+<li><p><strong>image_opa</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> )：图像的不透明度。默认值：<strong>LV_OPA_COVER</strong></p></li>
+<li><p><strong>image_blend_mode</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span></code> )：设置图像的混合模式。可以是 <strong>LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE</strong>。默认值：<strong>LV_BLEND_MODE_NORMAL</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id33">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_9.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_9.png" />
+<p class="caption"><span class="caption-text">设置图象</span><a class="headerlink" href="#id33" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the image style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_9</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_style_set_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_pad_top</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_pad_bottom</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_pad_left</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_style_set_pad_right</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="n">lv_style_set_image_recolor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_style_set_image_recolor_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_50</span><span class="p">);</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="cp">#if LV_USE_IMG</span>
+<span class="linenos">27</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">28</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_img_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_IMG_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">30</span>            <span class="n">LV_IMG_DECLARE</span><span class="p">(</span><span class="n">img_cogwheel_argb</span><span class="p">);</span>
+<span class="linenos">31</span>            <span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">img_cogwheel_argb</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">33</span>    <span class="cp">#endif</span>
+<span class="linenos">34</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id20">
+<h3>转换属性<a class="headerlink" href="#id20" title="永久链接至标题">¶</a></h3>
+<p>用于描述状态更改动画的属性。</p>
+<ul class="simple">
+<li><p><strong>transition_time</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：过渡时间。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>transition_delay</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：转换前的延迟。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>transition_prop_1</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：应在其上应用过渡的属性。将属性名称与大写字母一起使用，例如：<strong>LV_STYLE_LV_STYLE_BG_COLOR</strong>。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_prop_2</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：与transition_1相同，只是另一个属性。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_prop_3</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：与transition_1相同，只是另一个属性。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_prop_4</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：与transition_1相同，只是另一个属性。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_prop_5</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：与transition_1相同，只是另一个属性。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_prop_6</strong> ( <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">name</span></code> )：与transition_1相同，只是另一个属性。默认值：<strong>0(none)</strong>。</p></li>
+<li><p><strong>transition_path</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_anim_path_t</span></code> )：过渡的动画路径(path)。(需要为静态或全局变量，因为仅保存了其指针)。默认值： <strong>lv_anim_path_def</strong> (线性路径)。</p></li>
+</ul>
+<div class="figure align-default" id="id34">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_10.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_10.png" />
+<p class="caption"><span class="caption-text">转换属性</span><a class="headerlink" href="#id34" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the transitions style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_10</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Set different background color in pressed state*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_GRAY</span><span class="p">);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>            <span class="cm">/*Set different transition time in default and pressed state</span>
+<span class="linenos">20</span><span class="cm">             *fast press, slower revert to default*/</span>
+<span class="linenos">21</span>            <span class="n">lv_style_set_transition_time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+<span class="linenos">22</span>            <span class="n">lv_style_set_transition_time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="cm">/*Small delay to make transition more visible*/</span>
+<span class="linenos">25</span>            <span class="n">lv_style_set_transition_delay</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/*Add `bg_color` to transitioned properties*/</span>
+<span class="linenos">28</span>            <span class="n">lv_style_set_transition_prop_1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_STYLE_BG_COLOR</span><span class="p">);</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">31</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">33</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">34</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id21">
+<h3>比例属性<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h3>
+<p>鳞片状元素的辅助属性。体重秤具有正常区域和末端区域。顾名思义，结束区域是标度的结束，可以是临界值或void值。正常区域在结束区域之前。两个区域可能具有不同的属性。</p>
+<ul class="simple">
+<li><p><strong>scale_grad_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：在正常区域中，在比例尺线上对该颜色进行渐变。默认值：<strong>LV_COLOR_BLACK</strong>。</p></li>
+<li><p><strong>scale_end_color</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> )：结束区域中刻度线的颜色。默认值：<strong>LV_COLOR_BLACK</strong>。</p></li>
+<li><p><strong>scale_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：比例尺的宽度。默认值：。默认值：<strong>LV_DPI/8</strong></p></li>
+<li><p><strong>scale_border_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：在标准区域的比例尺外侧绘制的边框的宽度。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>scale_end_border_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：在结束区域的刻度外侧上绘制边框的宽度。默认值：<strong>0</strong>。</p></li>
+<li><p><strong>scale_end_line_width</strong> ( <code class="docutils literal notranslate"><span class="pre">lv_style_int_t</span></code> )：结束区域中比例线的宽度。默认值：<strong>0</strong>。</p></li>
+</ul>
+<div class="figure align-default" id="id35">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_11.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_11.png" />
+<p class="caption"><span class="caption-text">轮盘比例效果</span><a class="headerlink" href="#id35" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">     * Using the scale style properties</span>
+<span class="linenos"> 5</span><span class="cm">     */</span>
+<span class="linenos"> 6</span>    <span class="kt">void</span> <span class="nf">lv_ex_style_11</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style</span><span class="p">;</span>
+<span class="linenos"> 9</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Set a background color and a radius*/</span>
+<span class="linenos">12</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Set some paddings*/</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_pad_inner</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_pad_top</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_pad_left</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_pad_right</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="n">lv_style_set_scale_end_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_style_set_line_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_WHITE</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_style_set_scale_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_style_set_line_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_style_set_scale_end_line_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="linenos">27</span>            <span class="n">lv_style_set_scale_end_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>            <span class="cm">/*Gauge has a needle but for simplicity its style is not initialized here*/</span>
+<span class="linenos">30</span>    <span class="cp">#if LV_USE_GAUGE</span>
+<span class="linenos">31</span>            <span class="cm">/*Create an object with the new style*/</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">lv_gauge_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">33</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_GAUGE_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="linenos">34</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">35</span>    <span class="cp">#endif</span>
+<span class="linenos">36</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<p>在小部件的文档中，您将看到诸如“小部件使用典型的背景属性”之类的句子。 “典型背景”属性是：</p>
+<ul class="simple">
+<li><p>背景</p></li>
+<li><p>边境</p></li>
+<li><p>大纲</p></li>
+<li><p>阴影</p></li>
+<li><p>模式</p></li>
+<li><p>值</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id22">
+<h2>主题<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h2>
+<p>主题是样式的集合。始终有一个活动主题，在创建对象时会自动应用其样式。它为UI提供了默认外观，可以通过添加其他样式来对其进行修改。</p>
+<p>默认的主题被设定在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 与 <code class="docutils literal notranslate"><span class="pre">LV_THEME_...</span></code> 中定义。每个主题都具有以下属性：</p>
+<ul class="simple">
+<li><p>原色</p></li>
+<li><p>二次色</p></li>
+<li><p>小字体</p></li>
+<li><p>普通字体</p></li>
+<li><p>字幕字体</p></li>
+<li><p>标题字体</p></li>
+<li><p>标志(特定于给定主题)</p></li>
+</ul>
+<p>如何使用这些属性取决于主题。
+有3个内置主题：</p>
+<ul class="simple">
+<li><p><strong>empty</strong> 空：未添加默认样式</p></li>
+<li><p><strong>material</strong> 材质：令人印象深刻的现代主题-单声道：用于黑白显示的简单黑白主题</p></li>
+<li><p><strong>template</strong> 模板：一个非常简单的主题，可以将其复制以创建自定义主题</p></li>
+</ul>
+<div class="section" id="id23">
+<h3>扩展主题<a class="headerlink" href="#id23" title="永久链接至标题">¶</a></h3>
+<p>内置主题可以通过自定义主题进行扩展。如果创建了自定义主题，则可以选择“基本主题”。基本主题的样式将添加到自定义主题之前。可以链接任何数量的主题。例如，材料主题-&gt;自定义主题-&gt;黑暗主题。</p>
+<p>这是有关如何基于当前活动的内置主题创建自定义主题的示例。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cm">/*Get the current theme (e.g. material). It will be the base of the custom theme.*/</span>
+<span class="linenos"> 2</span>    <span class="n">lv_theme_t</span> <span class="o">*</span> <span class="n">base_theme</span> <span class="o">=</span> <span class="n">lv_theme_get_act</span><span class="p">();</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cm">/*Initialize a custom theme*/</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="n">lv_theme_t</span> <span class="n">custom_theme</span><span class="p">;</span>                         <span class="cm">/*Declare a theme*/</span>
+<span class="linenos"> 6</span>    <span class="n">lv_theme_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">custom_theme</span><span class="p">,</span> <span class="p">)</span><span class="n">base_theme</span><span class="p">;</span>               <span class="cm">/*Initialize the custom theme from the base theme*/</span>
+<span class="linenos"> 7</span>    <span class="n">lv_theme_set_apply_cb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">custom_theme</span><span class="p">,</span> <span class="n">custom_apply_cb</span><span class="p">);</span>  <span class="cm">/*Set a custom theme apply callback*/</span>
+<span class="linenos"> 8</span>    <span class="n">lv_theme_set_base</span><span class="p">(</span><span class="n">custom_theme</span><span class="p">,</span> <span class="n">base_theme</span><span class="p">);</span>            <span class="cm">/*Set the base theme of the csutom theme*/</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="cm">/*Initialize styles for the new theme*/</span>
+<span class="linenos">11</span>    <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style1</span><span class="p">;</span>
+<span class="linenos">12</span>    <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">);</span>
+<span class="linenos">13</span>    <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">custom_theme</span><span class="p">.</span><span class="n">color_primary</span><span class="p">);</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="p">...</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="cm">/*Add a custom apply callback*/</span>
+<span class="linenos">18</span>    <span class="k">static</span> <span class="kt">void</span> <span class="n">custom_apply_cb</span><span class="p">(</span><span class="n">lv_theme_t</span> <span class="o">*</span> <span class="n">th</span><span class="p">,</span> <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">lv_theme_style_t</span> <span class="n">name</span><span class="p">)</span>
+<span class="linenos">19</span>    <span class="p">{</span>
+<span class="linenos">20</span>            <span class="n">lv_style_list_t</span> <span class="o">*</span> <span class="n">list</span><span class="p">;</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="k">switch</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">23</span>                    <span class="k">case</span> <span class="nl">LV_THEME_BTN</span><span class="p">:</span>
+<span class="linenos">24</span>                            <span class="n">list</span> <span class="o">=</span> <span class="n">lv_obj_get_style_list</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">);</span>
+<span class="linenos">25</span>                            <span class="n">_lv_style_list_add_style</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_style</span><span class="p">);</span>
+<span class="linenos">26</span>                            <span class="k">break</span><span class="p">;</span>
+<span class="linenos">27</span>            <span class="p">}</span>
+<span class="linenos">28</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>示例<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h2>
+<div class="figure align-default" id="id36">
+<img alt="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_get_started_2.png" src="http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_get_started_2.png" />
+<p class="caption"><span class="caption-text">造型按钮</span><a class="headerlink" href="#id36" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cm">/**</span>
+<span class="linenos"> 5</span><span class="cm">     * Create styles from scratch for buttons.</span>
+<span class="linenos"> 6</span><span class="cm">     */</span>
+<span class="linenos"> 7</span>    <span class="kt">void</span> <span class="nf">lv_ex_get_started_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="p">{</span>
+<span class="linenos"> 9</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style_btn</span><span class="p">;</span>
+<span class="linenos">10</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style_btn_red</span><span class="p">;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>            <span class="cm">/*Create a simple button style*/</span>
+<span class="linenos">13</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_style_set_radius</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_GRAY</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_bg_grad_dir</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_GRAD_DIR_VER</span><span class="p">);</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>            <span class="cm">/*Swap the colors in pressed state*/</span>
+<span class="linenos">21</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_GRAY</span><span class="p">);</span>
+<span class="linenos">22</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">);</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="cm">/*Add a border*/</span>
+<span class="linenos">25</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_WHITE</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_style_set_border_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_70</span><span class="p">);</span>
+<span class="linenos">27</span>            <span class="n">lv_style_set_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>            <span class="cm">/*Different border color in focused state*/</span>
+<span class="linenos">30</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_FOCUSED</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">31</span>            <span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_FOCUSED</span> <span class="o">|</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_NAVY</span><span class="p">);</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>            <span class="cm">/*Set the text style*/</span>
+<span class="linenos">34</span>            <span class="n">lv_style_set_text_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_WHITE</span><span class="p">);</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>            <span class="cm">/*Make the button smaller when pressed*/</span>
+<span class="linenos">37</span>            <span class="n">lv_style_set_transform_height</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="mi">-5</span><span class="p">);</span>
+<span class="linenos">38</span>            <span class="n">lv_style_set_transform_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="mi">-10</span><span class="p">);</span>
+<span class="linenos">39</span>    <span class="cp">#if LV_USE_ANIMATION</span>
+<span class="linenos">40</span>            <span class="cm">/*Add a transition to the size change*/</span>
+<span class="linenos">41</span>            <span class="k">static</span> <span class="n">lv_anim_path_t</span> <span class="n">path</span><span class="p">;</span>
+<span class="linenos">42</span>            <span class="n">lv_anim_path_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">path</span><span class="p">);</span>
+<span class="linenos">43</span>            <span class="n">lv_anim_path_set_cb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">path</span><span class="p">,</span> <span class="n">lv_anim_path_overshoot</span><span class="p">);</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>            <span class="n">lv_style_set_transition_prop_1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_STYLE_TRANSFORM_HEIGHT</span><span class="p">);</span>
+<span class="linenos">46</span>            <span class="n">lv_style_set_transition_prop_2</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_STYLE_TRANSFORM_WIDTH</span><span class="p">);</span>
+<span class="linenos">47</span>            <span class="n">lv_style_set_transition_time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+<span class="linenos">48</span>            <span class="n">lv_style_set_transition_path</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">path</span><span class="p">);</span>
+<span class="linenos">49</span>    <span class="cp">#endif</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span>            <span class="cm">/*Create a red style. Change only some colors.*/</span>
+<span class="linenos">52</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">);</span>
+<span class="linenos">53</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">54</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_MAROON</span><span class="p">);</span>
+<span class="linenos">55</span>            <span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_MAROON</span><span class="p">);</span>
+<span class="linenos">56</span>            <span class="n">lv_style_set_bg_grad_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span> <span class="n">LV_STATE_PRESSED</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">57</span>            <span class="n">lv_style_set_text_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_WHITE</span><span class="p">);</span>
+<span class="linenos">58</span>    <span class="cp">#if LV_USE_BTN</span>
+<span class="linenos">59</span>            <span class="cm">/*Create buttons and use the new styles*/</span>
+<span class="linenos">60</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">btn</span> <span class="o">=</span> <span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>     <span class="cm">/*Add a button the current screen*/</span>
+<span class="linenos">61</span>            <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>                            <span class="cm">/*Set its position*/</span>
+<span class="linenos">62</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>                          <span class="cm">/*Set its size*/</span>
+<span class="linenos">63</span>            <span class="n">lv_obj_reset_style_list</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">);</span>         <span class="cm">/*Remove the styles coming from the theme*/</span>
+<span class="linenos">64</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style_btn</span><span class="p">);</span>
+<span class="linenos">65</span>
+<span class="linenos">66</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>          <span class="cm">/*Add a label to the button*/</span>
+<span class="linenos">67</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;Button&quot;</span><span class="p">);</span>                     <span class="cm">/*Set the labels text*/</span>
+<span class="linenos">68</span>
+<span class="linenos">69</span>            <span class="cm">/*Create a new button*/</span>
+<span class="linenos">70</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">btn2</span> <span class="o">=</span> <span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="n">btn</span><span class="p">);</span>
+<span class="linenos">71</span>            <span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+<span class="linenos">72</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>                             <span class="cm">/*Set its size*/</span>
+<span class="linenos">73</span>            <span class="n">lv_obj_reset_style_list</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">);</span>         <span class="cm">/*Remove the styles coming from the theme*/</span>
+<span class="linenos">74</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style_btn</span><span class="p">);</span>
+<span class="linenos">75</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">);</span>   <span class="cm">/*Add the red style on top of the current */</span>
+<span class="linenos">76</span>            <span class="n">lv_obj_set_style_local_radius</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="n">LV_BTN_PART_MAIN</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_RADIUS_CIRCLE</span><span class="p">);</span> <span class="cm">/*Add a local style*/</span>
+<span class="linenos">77</span>
+<span class="linenos">78</span>            <span class="n">label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>          <span class="cm">/*Add a label to the button*/</span>
+<span class="linenos">79</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;Button 2&quot;</span><span class="p">);</span>                     <span class="cm">/*Set the labels text*/</span>
+<span class="linenos">80</span>    <span class="cp">#endif</span>
+<span class="linenos">81</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+==================================
+按钮矩阵(lv_btnmatrix)
+==================================
+
+概述
+##################################
+Button Matrix对象可以在行和列中显示多个按钮。
+
+想要使用按钮矩阵而不是容器和单个按钮对象的主要原因是：
+
+- 对于基于网格的按钮布局，按钮矩阵更易于使用。
+- 每个按钮矩阵消耗的内存少得多。
+
+
+零件和样式
+##################################
+Button矩阵的主要部分称为 ``LV_BTNMATRIX_PART_BG`` 。它使用典型的背景样式属性绘制背景。
+
+``LV_BTNMATRIX_PART_BTN`` 是虚拟部件，它引用按钮矩阵上的按钮。它还使用所有典型的背景属性。
+
+背景中的 顶部/底部/左侧/右侧 填充值用于在侧面保留一些空间。在按钮之间应用内部填充。
+
+
+用法
+##################################
+
+按钮的文字
+**********************************
+每个按钮上都有一个文本。要指定它们，需要使用称为map的描述符字符串数组。可以使用 ``lv_btnmatrix_set_map(btnm, my_map)`` 设置地图。映射的声明应类似于 ``const char * map[] = {"btn1", "btn2", "btn3", ""}`` 。请注意，最后一个元素必须为空字符串！
+
+在按钮矩阵中使用 ``"\n"`` 进行 **换行** 。例如。 ``{"btn1", "btn2", "\n", "btn3", ""}`` 。每行按钮的宽度自动计算。
+
+
+控制按钮
+**********************************
+可以使用 ``lv_btnmatrix_set_btn_width(btnm, btn_id, width)`` 相对于同一行中的另一个按钮设置按钮宽度。例如。在带有两个按钮的行中：btnA，width = 1和btnB，width = 2，btnA将具有33％的宽度，btnB将具有66％的宽度。这类似于 ``flex-grow`` 属性在CSS中的工作方式。
+
+除了宽度，每个按钮都可以使用以下参数进行自定义：
+
+- **LV_BTNMATRIX_CTRL_HIDDEN** - 将按钮设为隐藏（隐藏的按钮仍会占用布局中的空间，它们只是不可见或不可单击）
+- **LV_BTNMATRIX_CTRL_NO_REPEAT** - 长按按钮时禁用重复
+- **LV_BTNMATRIX_CTRL_DISABLED** - 禁用按钮
+- **LV_BTNMATRIX_CTRL_CHECKABLE** - 启用按钮切换
+- **LV_BTNMATRIX_CTRL_CHECK_STATE** - 设置切换状态
+- **LV_BTNMATRIX_CTRL_CLICK_TRIG** - 如果为0，则按钮将在按下时作出反应；如果为1，则将在释放时作出反应
+
+设置或清除按钮的控件属性，分别使用 ``lv_btnmatrix_set_btn_ctrl(btnm, btn_id, LV_BTNM_CTRL_...)`` 和 ``lv_btnmatrix_clear_btn_ctrl(btnm, btn_id, LV_BTNM_CTRL_...)`` 。可以对更多 ``LV_BTNM_CTRL _...`` 值进行排序
+
+为按钮矩阵的所有按钮设置/清除相同的控件属性，使用 ``lv_btnmatrix_set_btn_ctrl_all(btnm, btn_id, LV_BTNM_CTRL_...)`` 和 ``lv_btnmatrix_clear_btn_ctrl_all(btnm, btn_id, LV_BTNM_CTRL_...)`` 。
+
+设置按钮矩阵的控制映射（类似于文本映射），请使用 ``lv_btnmatrix_set_ctrl_map(btnm, ctrl_map)`` 。 ``ctrl_map`` 的元素应类似于 ``ctrl_map[0] = width | LV_BTNM_CTRL_NO_REPEAT |  LV_BTNM_CTRL_TGL_ENABLE`` 。元素的数量应等于按钮的数量（不包括换行符）。
+
+
+一次检查
+**********************************
+可以通过 ``lv_btnmatrix_set_one_check(btnm, true)`` 启用 “一次检查” 功能，以仅一次检查（切换）一个按钮。
+
+
+重新着色
+**********************************
+可以对标签上的文本重新着色，类似于Label对象的重新着色功能。要启用它，请使用 ``lv_btnmatrix_set_recolor(btnm, true)`` 。之后，带有 ``＃FF0000`` 红色＃文本的按钮将变为红色。
+
+
+对齐按钮的文字
+**********************************
+要对齐按钮上的文本，请使用 ``lv_btnmatrix_set_align(roller, LV_LABEL_ALIGN_LEFT/CENTER/RIGHT)`` 。按钮矩阵中的所有文本项都将符合设置后的对齐属性。
+
+
+注意事项
+**********************************
+Button矩阵对象的权重非常轻，因为按钮不是在虚拟飞行中绘制的。这样，一个按钮仅使用8个额外的字节，而不是普通 `Button对象`_ 的〜100-150字节大小（加上其容器的大小和每个按钮的标签）。
+
+此设置的缺点是，将各个按钮的样式设置为与其他按钮不同的功能受到限制（除了切换功能之外）。如果您需要该功能，则使用单个按钮很有可能是一种更好的方法。
+
+.. _Button对象:  http://lvgl.100ask.net/documentation/04_widgets/04_btn.html
+
+
+事件
+##################################
+除了 `通用事件`_ 之外，按钮矩阵还发送以下特殊事件：
+
+- **LV_EVENT_VALUE_CHANGED** - 在按下/释放按钮时或在长按之后重复时发送。事件数据设置为按下/释放按钮的ID。
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按钮
+##################################
+以下按键由按钮处理：
+
+- **LV_KEY_RIGHT/UP/LEFT/RIGHT** - 在按钮之间导航以选择一个 
+- **LV_KEY_ENTER** - 按下/释放所选按钮
+
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单按钮矩阵
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/05_btnmatrix/01_lv_ex_btnmatrix1.png
+	   
+	  简单按钮矩阵示例
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_BTNMATRIX
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			const char * txt = lv_btnmatrix_get_active_btn_text(obj);
+
+			printf("%s was pressed\n", txt);
+		}
+	}
+
+
+	static const char * btnm_map[] = {"1", "2", "3", "4", "5", "\n",
+									  "6", "7", "8", "9", "0", "\n",
+									  "Action1", "Action2", ""};
+
+	void lv_ex_btnmatrix_1(void)
+	{
+		lv_obj_t * btnm1 = lv_btnmatrix_create(lv_scr_act(), NULL);
+		lv_btnmatrix_set_map(btnm1, btnm_map);
+		lv_btnmatrix_set_btn_width(btnm1, 10, 2);        /*Make "Action1" twice as wide as "Action2"*/
+		lv_btnmatrix_set_btn_ctrl(btnm1, 10, LV_BTNMATRIX_CTRL_CHECKABLE);
+		lv_btnmatrix_set_btn_ctrl(btnm1, 11, LV_BTNMATRIX_CTRL_CHECK_STATE);
+		lv_obj_align(btnm1, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_event_cb(btnm1, event_handler);
+	}
+
+	#endif
+
+
+
+
+相关API
+##################################
+
+Typedefs 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	typedef uint16_t lv_btnmatrix_ctrl_t
+	typedef uint8_t lv_btnmatrix_part_t
+
+enums 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	enum [anonymous ]
+	键入以存储按钮控制位(禁用，隐藏等)。前3位用于存储宽度
+	值：
+
+	enumerator LV_BTNMATRIX_CTRL_HIDDEN     /* 隐藏按钮 */
+
+
+	enumerator LV_BTNMATRIX_CTRL_NO_REPEAT  /* 不要重复按此按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_DISABLED   /* 禁用此按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_CHECKABLE  /* 可以切换按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_CHECK_STATE/* 当前已切换按钮(例如，选中)。*/
+
+	/* 1：在CLICK上发送LV_EVENT_SELECTED，0：在PRESS上发送LV_EVENT_SELECTED */
+	enumerator LV_BTNMATRIX_CTRL_CLICK_TRIG
+
+
+	enum [anonymous ]
+	值：
+	enumerator LV_BTNMATRIX_PART_BG
+	enumerator LV_BTNMATRIX_PART_BTN
+	
+	
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	LV_EXPORT_CONST_INT( LV_BTNMATRIX_BTN_NONE )
+	lv_obj_t * lv_btnmatrix_create(lv_obj_t * par，constlv_obj_t *copy)
+	功能：创建一个按钮矩阵对象
+	返回：
+	指向创建的按钮矩阵的指针
+	形参：
+	par：指向对象的指针，它将是新按钮矩阵的父对象
+	copy：指向按钮矩阵对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	void lv_btnmatrix_set_map(lv_obj_t * btnm，constchar *map[] )
+	功能：设置新地图。将根据地图创建/删除按钮。按钮矩阵保留对地图的引用，因此在矩阵有效期内不得释放 char 串数组。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	map：指针的 char 串数组。最后一个 char 串必须是：“”。使用“ \ n”进行换行。
+
+
+	void lv_btnmatrix_set_ctrl_map(lv_obj_t * btnm，constlv_btnmatrix_ctrl_t ctrl_map [] )
+	功能：设置按钮矩阵的按钮控制图(隐藏，禁用等)。控制图数组将被复制，因此在此函数返回：后可以将其释放。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl_map：指向lv_btn_ctrl_t控制字节数组的指针。数组的长度和元素的位置必须与单个按钮的数量和顺序匹配(即，不包括换行符)。地图的元素应类似于：ctrl_map[0] = width | LV_BTNMATRIX_CTRL_NO_REPEAT | LV_BTNMATRIX_CTRL_TGL_ENABLE
+
+
+	void lv_btnmatrix_set_focused_btn(lv_obj_t * btnm，uint16_t id )
+	功能：设置焦点按钮，即在视觉上突出显示它。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	id：要聚焦的按钮的索引(LV_BTNMATRIX_BTN_NONE以除去焦点)
+
+
+	void lv_btnmatrix_set_recolor(constlv_obj_t * btnm，bool en )
+	功能：启用按钮文本的重新着色
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	en：true：启用重新着色；false：禁用
+
+
+	void lv_btnmatrix_set_btn_ctrl(lv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：设置按钮矩阵的按钮属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。(不计算新行)
+
+
+	void lv_btnmatrix_clear_btn_ctrl(constlv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：清除按钮矩阵的按钮属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。(不计算新行)
+
+
+	void lv_btnmatrix_set_btn_ctrl_all(lv_obj_t * btnm，lv_btnmatrix_ctrl_t ctrl )
+	功能：设置按钮矩阵中所有按钮的属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl：要从中设置的属性lv_btnmatrix_ctrl_t。值可以进行或运算。
+
+
+	void lv_btnmatrix_clear_btn_ctrl_all(lv_obj_t * btnm，lv_btnmatrix_ctrl_t ctrl )
+	功能：清除按钮矩阵中所有按钮的属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl：要从中设置的属性lv_btnmatrix_ctrl_t。值可以进行或运算。
+	en：true：设置属性；false：清除属性
+
+
+	void lv_btnmatrix_set_btn_width(lv_obj_t * btnm，uint16_t btn_id，uint8_t width )
+	功能：设置单个按钮的相对宽度。该方法将导致矩阵再生并且是相对昂贵的操作。建议使用来指定初始宽度，lv_btnmatrix_set_ctrl_map并且此方法仅用于动态更改。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。
+	width：相对宽度(与同一行中的按钮相比)。[1..7]
+
+
+	void lv_btnmatrix_set_one_check(lv_obj_t * btnm，bool one_chk )
+	功能：使按钮矩阵像选择器小部件一样(一次只能切换一个按钮)。Checkable必须在要使用lv_btnmatrix_set_ctrl或选择的按钮上启用lv_btnmatrix_set_btn_ctrl_all。
+	形参：
+	btnm：按钮矩阵对象
+	one_chk：是否启用“一次检查”模式
+
+
+	void lv_btnmatrix_set_align(lv_obj_t * btnm，lv_label_align_t align )
+	功能：设置地图文字的对齐方式(向左，向右或居中)
+	形参：
+	btnm：指向btnmatrix对象的指针
+	align：LV_LABEL_ALIGN_LEFT，LV_LABEL_ALIGN_RIGHT或LV_LABEL_ALIGN_CENTER
+
+
+	const char ** lv_btnmatrix_get_map_array(constlv_obj_t * btnm )
+	功能：获取按钮矩阵的当前图
+	返回：
+	当前地图
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	bool lv_btnmatrix_get_recolor(constlv_obj_t * btnm )
+	功能：检查按钮的文本是否可以使用重新着色
+	返回：
+	true：启用文本重新着色；false：禁用
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	uint16_t lv_btnmatrix_get_active_btn(constlv_obj_t * btnm )
+	功能：获取用户最后按下的按钮的索引(按下，释放等)。在event_cb获取按钮的文本，检查是否隐藏等方面很有用。
+	返回：
+	最后释放按钮的索引(LV_BTNMATRIX_BTN_NONE：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	const char * lv_btnmatrix_get_active_btn_text(constlv_obj_t * btnm )
+	功能：获取用户最后一次“激活”按钮的文本(按下，释放等) event_cb
+	返回：
+	最后释放的按钮的文本(NULL：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	uint16_t lv_btnmatrix_get_focused_btn(constlv_obj_t * btnm )
+	功能：获取焦点按钮的索引。
+	返回：
+	焦点按钮的索引(LV_BTNMATRIX_BTN_NONE：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	const char * lv_btnmatrix_get_btn_text(constlv_obj_t * btnm，uint16_t btn_id )
+	功能：获取按钮的文字
+	返回：
+	btn_index`按钮的文本
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：索引一个不计算换行符的按钮。(lv_btnmatrix_get_pressed / released的返回：值)
+
+
+	bool lv_btnmatrix_get_btn_ctrl(lv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：获取按钮矩阵的按钮的控制值是启用还是禁用
+	返回：
+	true：禁用长按重复；false：长按重复启用
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：索引一个不计算换行符的按钮。(例如lv_btnmatrix_get_pressed / released的返回：值)
+	ctrl：要检查的控制值(可以使用ORed值)
+
+
+	bool lv_btnmatrix_get_one_check(constlv_obj_t * btnm )
+	功能：查找是否启用了“一次切换”模式。
+	返回：
+	是否启用“一次切换”模式
+	形参：
+	btnm：按钮矩阵对象
+
+
+	lv_label_align_t lv_btnmatrix_get_align(constlv_obj_t * btnm )
+	功能：获取align属性
+	返回：
+	LV_LABEL_ALIGN_LEFT，LV_LABEL_ALIGN_RIGHT或LV_LABEL_ALIGN_CENTER
+	形参：
+	btnm：指向btnmatrix对象的指针
+
+

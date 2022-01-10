@@ -1,0 +1,190 @@
+==================================
+滑杆(lv_slider)
+==================================
+
+概述
+##################################
+滑杆对象看起来像是带有旋钮的 ``进度条(lv_bar)`` 。可以拖动该旋钮以设置一个值。滑块也可以是垂直或水平的。
+
+.. _进度条(lv_bar): http://lvgl.100ask.net/documentation/04_widgets/03_bar.html
+
+
+零件和样式
+##################################
+滑块的主要部分称为 ``LV_SLIDER_PART_BG`` ，它使用典型的背景样式属性。
+
+``LV_SLIDER_PART_INDIC`` 是一个虚拟部件，它也使用所有典型的背景属性。默认情况下，指标的最大大小与背景的大小相同，但在 ``LV_SLIDER_PART_BG`` 中设置正填充值将使指标变小。 （负值会使它变大）
+如果在指示器上使用了值样式属性，则将根据指示器的当前大小来计算对齐方式。例如，中心对齐值始终显示在指示器的中间，无论其当前大小如何。
+
+
+``LV_SLIDER_PART_KNOB`` 是一个虚拟部件，使用所有典型的背景属性来描述旋钮。与指示器类似，值文本也与旋钮的当前位置和大小对齐。默认情况下，旋钮是正方形（具有半径），其边长等于滑块的较小边。
+可以使用填充值使旋钮变大。填充值也可以是不对称的。
+
+
+用法
+##################################
+
+值和范围
+**********************************
+要设置初始值，请使用 ``lv_slider_set_value(slider, new_value, LV_ANIM_ON/OFF)`` 。 ``lv_slider_set_anim_time(slider, anim_time)`` 设置动画时间（以毫秒为单位）。
+
+要指定范围（最小，最大值），可以使用 ``lv_slider_set_range(slider, min , max)`` 。
+
+
+
+对称范围
+**********************************
+除普通类型外，滑块还可以配置为两种其他类型：
+
+- **LV_SLIDER_TYPE_NORMAL** 普通型
+- **LV_SLIDER_TYPE_SYMMETRICAL** 将指标对称地绘制为零（从零开始，从左到右）
+- **LV_SLIDER_TYPE_RANGE** 允许为左（起始）值使用附加旋钮。 （可与 ``lv_slider_set/get_left_value()`` 一起使用）
+
+可以使用 ``lv_slider_set_type(slider, LV_SLIDER_TYPE_...)`` 更改类型
+
+
+
+仅旋钮模式
+**********************************
+通常，可以通过拖动旋钮或单击滑块来调整滑块。在后一种情况下，旋钮移动到所单击的点，并且滑块值相应地变化。在某些情况下，希望将滑块设置为仅在拖动旋钮时做出反应。
+
+通过调用 ``lv_obj_set_adv_hittest(slider, true);`` 启用此功能。
+
+
+
+事件
+##################################
+除了 `通用事件`_ ，滑杆还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_VALUE_CHANGED** 在使用键拖动或更改滑块时发送。拖动滑块时（仅当释放时）连续发送事件。使用lv_slider_is_dragged确定滑块是被拖动还是刚刚释放。
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+滑杆可处理以下按键：
+
+- **LV_KEY_UP, LV_KEY_RIGHT** 将滑块的值增加1
+- **LV_KEY_DOWN, LV_KEY_LEFT** 将滑块的值减1
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+自定义样式的滑块
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/26_slider/01_lv_ex_slider_1.png
+	   
+	  自定义样式的滑块
+
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_SLIDER
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("Value: %d\n", lv_slider_get_value(obj));
+		}
+	}
+
+	void lv_ex_slider_1(void)
+	{
+		/*Create a slider*/
+		lv_obj_t * slider = lv_slider_create(lv_scr_act(), NULL);
+		lv_obj_align(slider, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_event_cb(slider, event_handler);
+	}
+
+	#endif
+
+
+用滑块设定值
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/26_slider/02_lv_ex_slider_2.png
+	   
+	  用滑块设定值
+
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_SLIDER
+
+	static void slider_event_cb(lv_obj_t * slider, lv_event_t event);
+	static lv_obj_t * slider_label;
+
+	void lv_ex_slider_2(void)
+	{
+		/* Create a slider in the center of the display */
+		lv_obj_t * slider = lv_slider_create(lv_scr_act(), NULL);
+		lv_obj_set_width(slider, LV_DPI * 2);
+		lv_obj_align(slider, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_event_cb(slider, slider_event_cb);
+		lv_slider_set_range(slider, 0, 100);
+		
+		/* Create a label below the slider */
+		slider_label = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(slider_label, "0");
+		lv_obj_set_auto_realign(slider_label, true);
+		lv_obj_align(slider_label, slider, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+		
+		/* Create an informative label */
+		lv_obj_t * info = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(info, "Welcome to the slider+label demo!\n"
+								"Move the slider and see that the label\n"
+								"updates to match it.");
+		lv_obj_align(info, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 10);
+	}
+
+	static void slider_event_cb(lv_obj_t * slider, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			static char buf[4]; /* max 3 bytes for number plus 1 null terminating byte */
+			snprintf(buf, 4, "%u", lv_slider_get_value(slider));
+			lv_label_set_text(slider_label, buf);
+		}
+	}
+
+	#endif
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

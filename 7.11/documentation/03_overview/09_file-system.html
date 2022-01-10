@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>文件系统(File system) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="动画效果(Animations)" href="10_animation.html" />
+    <link rel="prev" title="图片(Images)" href="08_image.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_image.html">图片(Images)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文件系统(File system)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">添加驱动程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">使用范例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">使用图像驱动程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>文件系统(File system)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/09_file-system.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="file-system">
+<h1>文件系统(File system)<a class="headerlink" href="#file-system" title="永久链接至标题">¶</a></h1>
+<p>LVGL具有 “文件系统” (File system)抽象模块，使可以附加任何类型的文件系统。文件系统由驱动器号标识。例如，如果SD卡与字母 <code class="docutils literal notranslate"><span class="pre">`S`</span></code> 相关联，则可以访问 <code class="docutils literal notranslate"><span class="pre">&quot;S:path/to/file.txt&quot;</span></code> 之类的文件。</p>
+<div class="section" id="id1">
+<h2>添加驱动程序<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>要添加驱动程序， <code class="docutils literal notranslate"><span class="pre">lv_fs_drv_t</span></code> 需要这样初始化：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">lv_fs_drv_t</span> <span class="n">drv</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">lv_fs_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span>                     <span class="cm">/*Basic initialization*/</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="n">drv</span><span class="p">.</span><span class="n">letter</span> <span class="o">=</span> <span class="sc">&#39;S&#39;</span><span class="p">;</span>                         <span class="cm">/*An uppercase letter to identify the drive */</span>
+<span class="linenos"> 5</span>    <span class="n">drv</span><span class="p">.</span><span class="n">file_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">my_file_object</span><span class="p">);</span>   <span class="cm">/*Size required to store a file object*/</span>
+<span class="linenos"> 6</span>    <span class="n">drv</span><span class="p">.</span><span class="n">rddir_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">my_dir_object</span><span class="p">);</span>   <span class="cm">/*Size required to store a directory object (used by dir_open/close/read)*/</span>
+<span class="linenos"> 7</span>    <span class="n">drv</span><span class="p">.</span><span class="n">ready_cb</span> <span class="o">=</span> <span class="n">my_ready_cb</span><span class="p">;</span>               <span class="cm">/*Callback to tell if the drive is ready to use */</span>
+<span class="linenos"> 8</span>    <span class="n">drv</span><span class="p">.</span><span class="n">open_cb</span> <span class="o">=</span> <span class="n">my_open_cb</span><span class="p">;</span>                 <span class="cm">/*Callback to open a file */</span>
+<span class="linenos"> 9</span>    <span class="n">drv</span><span class="p">.</span><span class="n">close_cb</span> <span class="o">=</span> <span class="n">my_close_cb</span><span class="p">;</span>               <span class="cm">/*Callback to close a file */</span>
+<span class="linenos">10</span>    <span class="n">drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">my_read_cb</span><span class="p">;</span>                 <span class="cm">/*Callback to read a file */</span>
+<span class="linenos">11</span>    <span class="n">drv</span><span class="p">.</span><span class="n">write_cb</span> <span class="o">=</span> <span class="n">my_write_cb</span><span class="p">;</span>               <span class="cm">/*Callback to write a file */</span>
+<span class="linenos">12</span>    <span class="n">drv</span><span class="p">.</span><span class="n">seek_cb</span> <span class="o">=</span> <span class="n">my_seek_cb</span><span class="p">;</span>                 <span class="cm">/*Callback to seek in a file (Move cursor) */</span>
+<span class="linenos">13</span>    <span class="n">drv</span><span class="p">.</span><span class="n">tell_cb</span> <span class="o">=</span> <span class="n">my_tell_cb</span><span class="p">;</span>                 <span class="cm">/*Callback to tell the cursor position  */</span>
+<span class="linenos">14</span>    <span class="n">drv</span><span class="p">.</span><span class="n">trunc_cb</span> <span class="o">=</span> <span class="n">my_trunc_cb</span><span class="p">;</span>               <span class="cm">/*Callback to delete a file */</span>
+<span class="linenos">15</span>    <span class="n">drv</span><span class="p">.</span><span class="n">size_cb</span> <span class="o">=</span> <span class="n">my_size_cb</span><span class="p">;</span>                 <span class="cm">/*Callback to tell a file&#39;s size */</span>
+<span class="linenos">16</span>    <span class="n">drv</span><span class="p">.</span><span class="n">rename_cb</span> <span class="o">=</span> <span class="n">my_rename_cb</span><span class="p">;</span>             <span class="cm">/*Callback to rename a file */</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="n">drv</span><span class="p">.</span><span class="n">dir_open_cb</span> <span class="o">=</span> <span class="n">my_dir_open_cb</span><span class="p">;</span>         <span class="cm">/*Callback to open directory to read its content */</span>
+<span class="linenos">19</span>    <span class="n">drv</span><span class="p">.</span><span class="n">dir_read_cb</span> <span class="o">=</span> <span class="n">my_dir_read_cb</span><span class="p">;</span>         <span class="cm">/*Callback to read a directory&#39;s content */</span>
+<span class="linenos">20</span>    <span class="n">drv</span><span class="p">.</span><span class="n">dir_close_cb</span> <span class="o">=</span> <span class="n">my_dir_close_cb</span><span class="p">;</span>       <span class="cm">/*Callback to close a directory */</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">drv</span><span class="p">.</span><span class="n">free_space_cb</span> <span class="o">=</span> <span class="n">my_free_space_cb</span><span class="p">;</span>     <span class="cm">/*Callback to tell free space on the drive */</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">drv</span><span class="p">.</span><span class="n">user_data</span> <span class="o">=</span> <span class="n">my_user_data</span><span class="p">;</span>             <span class="cm">/*Any custom data if required*/</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">lv_fs_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span>                 <span class="cm">/*Finally register the drive*/</span>
+</pre></div>
+</div>
+<p>任何回调都可以为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，以指示不支持该操作。</p>
+<p>作为使用回调的示例，如果使用 <code class="docutils literal notranslate"><span class="pre">lv_fs_open(&amp;file,</span> <span class="pre">&quot;S:/folder/file.txt&quot;,</span> <span class="pre">LV_FS_MODE_WR)</span></code>，LVGL会：</p>
+<ol class="arabic simple">
+<li><p>验证是否存在带字母“ S”的已注册驱动器。</p></li>
+<li><p>检查是否实现了 <code class="docutils literal notranslate"><span class="pre">open_cb</span></code> （非 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ）。</p></li>
+<li><p>调用 <code class="docutils literal notranslate"><span class="pre">open_cb</span></code> 设置 <code class="docutils literal notranslate"><span class="pre">&quot;folder/file.txt&quot;</span></code> 路径。</p></li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>使用范例<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>下面的示例显示如何从文件读取：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">lv_fs_file_t</span> <span class="n">f</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">lv_fs_res_t</span> <span class="n">res</span><span class="p">;</span>
+<span class="linenos"> 3</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">lv_fs_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">,</span> <span class="s">&quot;S:folder/file.txt&quot;</span><span class="p">,</span> <span class="n">LV_FS_MODE_RD</span><span class="p">);</span>
+<span class="linenos"> 4</span>    <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">LV_FS_RES_OK</span><span class="p">)</span> <span class="n">my_error_handling</span><span class="p">();</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">uint32_t</span> <span class="n">read_num</span><span class="p">;</span>
+<span class="linenos"> 7</span>    <span class="kt">uint8_t</span> <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<span class="linenos"> 8</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">lv_fs_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">read_num</span><span class="p">);</span>
+<span class="linenos"> 9</span>    <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">LV_FS_RES_OK</span> <span class="o">||</span> <span class="n">read_num</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">)</span> <span class="n">my_error_handling</span><span class="p">();</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="n">lv_fs_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lv_fs_open</span></code> 中的模式可以是 <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_WR</span></code> 以打开以进行写入，也可以是 <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_RD</span></code> 。两者的 <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_WR</span></code></p>
+<p>本示例说明如何读取目录的内容。由驱动程序决定如何标记目录，但是在目录名称前面插入 <code class="docutils literal notranslate"><span class="pre">'/'</span></code> 可能是一个好习惯。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">lv_fs_dir_t</span> <span class="n">dir</span><span class="p">;</span>
+<span class="linenos"> 2</span>    <span class="n">lv_fs_res_t</span> <span class="n">res</span><span class="p">;</span>
+<span class="linenos"> 3</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">lv_fs_dir_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">,</span> <span class="s">&quot;S:/folder&quot;</span><span class="p">);</span>
+<span class="linenos"> 4</span>    <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">LV_FS_RES_OK</span><span class="p">)</span> <span class="n">my_error_handling</span><span class="p">();</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="kt">char</span> <span class="n">fn</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="linenos"> 7</span>    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="n">res</span> <span class="o">=</span> <span class="n">lv_fs_dir_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">,</span> <span class="n">fn</span><span class="p">);</span>
+<span class="linenos"> 9</span>            <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">LV_FS_RES_OK</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">10</span>                    <span class="n">my_error_handling</span><span class="p">();</span>
+<span class="linenos">11</span>                    <span class="k">break</span><span class="p">;</span>
+<span class="linenos">12</span>            <span class="p">}</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>            <span class="cm">/*fn is empty, if not more files to read*/</span>
+<span class="linenos">15</span>            <span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">16</span>                    <span class="k">break</span><span class="p">;</span>
+<span class="linenos">17</span>            <span class="p">}</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">);</span>
+<span class="linenos">20</span>    <span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">lv_fs_dir_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>使用图像驱动程序<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>图像对象也可以从文件中打开（除了存储在闪存中的变量）。</p>
+<p>要初始化 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/14_img.html">图像</a> ，需要以下回调：</p>
+<ul class="simple">
+<li><p>open</p></li>
+<li><p>close</p></li>
+<li><p>read</p></li>
+<li><p>seek</p></li>
+<li><p>tell</p></li>
+</ul>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="10_animation.html" class="btn btn-neutral float-right" title="动画效果(Animations)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="08_image.html" class="btn btn-neutral float-left" title="图片(Images)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

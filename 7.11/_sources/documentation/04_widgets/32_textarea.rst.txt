@@ -1,0 +1,389 @@
+==================================
+文本框(lv_textarea)
+==================================
+
+概述
+##################################
+文本框是一个带有标签和光标的 `页面(lv_page)`_ 。可以在其中添加文本或字符。长行被换行，并且当文本变得足够长时，可以滚动文本区域。
+ 
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+零件和样式
+##################################
+文本框与 `页面(lv_page)`_ 具有相同的部分。期望 ``LV_PAGE_PART_SCRL`` ，因为它不能被引用并且始终是透明的。请参阅该页面的详细文档。
+
+除了Page部分之外，还存在虚拟 ```LV_TEXTAREA_PART_CURSOR`` 部分来绘制光标。光标的区域始终是当前字符的边界框。可以通过在 ``LV_TEXTAREA_PART_CURSOR`` 的样式中添加背景色和背景色来创建块光标。创建行光标使光标透明并设置border_side属性。
+
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+用法
+##################################
+
+
+添加文字
+**********************************
+可以使用以下命令将文本或字符插入当前光标的位置：
+
+- ``lv_textarea_add_char(textarea, 'c')``
+- ``lv_textarea_add_text(textarea, "insert this text")``
+
+要添加宽字符，例如 ``'á'`` , ``'ß'`` 或 CJK 字符(中日韩统一表意文字)，请使用 ``lv_textarea_add_text(ta, "á")`` 。
+
+``lv_textarea_set_text(ta, "New text")`` 更改整个文本。
+
+
+占位符
+**********************************
+可以使用 ``lv_textarea_set_placeholder_text(ta, "Placeholder text")`` 指定一个占位符文本-当“文本”区域为空时显示。
+
+删除字符
+**********************************
+要从当前光标位置的左侧删除字符，请使用 ``lv_textarea_del_char(textarea)`` 
+
+要从右边删除，请使用 ``lv_textarea_del_char(textarea)`` 
+
+
+移动光标
+**********************************
+可以使用 ``lv_textarea_set_cursor_pos(textarea, 10)`` 直接修改光标位置。 ``0`` 位置表示“在第一个字符之前”， ``LV_TA_CURSOR_LAST`` 表示“在最后一个字符之后”
+
+可以使用
+
+- ``lv_textarea_cursor_right(textarea)``
+- ``lv_textarea_cursor_left(textarea)``
+- ``lv_textarea_cursor_up(textarea)``
+- ``lv_textarea_cursor_down(textarea)``
+
+如果调用 ``lv_textarea_set_cursor_click_pos(textarea, true)`` ，则光标将跳至单击“文本”区域的位置。
+
+
+隐藏光标
+**********************************
+可以使用 ``lv_textarea_set_cursor_hidden(textarea, true)`` 隐藏光标。
+
+
+光标闪烁时间
+**********************************
+光标的闪烁时间可以通过 ``lv_textarea_set_cursor_blink_time(textarea, time_ms)`` 进行调整。
+
+
+单行模式
+**********************************
+可以将“文本”区域配置为以 ``lv_textarea_set_one_line(ta, true)`` 为一行。在此模式下，高度自动设置为仅显示一行，忽略换行符，并且禁用自动换行。
+
+
+
+密码模式
+**********************************
+文本区域支持可以通过 ``lv_textarea_set_pwd_mode(textarea, true)`` 启用的密码模式。
+
+如果字体中存在 ``•`` ( `Bullet,U+2022`_ ) 字符，则一段时间后或输入新字符后，输入的字符将转换为该字符。如果 ``•`` 不存在，将使用 ``*`` 。
+
+在密码模式下 ``lv_textarea_get_text(textarea)`` 给出真实文本，而不是项目符号字符。
+
+可见时间可以使用lv_textarea_set_pwd_show_time（textarea，time_ms）进行调整。
+
+.. _Bullet,U+2022: http://www.fileformat.info/info/unicode/char/2022/index.htm
+
+
+文字对齐
+**********************************
+可以使用 ``lv_textarea_set_text_align(textarea, LV_LABEL_ALIGN_LET/CENTER/RIGHT)`` 将文本左，中或右对齐。
+
+在单行模式下，仅当文本保持对齐时才能水平滚动文本。
+
+
+字符过滤
+**********************************
+可以使用 ``lv_textarae_set_accepted_chars(ta, "0123456789.+-")`` 设置可接受字符的列表。其他字符将被忽略。
+
+
+最大文字长度
+**********************************
+最大字符数可以通过 ``lv_textarea_set_max_length(textarea, max_char_num)`` 进行限制
+
+长文本
+**********************************
+如果“文本”区域中的文本很长（例如> 20k个字符），则其滚动和绘制速度可能会很慢。但是，通过在 lv_conf.h 中启用 ``LV_LABEL_LONG_TXT_HINT 1`` 可以极大地改善它。
+它将保存一些有关标签的信息，以加快其绘制速度。使用 ``LV_LABEL_LONG_TXT_HINT`` ，滚动和绘图将与使用“普通”短文本一样快。
+
+选择文字
+**********************************
+如果通过 ``lv_textarea_set_text_sel(textarea, true)`` 启用，则可以选择一部分文本。就像用鼠标在PC上选择文本时一样。
+
+
+滚动条
+**********************************
+可以根据 ``lv_textarea_set_scrollbar_mode(textarea, LV_SCRLBAR_MODE_...)`` 设置的不同策略显示滚动条。在Page对象中了解更多信息。
+
+
+滚动传播
+**********************************
+当“文本”区域在另一个可滚动对象（如“页面”）上滚动并且滚动已到达“文本”区域的边缘时，滚动可以传播到父对象。也就是说，当“文本”区域可以进一步滚动时，父级将被滚动。
+
+可以使用 ``lv_ta_set_scroll_propagation(ta, true)`` 启用它。
+
+在 `页面(lv_page)`_ 对象中了解更多信息。
+
+.. _页面(lv_page): http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+边缘闪烁
+**********************************
+当“文本”区域滚动到边缘时，如果通过 ``lv_ta_set_edge_flash(ta, true)`` 启用，则可以显示类似Flash动画的圆圈
+
+
+事件
+##################################
+除了 `通用事件`_ ，文本框还支持以下 `特殊事件`_ ：
+
+- **LV_EVENT_INSERT** 在插入字符或文本之前发送。事件数据是计划插入的文本。lv_ta_set_insert_replace（ta，“新文本”）替换要插入的文本。新文本不能位于局部变量中，该局部变量会在事件回调存在时被销毁。 “”表示请勿插入任何内容。
+- **LV_EVENT_VALUE_CHANGED** 当文本区域的内容已更改时。
+- **LV_EVENT_APPLY** 当LV_KEY_ENTER发送到处于单行模式的文本区域时。
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+文本框可处理以下按键：
+
+- **LV_KEY_UP/DOWN/LEFT/RIGHT** 移动光标
+- **Any character** 将字符添加到当前光标位置
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单的文本框
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/32_textarea/01_lv_ex_textarea_1.png
+	   
+	  简单的文本框
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_TEXTAREA
+
+	lv_obj_t * ta1;
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("Value: %s\n", lv_textarea_get_text(obj));
+		}
+		else if(event == LV_EVENT_LONG_PRESSED_REPEAT) {
+			/*For simple test: Long press the Text are to add the text below*/
+			const char  * txt = "\n\nYou can scroll it if the text is long enough.\n";
+			static uint16_t i = 0;
+			if(txt[i] != '\0') {
+				lv_textarea_add_char(ta1, txt[i]);
+				i++;
+			}
+		}
+	}
+
+	void lv_ex_textarea_1(void)
+	{
+		ta1 = lv_textarea_create(lv_scr_act(), NULL);
+		lv_obj_set_size(ta1, 200, 100);
+		lv_obj_align(ta1, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_textarea_set_text(ta1, "A text in a Text Area");    /*Set an initial text*/
+		lv_obj_set_event_cb(ta1, event_handler);
+	}
+
+	#endif
+
+
+密码模式的文本区域
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/32_textarea/02_lv_ex_textarea_2.png
+	   
+	  简单的文本框
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_TEXTAREA && LV_USE_KEYBOARD
+
+	static void ta_event_cb(lv_obj_t * ta, lv_event_t event);
+
+	static lv_obj_t * kb;
+
+	void lv_ex_textarea_2(void)
+	{
+		/* Create the password box */
+		lv_obj_t * pwd_ta = lv_textarea_create(lv_scr_act(), NULL);
+		lv_textarea_set_text(pwd_ta, "");
+		lv_textarea_set_pwd_mode(pwd_ta, true);
+		lv_textarea_set_one_line(pwd_ta, true);
+		lv_textarea_set_cursor_hidden(pwd_ta, true);
+		lv_obj_set_width(pwd_ta, LV_HOR_RES / 2 - 20);
+		lv_obj_set_pos(pwd_ta, 5, 20);
+		lv_obj_set_event_cb(pwd_ta, ta_event_cb);
+
+		/* Create a label and position it above the text box */
+		lv_obj_t * pwd_label = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(pwd_label, "Password:");
+		lv_obj_align(pwd_label, pwd_ta, LV_ALIGN_OUT_TOP_LEFT, 0, 0);
+
+		/* Create the one-line mode text area */
+		lv_obj_t * oneline_ta = lv_textarea_create(lv_scr_act(), pwd_ta);
+		lv_textarea_set_pwd_mode(oneline_ta, false);
+		lv_textarea_set_cursor_hidden(oneline_ta, true);
+		lv_obj_align(oneline_ta, NULL, LV_ALIGN_IN_TOP_RIGHT, -5, 20);
+
+
+		/* Create a label and position it above the text box */
+		lv_obj_t * oneline_label = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(oneline_label, "Text:");
+		lv_obj_align(oneline_label, oneline_ta, LV_ALIGN_OUT_TOP_LEFT, 0, 0);
+
+		/* Create a keyboard */
+		kb = lv_keyboard_create(lv_scr_act(), NULL);
+		lv_obj_set_size(kb,  LV_HOR_RES, LV_VER_RES / 2);
+
+		lv_keyboard_set_textarea(kb, pwd_ta); /* Focus it on one of the text areas to start */
+		lv_keyboard_set_cursor_manage(kb, true); /* Automatically show/hide cursors on text areas */
+	}
+
+	static void ta_event_cb(lv_obj_t * ta, lv_event_t event)
+	{
+		if(event == LV_EVENT_CLICKED) {
+			/* Focus on the clicked text area */
+			if(kb != NULL)
+				lv_keyboard_set_textarea(kb, ta);
+		}
+
+		else if(event == LV_EVENT_INSERT) {
+			const char * str = lv_event_get_data();
+			if(str[0] == '\n') {
+				printf("Ready\n");
+			}
+		}
+	}
+
+	#endif
+
+
+文字自动格式化
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/32_textarea/03_lv_ex_textarea_3.png
+	   
+	  文字自动格式化
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_TEXTAREA && LV_USE_KEYBOARD
+
+	static void ta_event_cb(lv_obj_t * ta, lv_event_t event);
+
+	static lv_obj_t * kb;
+
+	/**
+	 * Automatically format text like a clock. E.g. "12:34"
+	 * Add the ':' automatically.
+	 */
+	void lv_ex_textarea_3(void)
+	{
+		/* Create the text area */
+		lv_obj_t * ta = lv_textarea_create(lv_scr_act(), NULL);
+		lv_obj_set_event_cb(ta, ta_event_cb);
+		lv_textarea_set_accepted_chars(ta, "0123456789:");
+		lv_textarea_set_max_length(ta, 5);
+		lv_textarea_set_one_line(ta, true);
+		lv_textarea_set_text(ta, "");
+
+
+		/*Create a custom map for the keyboard*/
+
+		static const char * kb_map[] = {
+				  "1","2", "3", " ","\n",
+				  "4", "5", "6", " ", "\n",
+				  "7", "8", "9", LV_SYMBOL_BACKSPACE ,"\n",
+				  "0",LV_SYMBOL_LEFT,LV_SYMBOL_RIGHT," ",""
+		};
+
+		static const lv_btnmatrix_ctrl_t kb_ctrl[] = {
+			   LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_HIDDEN,
+			   LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_HIDDEN,
+			   LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT,
+			   LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_HIDDEN,
+		};
+
+		/* Create a keyboard*/
+		kb = lv_keyboard_create(lv_scr_act(), NULL);
+		lv_obj_set_size(kb,  LV_HOR_RES, LV_VER_RES / 2);
+		lv_keyboard_set_mode(kb, LV_KEYBOARD_MODE_NUM);
+		lv_keyboard_set_map(kb, LV_KEYBOARD_MODE_NUM, kb_map);
+		lv_keyboard_set_ctrl_map(kb, LV_KEYBOARD_MODE_NUM,kb_ctrl);
+		lv_keyboard_set_textarea(kb, ta);
+	}
+
+	static void ta_event_cb(lv_obj_t * ta, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			const char * txt = lv_textarea_get_text(ta);
+			if(txt[3] == ':') {
+				lv_textarea_del_char(ta);
+			}
+			else if(txt[0] >= '0' && txt[0] <= '9' &&
+				txt[1] >= '0' && txt[1] <= '9' &&
+				txt[2] != ':')
+			{
+				lv_textarea_set_cursor_pos(ta, 2);
+				lv_textarea_add_char(ta, ':');
+			}
+		}
+	}
+
+	#endif
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

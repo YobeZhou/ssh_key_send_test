@@ -1,0 +1,27 @@
+==================================
+心跳
+==================================
+LVGL 需要系统滴答声才能知道动画和其他任务的经过时间。
+
+为此我们需要定期调用 lv_tick_inc(tick_period) 函数，并以毫秒为单位告知调用周期。例如， lv_tick_inc(1) 用于每毫秒调用一次。
+
+为了精确地知道经过的毫秒数，lv_tick_inc 应该在比 lv_task_handler() 更高优先级的例程中被调用(例如在中断中)，即使 lv_task_handler 的执行花费较长时间。
+
+使用 FreeRTOS 时，可以在 vApplicationTickHook 中调用 lv_tick_inc 。
+
+在基于 Linux 的设备上(例如在 Raspberry Pi 上)， lv_tick_inc 可以在如下所示的线程中调用，比如：
+
+
+.. code-block:: c
+    :linenos:
+	
+	void * tick_thread (void *args)
+	{
+		  while(1) {
+			usleep(5*1000);   /*Sleep for 5 millisecond*/
+			lv_tick_inc(5);      /*Tell LVGL that 5 milliseconds were elapsed*/
+		}
+	}
+
+
+

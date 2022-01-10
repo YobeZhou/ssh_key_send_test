@@ -1,0 +1,196 @@
+==================================
+列表(lv_list)
+==================================
+
+概述
+##################################
+列表是从背景 `页面(Page)`_ 和其上的 `按钮(Buttons)`_ 构建的。按钮包含可选的类似图标的 `图像(Image)`_ （也可以是符号）和 `标签(Label) `_。当列表足够长时，可以滚动它。
+
+.. _页面(Page):  http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+.. _按钮(Buttons): http://lvgl.100ask.net/documentation/04_widgets/04_btn.html
+.. _图像(Image: http://lvgl.100ask.net/documentation/04_widgets/14_img.html
+.. _标签(Label):http://lvgl.100ask.net/documentation/04_widgets/17_label.html
+
+
+零件和样式
+##################################
+列表与 `页面(Page)`_ 具有相同的部分
+
+- ``LV_LIST_PART_BG``
+- ``LV_LIST_PART_SCRL``
+- ``LV_LIST_PART_SCRLBAR``
+- ``LV_LIST_PART_EDGE_FLASH``
+
+有关详细信息，请参见 `页面(Page)`_  部分。
+
+列表上的按钮被视为普通按钮，它们只有一个主要部分，称为 ``LV_BTN_PART_MAIN`` 。
+
+.. _页面(Page):  http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+用法
+##################################
+
+添加按钮
+**********************************
+可以使用 ``lv_list_add_btn(list, &icon_img, "Text")`` 或符号 ``lv_list_add_btn(list, SYMBOL_EDIT, "Edit text")`` 添加新的列表元素（按钮）。如果不想添加图像，请使用 ``NULL`` 作为图像源。该函数返回指向创建的按钮的指针，以允许进行进一步的配置。
+
+按钮的宽度根据对象的宽度设置为最大。按钮的高度会根据内容自动调整。 （内容高度+ padding_top + padding_bottom）。
+
+标签以 ``LV_LABEL_LONG_SROLL_CIRC`` 长模式创建，以自动循环滚动长标签。
+
+``lv_list_get_btn_label(list_btn)`` 和 ``lv_list_get_btn_img(list_btn)`` 可用于获取标签和列表按钮的图像。可以直接使用 ``lv_list_get_btn_text(list_btn)`` 来输入文本。
+
+
+
+删除按钮
+**********************************
+要删除列表元素，请使用 ``lv_list_remove(list, btn_index)`` 。可以通过 ``lv_list_get_btn_index(list, btn)`` 获得btn_index，其中btn是 ``lv_list_add_btn()`` 的返回值。
+
+要清除列表（删除所有按钮），请使用 ``lv_list_clean(list)`` 
+
+
+手动导航
+**********************************
+可以使用 ``lv_list_up(list)`` 和 ``lv_list_down(list)`` 在列表中手动导航。
+
+可以使用 ``lv_list_focus(btn, LV_ANIM_ON/OFF)`` 直接关注按钮。
+
+上/下/焦点移动的动画时间可以通过以下命令设置： ``lv_list_set_anim_time(list, anim_time)`` 。动画时间为零表示不是动画。
+
+
+布局
+**********************************
+默认情况下，列表是垂直的。要获取水平列表，请使用 ``lv_list_set_layout(list, LV_LAYOUT_ROW_MID)`` 。
+
+
+边缘闪烁
+**********************************
+当列表到达最高或最低位置时，可以显示类似圆圈的效果。 ``lv_list_set_edge_flash(list, true)`` 启用此功能。
+
+
+滚动传播
+**********************************
+如果列表是在其他可滚动元素（例如 `页面(Page)`_ ）上创建的，并且列表无法进一步滚动，则滚动可以传播到父级。这样，滚动将在父级上继续。可以通过lv_list_set_scroll_propagation（list，true）启用它
+
+.. _页面(Page):  http://lvgl.100ask.net/documentation/04_widgets/24_page.html
+
+
+
+事件
+##################################
+仅支持 `通用事件`_  。 
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+列表处理以下按键： 
+
+
+- **LV_KEY_RIGHT/DOWN** 选择下一个按钮
+- **LV_KEY_LEFT/UP** 选择上一个按钮
+
+
+请注意，与往常一样， ``LV_K​​EY_ENTER`` 的状态会转换为 ``LV_EVENT_PRESSED/PRESSING/RELEASED`` 等。
+
+所选按钮处于 ``LV_BTN_STATE_PR/TG_PR`` 状态。
+
+要手动选择按钮，请使用 ``lv_list_set_btn_selected(list, btn)`` 。当列表散焦并再次聚焦时，它将恢复最后选择的按钮。
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单的列表
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/20_list/01_lv_ex_list_1.png
+	   
+	  简单的列表
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_LIST
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_CLICKED) {
+			printf("Clicked: %s\n", lv_list_get_btn_text(obj));
+		}
+	}
+
+	void lv_ex_list_1(void)
+	{
+		/*Create a list*/
+		lv_obj_t * list1 = lv_list_create(lv_scr_act(), NULL);
+		lv_obj_set_size(list1, 160, 200);
+		lv_obj_align(list1, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Add buttons to the list*/
+		lv_obj_t * list_btn;
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_FILE, "New");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_DIRECTORY, "Open");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_CLOSE, "Delete");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_EDIT, "Edit");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_SAVE, "Save");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_BELL, "Notify");
+		lv_obj_set_event_cb(list_btn, event_handler);
+
+		list_btn = lv_list_add_btn(list1, LV_SYMBOL_BATTERY_FULL, "Battery");
+		lv_obj_set_event_cb(list_btn, event_handler);
+	}
+
+	#endif
+
+
+
+
+
+
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

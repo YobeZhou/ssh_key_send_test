@@ -1,0 +1,912 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>图表(lv_chart) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="容器(lv_cont)" href="10_cont.html" />
+    <link rel="prev" title="复选框(lv_cb)" href="08_checkbox.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">图表(lv_chart)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">数据系列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">系列类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">修改数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">覆盖系列的默认起点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">设置外部数据源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">获取当前图表信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">更新模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">浮标个数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">垂直范围</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">分割线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">刻度线和标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">光标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">按键</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id23">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id24">折线图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id25">折线图添加褪色区域效果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#typedefs">Typedefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enums">enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id26">函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>图表(lv_chart)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/09_chart.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-chart">
+<h1>图表(lv_chart)<a class="headerlink" href="#lv-chart" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>图表是可视化数据点的基本对象。它们支持折线图（将点与线连接和/或在其上绘制点）和柱形图。</p>
+<p>图表还支持分隔线，2 y轴，刻度线和刻度线文本。</p>
+</div>
+<div class="section" id="id2">
+<h2>零件和样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>图表的主要部分称为 <code class="docutils literal notranslate"><span class="pre">LV_CHART_PART_BG</span></code> ，它使用所有典型的背景属性。文本样式属性确定轴文本的样式，而线属性确定刻度线的样式。填充值在侧面增加了一些空间，因此使序列区域更小。填充也可用于为轴文本和刻度线留出空间。</p>
+<p>该系列的背景称为 <code class="docutils literal notranslate"><span class="pre">LV_CHART_PART_SERIES_BG</span></code> ，它位于主要背景上。在此部分上绘制了分隔线和系列数据。除典型的背景样式属性外，分割线还使用线型属性。填充值指示此零件与轴文本之间的间隔。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_CHART_PART_SERIES</span></code> 可以引用该系列的样式。对于列类型，使用以下属性：</p>
+<ul class="simple">
+<li><p>半径：数据点的半径</p></li>
+<li><p>padding_inner：相同x坐标的列之间的间隔</p></li>
+</ul>
+<p>如果是线型图，则使用以下属性：</p>
+<ul class="simple">
+<li><p>线属性来描述线</p></li>
+<li><p>点的大小半径</p></li>
+<li><p>bg_opa：线条下方区域的整体不透明度</p></li>
+<li><p>bg_main_stop：的％bg_opa在顶部以创建一个alpha褪色（0：在顶部透明，255：bg_opa在顶部）</p></li>
+<li><p>bg_grad_stop：底部bg_opa的百分比以创建alpha渐变（0：底部透明，255：bg_opa顶部）</p></li>
+<li><p>bg_drag_dir：应该 <code class="docutils literal notranslate"><span class="pre">LV_GRAD_DIR_VER</span></code> 允许通过bg_main_stop和bg_grad_stop进行Alpha淡入</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">LV_CHART_PART_CURSOR</span></code> 引用游标。可以添加任意数量的光标，并且可以通过与行相关的样式属性来设置其外观。创建游标时设置游标的颜色，并用该值覆盖 <code class="docutils literal notranslate"><span class="pre">line_color</span></code> 样式。</p>
+</div>
+<div class="section" id="id3">
+<h2>用法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>数据系列<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>您可以通过 <code class="docutils literal notranslate"><span class="pre">lv_chart_add_series(chart,</span> <span class="pre">color)</span></code> 向图表添加任意数量的系列。它为包含所选颜色的 <code class="docutils literal notranslate"><span class="pre">lv_chart_u</span> <span class="pre">series_t</span></code> 结构分配数据，如果不使用外部数组，如果分配了外部数组，则与该系列关联的任何内部点都将被释放，而序列指向外部数组。</p>
+</div>
+<div class="section" id="id5">
+<h3>系列类型<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>存在以下数据显示类型：</p>
+<ul class="simple">
+<li><p><strong>LV_CHART_TYPE_NONE</strong> - 不显示任何数据。它可以用来隐藏系列。</p></li>
+<li><p><strong>LV_CHART_TYPE_LINE</strong> - 在两点之间画线。</p></li>
+<li><p><strong>LV_CHART_TYPE_COLUMN</strong> - 绘制列。</p></li>
+</ul>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_type(chart,</span> <span class="pre">LV_CHART_TYPE_...)</span></code> 指定显示类型。可以对类型进行“或”运算（例如 <code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_LINE</span></code> ）。</p>
+</div>
+<div class="section" id="id6">
+<h3>修改数据<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>有几个选项可以设置系列数据：</p>
+<ol class="arabic simple">
+<li><p>在数组中手动​​设置值，例如 <code class="docutils literal notranslate"><span class="pre">ser1-&gt;points[3]</span> <span class="pre">=</span> <span class="pre">7</span></code> ，然后使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_refresh(chart)</span></code> 刷新图表。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_point_id(chart,</span> <span class="pre">ser,</span> <span class="pre">value,</span> <span class="pre">id)</span></code> ，其中id是您要更新的点的索引。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_next(chart,</span> <span class="pre">ser,</span> <span class="pre">value)</span></code> 。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_init_points(chart,</span> <span class="pre">ser,</span> <span class="pre">value)</span></code> 将所有点初始化为给定值。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_points(chart,</span> <span class="pre">ser,</span> <span class="pre">value_array)</span></code> 设置数组中的所有点。</p></li>
+</ol>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">LV_CHART_POINT_DEF</span></code> 作为值可使库跳过该点，列或线段的绘制。</p>
+</div>
+<div class="section" id="id7">
+<h3>覆盖系列的默认起点<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>如果希望绘图从默认点（序列的点[0]）之外的其他点开始，则可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_x_start_point(chart,</span> <span class="pre">ser,</span> <span class="pre">id)</span></code> 函数设置替代索引，其中id是要开始的新索引位置从。</p>
+</div>
+<div class="section" id="id8">
+<h3>设置外部数据源<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>可以使用以下函数从外部数据源更新图表系列： <code class="docutils literal notranslate"><span class="pre">lv_chart_set_ext_array(chart,</span> <span class="pre">ser,</span> <span class="pre">array,</span> <span class="pre">point_cnt</span> <span class="pre">)</span></code> ，其中array是lv_coord_t与point_cnt元素的外部数组。注意：更新外部数据源后，应调用 <code class="docutils literal notranslate"><span class="pre">lv_chart_refresh(chart)</span></code> 来更新图表。</p>
+</div>
+<div class="section" id="id9">
+<h3>获取当前图表信息<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>有四个功能可获取有关图表的信息：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_type(chart)</span></code> 返回当前图表类型。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_point_count(chart)</span></code> 返回当前图表点数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_x_start_point(ser)</span></code> 返回指定系列的当前绘图索引。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_point_id(chart,</span> <span class="pre">ser,</span> <span class="pre">id)</span></code> 返回指定系列的特定索引处的数据值。</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>更新模式<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_next</span></code> 可以以两种方式运行，具体取决于更新模式：</p>
+<ul class="simple">
+<li><p><strong>LV_CHART_UPDATE_MODE_SHIFT</strong> - 将旧数据向左移动，然后向右添加新数据。</p></li>
+<li><p><strong>LV_CHART_UPDATE_MODE_CIRCULAR</strong> - 循环添加新数据（如ECG图）。</p></li>
+</ul>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_update_mode(chart,</span> <span class="pre">LV_CHART_UPDATE_MODE_...)</span></code> 更改更新模式。</p>
+</div>
+<div class="section" id="id11">
+<h3>浮标个数<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>可以通过 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_point_count(chart,</span> <span class="pre">point_num)</span></code> 修改系列中的点数。默认值为10。注意：当将外部缓冲区分配给序列时，这也会影响处理的点数。</p>
+</div>
+<div class="section" id="id12">
+<h3>垂直范围<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_range(chart,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code> 在y方向上指定最小值和最大值。点的值将按比例缩放。默认范围是：0..100。</p>
+</div>
+<div class="section" id="id13">
+<h3>分割线<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>水平和垂直分隔线的数量可以通过 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_div_line_count(chart,</span> <span class="pre">hdiv_num,</span> <span class="pre">vdiv_</span></code> 进行修改。默认设置为3条水平分割线和5条垂直分割线。</p>
+</div>
+<div class="section" id="id14">
+<h3>刻度线和标签<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>刻度和标签可以添加到轴上。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_x_tick_text(chart,</span> <span class="pre">list_of_values,</span> <span class="pre">num_tick_marks,</span> <span class="pre">LV_CHART_AXIS_...)</span></code> 设置x轴上的刻度和文本。 <code class="docutils literal notranslate"><span class="pre">list_of_values</span></code> 是一个字符串，带有 <code class="docutils literal notranslate"><span class="pre">'\n'</span></code> 终止文本（期望最后一个），其中包含用于刻度的文本。
+<code class="docutils literal notranslate"><span class="pre">list_of_values</span></code> 是一个字符串，带有 <code class="docutils literal notranslate"><span class="pre">'\n'</span></code> 终止文本（期望最后一个），其中包含用于刻度的文本。例如。 <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*</span> <span class="pre">list_of_values</span> <span class="pre">=</span> <span class="pre">&quot;first\nsec\nthird&quot;</span></code> 。 <code class="docutils literal notranslate"><span class="pre">list_of_values</span></code> 可以为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 。
+如果设置了 <code class="docutils literal notranslate"><span class="pre">list_of_values</span></code> ，则 <code class="docutils literal notranslate"><span class="pre">num_tick_marks</span></code> 告诉两个标签之间的刻度数。如果 <code class="docutils literal notranslate"><span class="pre">list_of_values</span></code> 为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，则它指定滴答声的总数。</p>
+<p>主刻度线绘制在放置文本的位置，次刻度线绘制在其他位置。 <a href="#id15"><span class="problematic" id="id16">``</span></a>lv_chart_set_x_tick_length(chart, major_tick_len, minor_tick_len) `` 设置x轴上刻度线的长度。</p>
+<p>y轴也存在相同的功能： <code class="docutils literal notranslate"><span class="pre">lv_chart_set_y_tick_text</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_chart_set_y_tick_length</span></code> 。</p>
+</div>
+<div class="section" id="id17">
+<h3>光标<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_cursor_t</span> <span class="pre">*</span> <span class="pre">c1</span> <span class="pre">=</span> <span class="pre">lv_chart_add_cursor(chart,</span> <span class="pre">color,</span> <span class="pre">dir);</span></code> 添加光标。 <code class="docutils literal notranslate"><span class="pre">dir</span></code>  <code class="docutils literal notranslate"><span class="pre">LV_CHART_CURSOR_NONE/RIGHT/UP/LEFT/DOWN</span></code> 的可能值或它们的OR-ed值，用于指示应在哪个方向上绘制光标。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_cursor_point(chart,</span> <span class="pre">cursor,</span> <span class="pre">&amp;point)</span></code> 设置光标的位置。 <code class="docutils literal notranslate"><span class="pre">point</span></code> 是指向 <code class="docutils literal notranslate"><span class="pre">lv_poin_t</span></code> 变量的指针。例如。<code class="docutils literal notranslate"><span class="pre">lv_point_t</span> <span class="pre">point</span> <span class="pre">=</span> <span class="pre">{10,</span> <span class="pre">20};</span></code> 。该点相对于图表的序列区域。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_coord_t</span> <span class="pre">p_index</span> <span class="pre">=</span> <span class="pre">lv_chart_get_nearest_index_from_coord(chart,</span> <span class="pre">x)</span></code> 告诉哪个点索引最接近X坐标（相对于序列区域）。例如，当单击图表时，它可用于将光标捕捉到一个点。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_x_from_index(chart,</span> <span class="pre">series,</span> <span class="pre">id)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_chart_get_y_from_index(chart,</span> <span class="pre">series,</span> <span class="pre">id)</span></code> 告诉给定点的X和Y坐标。将光标放置到给定点很有用。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_chart_get_series_area(chart,</span> <span class="pre">&amp;area)</span></code> 检索当前系列区域，其中 <code class="docutils literal notranslate"><span class="pre">area</span></code> 是指向 <code class="docutils literal notranslate"><span class="pre">lv_area_t</span></code> 变量的指针，用于存储结果。该区域具有绝对坐标。</p>
+</div>
+</div>
+<div class="section" id="id18">
+<h2>事件<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h2>
+<p>仅通用事件是按对象类型发送的。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多信息。</p>
+</div>
+<div class="section" id="id21">
+<h2>按键<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h2>
+<p>对象类型不处理任何键。</p>
+<p>进一步了解 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a> 。</p>
+</div>
+<div class="section" id="id23">
+<h2>范例<a class="headerlink" href="#id23" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id24">
+<h3>折线图<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id27">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/09_chart/01_lv_ex_chart_1.png" src="http://photos.100ask.net/lvgl/04_widgets/09_chart/01_lv_ex_chart_1.png" />
+<p class="caption"><span class="caption-text">折线图</span><a class="headerlink" href="#id27" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_CHART</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="kt">void</span> <span class="nf">lv_ex_chart_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="p">{</span>
+<span class="linenos"> 6</span>            <span class="cm">/*Create a chart*/</span>
+<span class="linenos"> 7</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">chart</span><span class="p">;</span>
+<span class="linenos"> 8</span>            <span class="n">chart</span> <span class="o">=</span> <span class="n">lv_chart_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos"> 9</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+<span class="linenos">10</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">11</span>            <span class="n">lv_chart_set_type</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_TYPE_LINE</span><span class="p">);</span>   <span class="cm">/*Show lines and points too*/</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>            <span class="cm">/*Add two data series*/</span>
+<span class="linenos">14</span>            <span class="n">lv_chart_series_t</span> <span class="o">*</span> <span class="n">ser1</span> <span class="o">=</span> <span class="n">lv_chart_add_series</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="n">lv_chart_series_t</span> <span class="o">*</span> <span class="n">ser2</span> <span class="o">=</span> <span class="n">lv_chart_add_series</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_COLOR_GREEN</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>            <span class="cm">/*Set the next points on &#39;ser1&#39;*/</span>
+<span class="linenos">18</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">22</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">24</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">70</span><span class="p">);</span>
+<span class="linenos">27</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>            <span class="cm">/*Directly set points on &#39;ser2&#39;*/</span>
+<span class="linenos">30</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+<span class="linenos">31</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
+<span class="linenos">32</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">33</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">34</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">35</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">36</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">37</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">38</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">39</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>            <span class="n">lv_chart_refresh</span><span class="p">(</span><span class="n">chart</span><span class="p">);</span> <span class="cm">/*Required after direct set*/</span>
+<span class="linenos">42</span>    <span class="p">}</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id25">
+<h3>折线图添加褪色区域效果<a class="headerlink" href="#id25" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id28">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/02_lv_ex_chart_2.png" src="http://photos.100ask.net/lvgl/04_widgets/02_lv_ex_chart_2.png" />
+<p class="caption"><span class="caption-text">折线图添加褪色区域效果</span><a class="headerlink" href="#id28" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_CHART</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cm">/**</span>
+<span class="linenos"> 5</span><span class="cm">     * Add a faded area effect to the line chart</span>
+<span class="linenos"> 6</span><span class="cm">     */</span>
+<span class="linenos"> 7</span>    <span class="kt">void</span> <span class="nf">lv_ex_chart_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="p">{</span>
+<span class="linenos"> 9</span>            <span class="cm">/*Create a chart*/</span>
+<span class="linenos">10</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">chart</span><span class="p">;</span>
+<span class="linenos">11</span>            <span class="n">chart</span> <span class="o">=</span> <span class="n">lv_chart_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_chart_set_type</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_TYPE_LINE</span><span class="p">);</span>   <span class="cm">/*Show lines and points too*/</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/*Add a faded are effect*/</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_set_style_local_bg_opa</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_PART_SERIES</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_OPA_50</span><span class="p">);</span> <span class="cm">/*Max. opa.*/</span>
+<span class="linenos">18</span>            <span class="n">lv_obj_set_style_local_bg_grad_dir</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_PART_SERIES</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_GRAD_DIR_VER</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_obj_set_style_local_bg_main_stop</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_PART_SERIES</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>    <span class="cm">/*Max opa on the top*/</span>
+<span class="linenos">20</span>            <span class="n">lv_obj_set_style_local_bg_grad_stop</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_CHART_PART_SERIES</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>      <span class="cm">/*Transparent on the bottom*/</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="cm">/*Add two data series*/</span>
+<span class="linenos">24</span>            <span class="n">lv_chart_series_t</span> <span class="o">*</span> <span class="n">ser1</span> <span class="o">=</span> <span class="n">lv_chart_add_series</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_chart_series_t</span> <span class="o">*</span> <span class="n">ser2</span> <span class="o">=</span> <span class="n">lv_chart_add_series</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">LV_COLOR_GREEN</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/*Set the next points on &#39;ser1&#39;*/</span>
+<span class="linenos">28</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">31</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">66</span><span class="p">);</span>
+<span class="linenos">30</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">31</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">89</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">63</span><span class="p">);</span>
+<span class="linenos">33</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">56</span><span class="p">);</span>
+<span class="linenos">34</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+<span class="linenos">35</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">35</span><span class="p">);</span>
+<span class="linenos">36</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">57</span><span class="p">);</span>
+<span class="linenos">37</span>            <span class="n">lv_chart_set_next</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">ser1</span><span class="p">,</span> <span class="mi">85</span><span class="p">);</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>            <span class="cm">/*Directly set points on &#39;ser2&#39;*/</span>
+<span class="linenos">40</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+<span class="linenos">41</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">71</span><span class="p">;</span>
+<span class="linenos">42</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">61</span><span class="p">;</span>
+<span class="linenos">43</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="linenos">44</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">21</span><span class="p">;</span>
+<span class="linenos">45</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
+<span class="linenos">46</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
+<span class="linenos">47</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mi">58</span><span class="p">;</span>
+<span class="linenos">48</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">31</span><span class="p">;</span>
+<span class="linenos">49</span>            <span class="n">ser2</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">53</span><span class="p">;</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span>            <span class="n">lv_chart_refresh</span><span class="p">(</span><span class="n">chart</span><span class="p">);</span> <span class="cm">/*Required after direct set*/</span>
+<span class="linenos">52</span>    <span class="p">}</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<div class="section" id="typedefs">
+<h3>Typedefs<a class="headerlink" href="#typedefs" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_chart_type_t</span>
+<span class="linenos">2</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_chart_update_mode_t</span>
+<span class="linenos">3</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_chart_axis_t</span>
+<span class="linenos">4</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_cursor_direction_t</span>
+<span class="linenos">5</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_chart_axis_options_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enums">
+<h3>enums<a class="headerlink" href="#enums" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    enum [anonymous]
+<span class="linenos"> 2</span>    图表类型
+<span class="linenos"> 3</span>    值：
+<span class="linenos"> 4</span>    enumerator LV_CHART_TYPE_NONE
+<span class="linenos"> 5</span>    不要画系列
+<span class="linenos"> 6</span>    enumerator LV_CHART_TYPE_LINE
+<span class="linenos"> 7</span>    用线连接点
+<span class="linenos"> 8</span>    enumerator LV_CHART_TYPE_COLUMN
+<span class="linenos"> 9</span>    绘制列
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    enum [anonymous]
+<span class="linenos">13</span>    图表更新模式 lv_chart_set_next
+<span class="linenos">14</span>    值：
+<span class="linenos">15</span>    enumerator LV_CHART_UPDATE_MODE_SHIFT
+<span class="linenos">16</span>    向左移动旧数据，向右添加新数据
+<span class="linenos">17</span>    enumerator LV_CHART_UPDATE_MODE_CIRCULAR
+<span class="linenos">18</span>    循环添加新数据
+<span class="linenos">19</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>    enum [anonymous]
+<span class="linenos">22</span>    值：
+<span class="linenos">23</span>    enumerator LV_CHART_AXIS_PRIMARY_Y
+<span class="linenos">24</span>    enumerator LV_CHART_AXIS_SECONDARY_Y
+<span class="linenos">25</span>    enumerator _LV_CHART_AXIS_LAST
+<span class="linenos">26</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    enum [anonymous]
+<span class="linenos">29</span>    值：
+<span class="linenos">30</span>    enumerator LV_CHART_CURSOR_NONE
+<span class="linenos">31</span>    enumerator LV_CHART_CURSOR_RIGHT
+<span class="linenos">32</span>    enumerator LV_CHART_CURSOR_UP
+<span class="linenos">33</span>    enumerator LV_CHART_CURSOR_LEFT
+<span class="linenos">34</span>    enumerator LV_CHART_CURSOR_DOWN
+<span class="linenos">35</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>    enum [anonymous]
+<span class="linenos">38</span>    轴数据
+<span class="linenos">39</span>    值：
+<span class="linenos">40</span>    enumerator LV_CHART_AXIS_SKIP_LAST_TICK
+<span class="linenos">41</span>    不要画最后的刻度
+<span class="linenos">42</span>    enumerator LV_CHART_AXIS_DRAW_LAST_TICK
+<span class="linenos">43</span>    画最后一个刻度
+<span class="linenos">44</span>    enumerator LV_CHART_AXIS_INVERSE_LABELS_ORDER
+<span class="linenos">45</span>    以倒序绘制刻度标签
+<span class="linenos">46</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>    enum [anonymous]
+<span class="linenos">49</span>    值：
+<span class="linenos">50</span>    enumerator LV_CHART_PART_BG
+<span class="linenos">51</span>    enumerator LV_CHART_PART_SERIES_BG
+<span class="linenos">52</span>    enumerator LV_CHART_PART_SERIES
+<span class="linenos">53</span>    enumerator LV_CHART_PART_CURSOR
+</pre></div>
+</div>
+</div>
+<div class="section" id="id26">
+<h3>函数<a class="headerlink" href="#id26" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>    LV_EXPORT_CONST_INT( LV_CHART_POINT_DEF )
+<span class="linenos">  2</span>    LV_EXPORT_CONST_INT( LV_CHART_TICK_LENGTH_AUTO )
+<span class="linenos">  3</span>    lv_obj_t * lv_chart_create(lv_obj_t * par，constlv_obj_t *copy)
+<span class="linenos">  4</span>    功能：创建图表背景对象
+<span class="linenos">  5</span>    返回：
+<span class="linenos">  6</span>    指向创建的图表背景的指针
+<span class="linenos">  7</span>    形参：
+<span class="linenos">  8</span>    par：指向对象的指针，它将是新图表背景的父对象
+<span class="linenos">  9</span>    copy：指向图表背景对象的指针，如果不为NULL，则将从其复制新对象
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span>
+<span class="linenos"> 12</span>    lv_chart_series_t * lv_chart_add_series(lv_obj_t *chart，lv_color_t color)
+<span class="linenos"> 13</span>    功能：分配数据系列并将其添加到图表
+<span class="linenos"> 14</span>    返回：
+<span class="linenos"> 15</span>    指向已分配数据系列的指针
+<span class="linenos"> 16</span>    形参：
+<span class="linenos"> 17</span>    chart：指向图表对象的指针
+<span class="linenos"> 18</span>    color：数据系列的颜色
+<span class="linenos"> 19</span>
+<span class="linenos"> 20</span>
+<span class="linenos"> 21</span>    void lv_chart_clear_series(lv_obj_t *chart，lv_chart_series_t *series)
+<span class="linenos"> 22</span>    功能：明确系列的要点
+<span class="linenos"> 23</span>    形参：
+<span class="linenos"> 24</span>    chart：指向图表对象的指针
+<span class="linenos"> 25</span>    series：指向要清除的图表系列的指针
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span>
+<span class="linenos"> 28</span>    void lv_chart_set_div_line_count(lv_obj_t *chart，uint8_t hdiv，uint8_t vdiv )
+<span class="linenos"> 29</span>    功能：设置水平和垂直分割线的数量
+<span class="linenos"> 30</span>    形参：
+<span class="linenos"> 31</span>    chart：指向图形背景对象的指针
+<span class="linenos"> 32</span>    hdiv：水平分割线数
+<span class="linenos"> 33</span>    vdiv：垂直分割线数
+<span class="linenos"> 34</span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span>    void lv_chart_set_y_range(lv_obj_t *chart，lv_chart_axis_t axis，lv_coord_t ymin，lv_coord_t ymax )
+<span class="linenos"> 37</span>    功能：在轴上设置最小和最大y值
+<span class="linenos"> 38</span>    形参：
+<span class="linenos"> 39</span>    chart：指向图形背景对象的指针
+<span class="linenos"> 40</span>    axis：LV_CHART_AXIS_PRIMARY_Y或LV_CHART_AXIS_SECONDARY_Y
+<span class="linenos"> 41</span>    ymin：y最小值
+<span class="linenos"> 42</span>    ymax：y最大值
+<span class="linenos"> 43</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span>    void lv_chart_set_type(lv_obj_t *chart，lv_chart_type_t type)
+<span class="linenos"> 46</span>    功能：设置图表的新类型
+<span class="linenos"> 47</span>    形参：
+<span class="linenos"> 48</span>    chart：指向图表对象的指针
+<span class="linenos"> 49</span>    type：图表的新类型(来自“ lv_chart_type_t”enum )
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span>
+<span class="linenos"> 52</span>    void lv_chart_set_point_count(lv_obj_t *chart，uint16_t point_cnt )
+<span class="linenos"> 53</span>    功能：设置图表上数据线上的点数
+<span class="linenos"> 54</span>    形参：
+<span class="linenos"> 55</span>    chart：指向图表对象的指针r
+<span class="linenos"> 56</span>    point_cnt：数据线上的新点数
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span>
+<span class="linenos"> 59</span>    void lv_chart_init_points(lv_obj_t *chart，lv_chart_series_t * ser，lv_coord_t y )
+<span class="linenos"> 60</span>    功能：用一个值初始化所有数据点
+<span class="linenos"> 61</span>    形参：
+<span class="linenos"> 62</span>    chart：指向图表对象的指针
+<span class="linenos"> 63</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos"> 64</span>    y：所有点的新值
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span>    void lv_chart_set_points(lv_obj_t *chart，lv_chart_series_t * ser，lv_coord_t y_array [] )
+<span class="linenos"> 68</span>    功能：设置数组中的点的值
+<span class="linenos"> 69</span>    形参：
+<span class="linenos"> 70</span>    chart：指向图表对象的指针
+<span class="linenos"> 71</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos"> 72</span>    y_array：&#39;lv_coord_t&#39;点的数组(带有&#39;points count&#39;元素)
+<span class="linenos"> 73</span>
+<span class="linenos"> 74</span>
+<span class="linenos"> 75</span>    void lv_chart_set_next(lv_obj_t *chart，lv_chart_series_t * ser，lv_coord_t y )
+<span class="linenos"> 76</span>    功能：向右移动所有数据并在数据线上设置最右边的数据
+<span class="linenos"> 77</span>    形参：
+<span class="linenos"> 78</span>    chart：指向图表对象的指针
+<span class="linenos"> 79</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos"> 80</span>    y：最正确数据的新价值
+<span class="linenos"> 81</span>
+<span class="linenos"> 82</span>
+<span class="linenos"> 83</span>    void lv_chart_set_update_mode(lv_obj_t *chart，lv_chart_update_mode_t update_mode )
+<span class="linenos"> 84</span>    功能：设置图表对象的更新模式。
+<span class="linenos"> 85</span>    形参：
+<span class="linenos"> 86</span>    chart：指向图表对象的指针
+<span class="linenos"> 87</span>    update：模式
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>
+<span class="linenos"> 90</span>    void lv_chart_set_x_tick_length(lv_obj_t *chart，uint8_t major_tick_len，uint8_t minor_tick_len )
+<span class="linenos"> 91</span>    功能：设置x轴上刻度线的长度
+<span class="linenos"> 92</span>    形参：
+<span class="linenos"> 93</span>    chart：指向图表的指针
+<span class="linenos"> 94</span>    major_tick_len：主要刻度的长度或LV_CHART_TICK_LENGTH_AUTO自动设置(添加标签的位置)
+<span class="linenos"> 95</span>    minor_tick_len：次刻度的长度，LV_CHART_TICK_LENGTH_AUTO可自动设置(不添加标签)
+<span class="linenos"> 96</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    void lv_chart_set_y_tick_length(lv_obj_t *chart，uint8_t major_tick_len，uint8_t minor_tick_len )
+<span class="linenos"> 99</span>    功能：设置y轴上刻度线的长度
+<span class="linenos">100</span>    形参：
+<span class="linenos">101</span>    chart：指向图表的指针
+<span class="linenos">102</span>    major_tick_len：主要刻度的长度或LV_CHART_TICK_LENGTH_AUTO自动设置(添加标签的位置)
+<span class="linenos">103</span>    minor_tick_len：次刻度的长度，LV_CHART_TICK_LENGTH_AUTO可自动设置(不添加标签)
+<span class="linenos">104</span>
+<span class="linenos">105</span>
+<span class="linenos">106</span>    void lv_chart_set_secondary_y_tick_length(lv_obj_t *chart，uint8_t major_tick_len，uint8_t minor_tick_len )
+<span class="linenos">107</span>    功能：设置次要y轴上刻度线的长度
+<span class="linenos">108</span>    形参：
+<span class="linenos">109</span>    chart：指向图表的指针
+<span class="linenos">110</span>    major_tick_len：主要刻度的长度或LV_CHART_TICK_LENGTH_AUTO自动设置(添加标签的位置)
+<span class="linenos">111</span>    minor_tick_len：次刻度的长度，LV_CHART_TICK_LENGTH_AUTO可自动设置(不添加标签)
+<span class="linenos">112</span>
+<span class="linenos">113</span>
+<span class="linenos">114</span>    void lv_chart_set_x_tick_texts(lv_obj_t *chart，constchar * list_of_values，uint8_t num_tick_marks，lv_chart_axis_options_t options )
+<span class="linenos">115</span>    功能：设置图表的X轴刻度计数和标签
+<span class="linenos">116</span>
+<span class="linenos">117</span>    形参：
+<span class="linenos">118</span>    chart：指向图表对象的指针
+<span class="linenos">119</span>    list_of_values：字符串值列表，以终止，除了最后一个
+<span class="linenos">120</span>    num_tick_marks：如果list_of_values为NULL：每个轴的总刻度数，否则两个值标签之间的刻度数
+<span class="linenos">121</span>    options：额外的选择
+<span class="linenos">122</span>
+<span class="linenos">123</span>
+<span class="linenos">124</span>    void lv_chart_set_secondary_y_tick_texts(lv_obj_t *chart，constchar * list_of_values，uint8_t num_tick_marks，lv_chart_axis_options_t options )
+<span class="linenos">125</span>    功能：设置次要y轴刻度计数和图表标签
+<span class="linenos">126</span>    形参：
+<span class="linenos">127</span>    chart：指向图表对象的指针
+<span class="linenos">128</span>    list_of_values：字符串值列表，以终止，除了最后一个
+<span class="linenos">129</span>    num_tick_marks：如果list_of_values为NULL：每个轴的总刻度数，否则两个值标签之间的刻度数
+<span class="linenos">130</span>    options：额外的选择
+<span class="linenos">131</span>
+<span class="linenos">132</span>
+<span class="linenos">133</span>    void lv_chart_set_y_tick_texts(lv_obj_t *chart，constchar * list_of_values，uint8_t num_tick_marks，lv_chart_axis_options_t options )
+<span class="linenos">134</span>    功能：设置图表的Y轴刻度计数和标签
+<span class="linenos">135</span>    形参：
+<span class="linenos">136</span>    chart：指向图表对象的指针
+<span class="linenos">137</span>    list_of_values：字符串值列表，以终止，除了最后一个
+<span class="linenos">138</span>    num_tick_marks：如果list_of_values为NULL：每个轴的总刻度数，否则两个值标签之间的刻度数
+<span class="linenos">139</span>    options：额外的选择
+<span class="linenos">140</span>
+<span class="linenos">141</span>
+<span class="linenos">142</span>    void lv_chart_set_x_start_point(lv_obj_t *chart，lv_chart_series_t * ser，uint16_t id )
+<span class="linenos">143</span>    功能：设置数据数组中x轴起点的索引
+<span class="linenos">144</span>    形参：
+<span class="linenos">145</span>    chart：指向图表对象的指针
+<span class="linenos">146</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos">147</span>    id：数据数组中x点的索引
+<span class="linenos">148</span>
+<span class="linenos">149</span>
+<span class="linenos">150</span>    void lv_chart_set_ext_array(lv_obj_t *chart，lv_chart_series_t * ser，lv_coord_t array[]，uint16_t point_cnt )
+<span class="linenos">151</span>    功能：设置要用于图表的外部数据点阵列注意：用户有责任确保point_cnt与外部阵列大小匹配。
+<span class="linenos">152</span>    形参：
+<span class="linenos">153</span>    chart：指向图表对象的指针
+<span class="linenos">154</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos">155</span>    array：图表的外部点数组
+<span class="linenos">156</span>
+<span class="linenos">157</span>
+<span class="linenos">158</span>    void lv_chart_set_point_id(lv_obj_t *chart，lv_chart_series_t * ser，lv_coord_t value，uint16_t id )
+<span class="linenos">159</span>    功能：直接基于索引在图表系列中设置单个点值
+<span class="linenos">160</span>    形参：
+<span class="linenos">161</span>    chart：指向图表对象的指针
+<span class="linenos">162</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos">163</span>    value：分配给数组点的值
+<span class="linenos">164</span>    id：数组中x点的索引
+<span class="linenos">165</span>
+<span class="linenos">166</span>
+<span class="linenos">167</span>    void lv_chart_set_series_axis(lv_obj_t *chart，lv_chart_series_t * ser，lv_chart_axis_t axis)
+<span class="linenos">168</span>    功能：设置系列的Y轴
+<span class="linenos">169</span>    形参：
+<span class="linenos">170</span>    chart：指向图表对象的指针
+<span class="linenos">171</span>    ser：指向系列的指针
+<span class="linenos">172</span>    axis：LV_CHART_AXIS_PRIMARY_Y或LV_CHART_AXIS_SECONDARY_Y
+<span class="linenos">173</span>
+<span class="linenos">174</span>
+<span class="linenos">175</span>    lv_chart_type_t lv_chart_get_type(constlv_obj_t *chart)
+<span class="linenos">176</span>    获取图表类型
+<span class="linenos">177</span>    返回：
+<span class="linenos">178</span>    图表类型(来自“ lv_chart_t”enum )
+<span class="linenos">179</span>    形参：
+<span class="linenos">180</span>    chart：指向图表对象的指针
+<span class="linenos">181</span>
+<span class="linenos">182</span>
+<span class="linenos">183</span>    uint16_t lv_chart_get_point_count(constlv_obj_t *chart)
+<span class="linenos">184</span>    功能：获取图表上每条数据线的数据点编号
+<span class="linenos">185</span>    返回：
+<span class="linenos">186</span>    每条数据线上的点号
+<span class="linenos">187</span>    形参：
+<span class="linenos">188</span>    chart：指向图表对象的指针
+<span class="linenos">189</span>
+<span class="linenos">190</span>
+<span class="linenos">191</span>    uint16_t lv_chart_get_x_start_point(lv_chart_series_t * ser )
+<span class="linenos">192</span>    功能：获取数据数组中x轴起点的当前索引
+<span class="linenos">193</span>    返回：
+<span class="linenos">194</span>    数据数组中当前x起点的索引
+<span class="linenos">195</span>    形参：
+<span class="linenos">196</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos">197</span>
+<span class="linenos">198</span>
+<span class="linenos">199</span>    lv_coord_t lv_chart_get_point_id(lv_obj_t *chart，lv_chart_series_t * ser，uint16_t id )
+<span class="linenos">200</span>    功能：直接基于索引获取图表系列中的单个点值
+<span class="linenos">201</span>    返回：
+<span class="linenos">202</span>    索引ID处数组点的值
+<span class="linenos">203</span>    形参：
+<span class="linenos">204</span>    chart：指向图表对象的指针
+<span class="linenos">205</span>    ser：指向“图表”上的数据系列的指针
+<span class="linenos">206</span>    id：数组中x点的索引
+<span class="linenos">207</span>
+<span class="linenos">208</span>
+<span class="linenos">209</span>    lv_chart_axis_t lv_chart_get_series_axis(lv_obj_t *chart，lv_chart_series_t * ser )
+<span class="linenos">210</span>    功能：获取系列的Y轴
+<span class="linenos">211</span>    返回：
+<span class="linenos">212</span>    LV_CHART_AXIS_PRIMARY_Y 要么 LV_CHART_AXIS_SECONDARY_Y
+<span class="linenos">213</span>    形参：
+<span class="linenos">214</span>    chart：指向图表对象的指针
+<span class="linenos">215</span>    ser：指向系列的指针
+<span class="linenos">216</span>
+<span class="linenos">217</span>
+<span class="linenos">218</span>    void lv_chart_refresh(lv_obj_t *chart)
+<span class="linenos">219</span>    功能：如果其数据线已更改，则刷新图表
+<span class="linenos">220</span>    形参：
+<span class="linenos">221</span>    chart：指向图表对象的指针
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="10_cont.html" class="btn btn-neutral float-right" title="容器(lv_cont)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="08_checkbox.html" class="btn btn-neutral float-left" title="复选框(lv_cb)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

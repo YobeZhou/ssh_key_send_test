@@ -1,0 +1,289 @@
+==================================
+对象蒙版(lv_objmask)
+==================================
+
+概述
+##################################
+绘制其子级时，对象蒙版能够向图形添加一些蒙版。
+
+
+零件和样式
+##################################
+对象蒙版只有一个主要部分称为 ``LV_OBJMASK_PART_BG`` ，它使用典型的背景样式属性。
+
+
+用法
+##################################
+
+添加蒙版
+**********************************
+在向对象蒙版添加蒙版之前，应先初始化蒙版：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_draw_mask_<type>_param_t mask_param;
+	lv_draw_mask_<type>_init(&mask_param, ...);
+	lv_objmask_mask_t * mask_p = lv_objmask_add_mask(objmask, &mask_param);
+
+
+Lvgl支持以下蒙版类型：
+
+- **line** 剪裁线条左上/右下的像素。可以从两个点或一个点和一个角度初始化：
+- **angle** 将像素仅保持在给定的开始角度和结束角度之间
+- **radius** 将像素仅保留在可以具有半径的矩形内（也可以是一个圆形）。可以反转以将像素保持在矩形之外。
+- **fade** 垂直淡入（根据像素的y位置更改像素的不透明度）
+- **map** 使用Alpha遮罩（字节数组）描述像素的不透明度。
+
+
+遮罩中的坐标是相对于对象的。也就是说，如果对象移动，则蒙版也随之移动。
+
+
+更新蒙版
+**********************************
+可以使用 ``lv_objmask_update_mask(objmask, mask_p, new_param)`` 更新现有的掩码，其中 ``mask_p`` 是 ``lv_objmask_add_mask`` 的返回值。
+
+
+移除蒙版
+**********************************
+可以使用 ``lv_objmask_remove_mask(objmask, mask_p)`` 删除蒙版
+
+
+事件
+##################################
+仅支持 `通用事件`_  
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+对象类型不处理任何键。 
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+创建几个对象蒙版
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/23_objmask/01_lv_ex_objmask_1.png
+	   
+	  几个对象蒙版
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_OBJMASK
+
+	void lv_ex_objmask_1(void)
+	{
+
+		/*Set a very visible color for the screen to clearly see what happens*/
+		lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex3(0xf33));
+
+		lv_obj_t * om = lv_objmask_create(lv_scr_act(), NULL);
+		lv_obj_set_size(om, 200, 200);
+		lv_obj_align(om, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_t * label = lv_label_create(om, NULL);
+		lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
+		lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
+		lv_obj_set_width(label, 180);
+		lv_label_set_text(label, "This label will be masked out. See how it works.");
+		lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);
+
+		lv_obj_t * cont = lv_cont_create(om, NULL);
+		lv_obj_set_size(cont, 180, 100);
+		lv_obj_set_drag(cont, true);
+		lv_obj_align(cont, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -10);
+
+		lv_obj_t * btn = lv_btn_create(cont, NULL);
+		lv_obj_align(btn, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_style_local_value_str(btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "Button");
+		uint32_t t;
+
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 1000);
+
+		lv_area_t a;
+		lv_draw_mask_radius_param_t r1;
+
+		a.x1 = 10;
+		a.y1 = 10;
+		a.x2 = 190;
+		a.y2 = 190;
+		lv_draw_mask_radius_init(&r1, &a, LV_RADIUS_CIRCLE, false);
+		lv_objmask_add_mask(om, &r1);
+
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 1000);
+
+		a.x1 = 100;
+		a.y1 = 100;
+		a.x2 = 150;
+		a.y2 = 150;
+		lv_draw_mask_radius_init(&r1, &a, LV_RADIUS_CIRCLE, true);
+		lv_objmask_add_mask(om, &r1);
+
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 1000);
+
+		lv_draw_mask_line_param_t l1;
+		lv_draw_mask_line_points_init(&l1, 0, 0, 100, 200, LV_DRAW_MASK_LINE_SIDE_TOP);
+		lv_objmask_add_mask(om, &l1);
+
+		lv_refr_now(NULL);
+		t = lv_tick_get();
+		while(lv_tick_elaps(t) < 1000);
+
+		lv_draw_mask_fade_param_t f1;
+		a.x1 = 100;
+		a.y1 = 0;
+		a.x2 = 200;
+		a.y2 = 200;
+		lv_draw_mask_fade_init(&f1, &a, LV_OPA_TRANSP, 0, LV_OPA_COVER, 150);
+		lv_objmask_add_mask(om, &f1);
+	}
+
+	#endif
+
+
+
+
+文字蒙版
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/23_objmask/02_lv_ex_objmask_2.png
+	   
+	  文字蒙版
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_OBJMASK
+
+	#define MASK_WIDTH 100
+	#define MASK_HEIGHT 50
+
+	void lv_ex_objmask_2(void)
+	{
+
+		/* Create the mask of a text by drawing it to a canvas*/
+		static lv_opa_t mask_map[MASK_WIDTH * MASK_HEIGHT];
+
+		/*Create a "8 bit alpha" canvas and clear it*/
+		lv_obj_t * canvas = lv_canvas_create(lv_scr_act(), NULL);
+		lv_canvas_set_buffer(canvas, mask_map, MASK_WIDTH, MASK_HEIGHT, LV_IMG_CF_ALPHA_8BIT);
+		lv_canvas_fill_bg(canvas, LV_COLOR_BLACK, LV_OPA_TRANSP);
+
+		/*Draw a label to the canvas. The result "image" will be used as mask*/
+		lv_draw_label_dsc_t label_dsc;
+		lv_draw_label_dsc_init(&label_dsc);
+		label_dsc.color = LV_COLOR_WHITE;
+		lv_canvas_draw_text(canvas, 5, 5, MASK_WIDTH, &label_dsc, "Text with gradient", LV_LABEL_ALIGN_CENTER);
+
+		/*The mask is reads the canvas is not required anymore*/
+		lv_obj_del(canvas);
+
+		/*Create an object mask which will use the created mask*/
+		lv_obj_t * om = lv_objmask_create(lv_scr_act(), NULL);
+		lv_obj_set_size(om, MASK_WIDTH, MASK_HEIGHT);
+		lv_obj_align(om, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Add the created mask map to the object mask*/
+		lv_draw_mask_map_param_t m;
+		lv_area_t a;
+		a.x1 = 0;
+		a.y1 = 0;
+		a.x2 = MASK_WIDTH - 1;
+		a.y2 = MASK_HEIGHT - 1;
+		lv_draw_mask_map_init(&m, &a, mask_map);
+		lv_objmask_add_mask(om, &m);
+
+		/*Create a style with gradient*/
+		static lv_style_t style_bg;
+		lv_style_init(&style_bg);
+		lv_style_set_bg_opa(&style_bg, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_RED);
+		lv_style_set_bg_grad_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_bg_grad_dir(&style_bg, LV_STATE_DEFAULT, LV_GRAD_DIR_HOR);
+
+		/* Create and object with the gradient style on the object mask.
+		 * The text will be masked from the gradient*/
+		lv_obj_t * bg = lv_obj_create(om, NULL);
+		lv_obj_reset_style_list(bg, LV_OBJ_PART_MAIN);
+		lv_obj_add_style(bg, LV_OBJ_PART_MAIN, &style_bg);
+		lv_obj_set_size(bg, MASK_WIDTH, MASK_HEIGHT);
+
+	}
+
+	#endif
+
+
+相关API
+##################################
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * lv_objmask_create(lv_obj_t * par，constlv_obj_t *copy)
+	创建对象遮罩对象
+	返回：
+	指向创建的对象掩码的指针
+	形参：
+	par：指向对象的指针，它将是新对象蒙版的父对象
+	copy：指向对象掩码对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	lv_objmask_mask_t * lv_objmask_add_mask(lv_obj_t * objmask，void *param)
+	添加面膜
+	返回：
+	指向添加的蒙版的指针
+	形参：
+	objmask：指向对象遮罩对象的指针
+	param：初始化的mask参数
+
+
+	void lv_objmask_update_mask(lv_obj_t * objmask，lv_objmask_mask_t * mask，void * param )
+	更新已创建的蒙版
+	形参：
+	objmask：指向对象遮罩对象的指针
+	mask：指向创建的遮罩的指针(由返回：lv_objmask_add_mask)
+	param：初始化的mask参数(由初始化lv_draw_mask_line/angle/.../_init)
+
+
+	void lv_objmask_remove_mask(lv_obj_t * objmask，lv_objmask_mask_t * mask )
+	取下口罩
+	形参：
+	objmask：指向对象遮罩对象的指针
+	mask：指向创建的遮罩的指针(由返回：lv_objmask_add_mask)如果NULL
+
+
+
+
+
+
+
+
+

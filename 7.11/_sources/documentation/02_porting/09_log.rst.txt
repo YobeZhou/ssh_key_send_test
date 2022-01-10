@@ -1,0 +1,71 @@
+==================================
+日志记录
+==================================
+LVGL 内置有日志模块，用于记录用户库中正在发生的事情。
+
+
+日志级别
+##################################
+要启用日志记录，需要在 ``lv_conf.h`` 中将 **LV_USE_LOG** 设置为 ``1`` ，并将 **LV_LOG_LEVEL** 设置为以下值之一：
+
+
+- **LV_LOG_LEVEL_TRACE** 记录所有信息
+- **LV_LOG_LEVEL_INFO** 记录重要事件
+- **LV_LOG_LEVEL_WARN** 记录是否发生了警告事件
+- **LV_LOG_LEVEL_ERROR** 记录错误信息，当系统可能发生故障时或致命错误
+- **LV_LOG_LEVEL_NONE** 不要记录任何东西
+
+
+级别高于设置的日志级别的事件也将被记录。例如。如果使用 **LV_LOG_LEVEL_WARN** ，也会记录错误。
+
+
+使用printf记录
+##################################
+如果您的系统支持printf，则只需在 ``lv_conf.h`` 中启用 **LV_LOG_PRINTF **即可发送带有 printf 的日志。
+
+
+
+自定义日志功能
+##################################
+如果不能使用 printf 或想要使用自定义函数进行日志记录，可以使用 lv_log_register_print_cb() 注册 "logger" 回调。
+
+例如：
+
+
+.. code-block:: c
+    :linenos:
+	
+	void my_log_cb(lv_log_level_t level, const char * file, int line, const char * fn_name, const char * dsc)
+	{
+	  /*Send the logs via serial port*/
+	  if(level == LV_LOG_LEVEL_ERROR) serial_send("ERROR: ");
+	  if(level == LV_LOG_LEVEL_WARN)  serial_send("WARNING: ");
+	  if(level == LV_LOG_LEVEL_INFO)  serial_send("INFO: ");
+	  if(level == LV_LOG_LEVEL_TRACE) serial_send("TRACE: ");
+
+	  serial_send("File: ");
+	  serial_send(file);
+
+	  char line_str[8];
+	  sprintf(line_str,"%d", line);
+	  serial_send("#");
+	  serial_send(line_str);
+
+	  serial_send(": ");
+	  serial_send(fn_name);
+	  serial_send(": ");
+	  serial_send(dsc);
+	  serial_send("\n");
+	}
+
+	...
+
+	lv_log_register_print_cb(my_log_cb);
+
+
+添加日志
+##################################
+还可以通过 **LV_LOG_TRACE/INFO/WARN/ERROR(description)** 函数使用日志模块。
+
+
+

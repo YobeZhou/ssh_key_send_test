@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>页面(lv_page) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="滚筒(lv_roller)" href="25_roller.html" />
+    <link rel="prev" title="对象蒙版(lv_objmask)" href="23_objmask.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">页面(lv_page)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">滚动条</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">胶水对象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">焦点对象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">手动导航</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">滚动传播</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">清除页面</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">可滚动的API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">按键处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">带有滚动条的页面</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">相关API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>页面(lv_page)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/24_page.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-page">
+<h1>页面(lv_page)<a class="headerlink" href="#lv-page" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>页面彼此包含两个 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/10_cont.html">容器(lv_cont)</a> ：</p>
+<ul class="simple">
+<li><p>背景</p></li>
+<li><p>可滚动的顶部。</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>零件和样式<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>页面的主要部分称为 <code class="docutils literal notranslate"><span class="pre">LV_PAGE_PART_BG</span></code> ，它是页面的背景。它使用所有典型的背景样式属性。使用填充会增加侧面的空间。</p>
+<p>可以通过 <code class="docutils literal notranslate"><span class="pre">LV_PAGE_PART_SCRL</span></code> 部分引用可滚动对象。它还使用所有典型的背景样式属性和填充来增加侧面的空间。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_SCROLLBAR</span></code> 是绘制滚动条的背景的虚拟部分。使用所有典型的背景样式属性，使用size设置滚动条的宽度，并使用pad_right和pad_bottom设置间距。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_EDGE_FLASH</span></code> 还是背景的虚拟部分，当无法进一步沿该方向滚动列表时，将在侧面绘制半圆。使用所有典型的背景属性。</p>
+</div>
+<div class="section" id="id3">
+<h2>用法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>后台对象可以像页面本身一样被引用。例如。设置页面的宽度： <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(page,</span> <span class="pre">100)</span></code> 。</p>
+<p>如果在页面上创建了一个子代，它将被自动移动到可滚动容器中。如果可滚动容器变大，则可以通过拖动来滚动背景（如智能手机上的列表）。</p>
+<p>默认情况下，可滚动控件的 <code class="docutils literal notranslate"><span class="pre">LV_FIT_MAX</span></code> 适合所有方向。这意味着当子代处于背景中时，可滚动大小将与背景大小相同（减去填充）。</p>
+<p>但是，当将对象放置在背景之外时，可滚动大小将增加以使其包含其中。</p>
+<div class="section" id="id4">
+<h3>滚动条<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>可以根据以下四个策略显示滚动条：</p>
+<ul class="simple">
+<li><p><strong>LV_SCRLBAR_MODE_OFF</strong> 一直都不显示滚动条</p></li>
+<li><p><strong>LV_SCRLBAR_MODE_ON</strong>  一直都显示滚动条</p></li>
+<li><p><strong>LV_SCRLBAR_MODE_DRAG</strong> 拖动页面时显示滚动条</p></li>
+<li><p><strong>LV_SCRLBAR_MODE_AUTO</strong> 当可滚动容器的大小足以滚动时显示滚动条</p></li>
+<li><p><strong>LV_SCRLBAR_MODE_HIDE</strong> 暂时隐藏滚动条</p></li>
+<li><p><strong>LV_SCRLBAR_MODE_UNHIDE</strong> 取消隐藏以前隐藏的滚动条。也恢复原始模式</p></li>
+</ul>
+<p>可以通过以下方式更改滚动条显示策略： <code class="docutils literal notranslate"><span class="pre">lv_page_set_scrlbar_mode(page,</span> <span class="pre">SB_MODE)</span></code> 。默认值为 <code class="docutils literal notranslate"><span class="pre">LV_SCRLBAR_​​MODE_AUTO</span></code> 。</p>
+</div>
+<div class="section" id="id5">
+<h3>胶水对象<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>可以将孩子“粘”到页面上。在这种情况下，是否可以通过拖动该对象来滚动页面。可以通过 <code class="docutils literal notranslate"><span class="pre">lv_page_glue_obj(child,</span> <span class="pre">true)</span></code> 启用它。</p>
+</div>
+<div class="section" id="id6">
+<h3>焦点对象<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>页面上的对象可以使用 <code class="docutils literal notranslate"><span class="pre">lv_page_focus(page,</span> <span class="pre">child,</span> <span class="pre">LV_ANIM_ONO/FF)</span></code> 进行聚焦。它将移动可滚动容器以显示一个孩子。
+动画的时间可以通过 <code class="docutils literal notranslate"><span class="pre">lv_page_set_anim_time(page,</span> <span class="pre">anim_time)</span></code> 设置，以毫秒为单位。 child不必是页面的直接子级。如果可滚动对象也是该对象的祖父母，则此方法有效。</p>
+</div>
+<div class="section" id="id7">
+<h3>手动导航<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_page_scroll_hor(page,</span> <span class="pre">dist)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_page_scroll_ver(page,</span> <span class="pre">dist)</span></code> 手动移动可滚动对象</p>
+</div>
+<div class="section" id="id8">
+<h3>滚动传播<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>如果列表是在另一个可滚动元素（如另一个页面）上创建的，并且Page无法进一步滚动，则滚动可以传播到父对象，以继续在父对象上滚动。
+可以使用 lv_page_set_edge_flash(list, true) 启用它</p>
+</div>
+<div class="section" id="id9">
+<h3>清除页面<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>页面上创建的所有对象都可以使用 <code class="docutils literal notranslate"><span class="pre">lv_page_clean(page)</span></code> 进行清理。请注意， <code class="docutils literal notranslate"><span class="pre">lv_page_clean(page)</span></code> 在这里不起作用，因为它也会删除可滚动对象。</p>
+</div>
+<div class="section" id="api">
+<h3>可滚动的API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h3>
+<p>有一些直接设置/获取可滚动属性的函数：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_get_scrl()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_fit/fint2/fit4()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_width()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_height()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_fit_width()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_fit_height()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_page_set_scrl_layout()</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>事件<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>仅支持 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a></p>
+<p>可滚动对象具有默认的事件回调，该事件回调将以下事件传播到后台对象：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSING</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESS_LOST</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_RELEASED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SHORT_CLICKED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CLICKED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED_REPEAT</span></code></p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多内容。</p>
+</div>
+<div class="section" id="id13">
+<h2>按键处理<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>页面处理以下键：</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_RIGHT/LEFT/UP/DOWN</strong> 滚动页面</p></li>
+</ul>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a>  的更多内容。</p>
+</div>
+<div class="section" id="id15">
+<h2>范例<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id16">
+<h3>带有滚动条的页面<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id19">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/24_page/01_lv_ex_page_1.png" src="http://photos.100ask.net/lvgl/04_widgets/24_page/01_lv_ex_page_1.png" />
+<p class="caption"><span class="caption-text">带有滚动条的页面</span><a class="headerlink" href="#id19" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_PAGE</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="kt">void</span> <span class="nf">lv_ex_page_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="p">{</span>
+<span class="linenos"> 6</span>            <span class="cm">/*Create a page*/</span>
+<span class="linenos"> 7</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">page</span> <span class="o">=</span> <span class="n">lv_page_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos"> 8</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="linenos"> 9</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>            <span class="cm">/*Create a label on the page*/</span>
+<span class="linenos">12</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lv_label_create</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_label_set_long_mode</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">LV_LABEL_LONG_BREAK</span><span class="p">);</span>            <span class="cm">/*Automatically break long lines*/</span>
+<span class="linenos">14</span>            <span class="n">lv_obj_set_width</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lv_page_get_width_fit</span><span class="p">(</span><span class="n">page</span><span class="p">));</span>          <span class="cm">/*Set the label width to max value to not show hor. scroll bars*/</span>
+<span class="linenos">15</span>            <span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit,</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">16</span>                                                             <span class="s">&quot;sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">17</span>                                                             <span class="s">&quot;Ut enim ad minim veniam, quis nostrud exercitation ullamco</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">18</span>                                                             <span class="s">&quot;laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">19</span>                                                             <span class="s">&quot;dolor in reprehenderit in voluptate velit esse cillum dolore</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">20</span>                                                             <span class="s">&quot;eu fugiat nulla pariatur.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">21</span>                                                             <span class="s">&quot;Excepteur sint occaecat cupidatat non proident, sunt in culpa</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="linenos">22</span>                                                             <span class="s">&quot;qui officia deserunt mollit anim id est laborum.&quot;</span><span class="p">);</span>
+<span class="linenos">23</span>    <span class="p">}</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>相关API<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id18">
+<h3>函数<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>    lv_obj_t * lv_page_create(lv_obj_t * par，constlv_obj_t *copy)
+<span class="linenos">  2</span>    创建页面对象
+<span class="linenos">  3</span>    返回:
+<span class="linenos">  4</span>    指向创建页面的指针
+<span class="linenos">  5</span>    形参：
+<span class="linenos">  6</span>    par：指向对象的指针，它将是新页面的父对象
+<span class="linenos">  7</span>    copy：指向页面对象的指针，如果不为NULL，则将从其复制新对象
+<span class="linenos">  8</span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span>    void lv_page_clean(lv_obj_t *page)
+<span class="linenos"> 11</span>    删除scrl对象的所有子级，而不删除scrl子级。
+<span class="linenos"> 12</span>    形参：
+<span class="linenos"> 13</span>    page：指向对象的指针
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span>
+<span class="linenos"> 16</span>    lv_obj_t * lv_page_get_scrollable(constlv_obj_t *page)
+<span class="linenos"> 17</span>    获取页面的可滚动对象
+<span class="linenos"> 18</span>    返回:
+<span class="linenos"> 19</span>    指向容器的指针，该容器是页面的可滚动部分
+<span class="linenos"> 20</span>    形参：
+<span class="linenos"> 21</span>    page：指向页面对象的指针
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span>
+<span class="linenos"> 24</span>    uint16_t lv_page_get_anim_time(constlv_obj_t *page)
+<span class="linenos"> 25</span>    获取动画时间
+<span class="linenos"> 26</span>    返回:
+<span class="linenos"> 27</span>    动画时间(以毫秒为单位)
+<span class="linenos"> 28</span>    形参：
+<span class="linenos"> 29</span>    page：指向页面对象的指针
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>
+<span class="linenos"> 32</span>    void lv_page_set_scrollbar_mode(lv_obj_t *page，lv_scrollbar_mode_t sb_mode )
+<span class="linenos"> 33</span>    在页面上设置滚动条模式
+<span class="linenos"> 34</span>    形参：
+<span class="linenos"> 35</span>    page：指向页面对象的指针
+<span class="linenos"> 36</span>    sb_mode：来自“ lv_page_sb.mode_t”枚举的新模式
+<span class="linenos"> 37</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span>    void lv_page_set_anim_time(lv_obj_t *page，uint16_t anim_time )
+<span class="linenos"> 40</span>    设置页面的动画时间
+<span class="linenos"> 41</span>    形参：
+<span class="linenos"> 42</span>    page：指向页面对象的指针
+<span class="linenos"> 43</span>    anim_time：动画时间(以毫秒为单位)
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span>
+<span class="linenos"> 46</span>    void lv_page_set_scroll_propagation(lv_obj_t * page，bool en )
+<span class="linenos"> 47</span>    启用滚动传播功能。如果启用，则如果没有更多滚动空间，页面将移动其父级。页面需要具有类似页面的父页面(例如lv_page，lv_tabview选项卡，lv_win内容区域等)。如果启用，则拖动方向将LV_DRAG_DIR_ONE自动更改，以允许一次仅在一个方向上滚动。
+<span class="linenos"> 48</span>    形参：
+<span class="linenos"> 49</span>    page：指向页面的指针
+<span class="linenos"> 50</span>    en：true或false启用/禁用滚动传播
+<span class="linenos"> 51</span>
+<span class="linenos"> 52</span>
+<span class="linenos"> 53</span>    void lv_page_set_edge_flash(lv_obj_t * page，bool en )
+<span class="linenos"> 54</span>    启用边缘闪光效果。(到达边缘时显示弧线)
+<span class="linenos"> 55</span>    形参：
+<span class="linenos"> 56</span>    page：指向页面的指针
+<span class="linenos"> 57</span>    en：true或false启用/禁用端闪
+<span class="linenos"> 58</span>
+<span class="linenos"> 59</span>
+<span class="linenos"> 60</span>    void lv_page_set_scrollable_fit4(lv_obj_t *page，lv_fit_t left，lv_fit_t right，lv_fit_t top，lv_fit_t bottom)
+<span class="linenos"> 61</span>    分别在所有四个方向上设置适合策略。它告诉如何自动更改页面大小。
+<span class="linenos"> 62</span>    形参：
+<span class="linenos"> 63</span>    page：指向页面对象的指针
+<span class="linenos"> 64</span>    left：从左适合政策 lv_fit_t
+<span class="linenos"> 65</span>    right：合适的政策来自 lv_fit_t
+<span class="linenos"> 66</span>    top：底部适合政策 lv_fit_t
+<span class="linenos"> 67</span>    bottom：底部适合政策 lv_fit_t
+<span class="linenos"> 68</span>
+<span class="linenos"> 69</span>
+<span class="linenos"> 70</span>    void lv_page_set_scrollable_fit2(lv_obj_t *page，lv_fit_t hor，lv_fit_t ver )
+<span class="linenos"> 71</span>    分别水平和垂直设置适合策略。它告诉如何自动更改页面大小。
+<span class="linenos"> 72</span>    形参：
+<span class="linenos"> 73</span>    page：指向页面对象的指针
+<span class="linenos"> 74</span>    hot：来自的水平拟合政策 lv_fit_t
+<span class="linenos"> 75</span>    ver：垂直适合政策，来自 lv_fit_t
+<span class="linenos"> 76</span>
+<span class="linenos"> 77</span>
+<span class="linenos"> 78</span>    void lv_page_set_scrollable_fit(lv_obj_t *page，lv_fit_t fit)
+<span class="linenos"> 79</span>    一次在所有4个方向上设置拟合策略。它告诉如何自动更改页面大小。
+<span class="linenos"> 80</span>    形参：
+<span class="linenos"> 81</span>    page：指向按钮对象的指针
+<span class="linenos"> 82</span>    fit：适合政策，来自 lv_fit_t
+<span class="linenos"> 83</span>
+<span class="linenos"> 84</span>
+<span class="linenos"> 85</span>    void lv_page_set_scrl_width(lv_obj_t *page，lv_coord_t w )
+<span class="linenos"> 86</span>    设置页面可滚动部分的宽度
+<span class="linenos"> 87</span>    形参：
+<span class="linenos"> 88</span>    page：指向页面对象的指针
+<span class="linenos"> 89</span>    w：新的可滚动宽度(没有启用水平对齐功能)
+<span class="linenos"> 90</span>
+<span class="linenos"> 91</span>
+<span class="linenos"> 92</span>    void lv_page_set_scrl_height(lv_obj_t *page，lv_coord_t h )
+<span class="linenos"> 93</span>    设置页面可滚动部分的高度
+<span class="linenos"> 94</span>    形参：
+<span class="linenos"> 95</span>    page：指向页面对象的指针
+<span class="linenos"> 96</span>    h：新的可滚动高度(启用垂直调整没有效果)
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>
+<span class="linenos"> 99</span>    void lv_page_set_scrl_layout(lv_obj_t *page，lv_layout_t layout)
+<span class="linenos">100</span>    设置页面可滚动部分的布局
+<span class="linenos">101</span>    形参：
+<span class="linenos">102</span>    page：指向页面对象的指针
+<span class="linenos">103</span>    layout：来自“ lv_cont_layout_t”的布局
+<span class="linenos">104</span>
+<span class="linenos">105</span>
+<span class="linenos">106</span>    lv_scrollbar_mode_t lv_page_get_scrollbar_mode(constlv_obj_t *page)
+<span class="linenos">107</span>    在页面上设置滚动条模式
+<span class="linenos">108</span>    返回:
+<span class="linenos">109</span>    来自“ lv_page_sb.mode_t”枚举的模式
+<span class="linenos">110</span>    形参：
+<span class="linenos">111</span>    page：指向页面对象的指针
+<span class="linenos">112</span>
+<span class="linenos">113</span>
+<span class="linenos">114</span>    bool lv_page_get_scroll_propagation(lv_obj_t *page)
+<span class="linenos">115</span>    获取滚动传播属性
+<span class="linenos">116</span>    返回:
+<span class="linenos">117</span>    对或错
+<span class="linenos">118</span>    形参：
+<span class="linenos">119</span>    page：指向页面的指针
+<span class="linenos">120</span>
+<span class="linenos">121</span>
+<span class="linenos">122</span>    bool lv_page_get_edge_flash(lv_obj_t *page)
+<span class="linenos">123</span>    获取边缘闪光效果属性。
+<span class="linenos">124</span>    形参：
+<span class="linenos">125</span>    page：指向页面的指针返回:true或false
+<span class="linenos">126</span>
+<span class="linenos">127</span>
+<span class="linenos">128</span>    lv_coord_t lv_page_get_width_fit(lv_obj_t *page)
+<span class="linenos">129</span>    获得可以设置为子代仍不会导致溢出的宽度(显示滚动条)
+<span class="linenos">130</span>    返回:
+<span class="linenos">131</span>    仍然适合页面的宽度
+<span class="linenos">132</span>    形参：
+<span class="linenos">133</span>    page：指向页面对象的指针
+<span class="linenos">134</span>
+<span class="linenos">135</span>
+<span class="linenos">136</span>    lv_coord_t lv_page_get_height_fit(lv_obj_t *page)
+<span class="linenos">137</span>    获得可以设置为子代仍不会导致溢出的高度(显示滚动条)
+<span class="linenos">138</span>    返回:
+<span class="linenos">139</span>    仍然适合页面的高度
+<span class="linenos">140</span>    形参：
+<span class="linenos">141</span>    page：指向页面对象的指针
+<span class="linenos">142</span>
+<span class="linenos">143</span>
+<span class="linenos">144</span>    lv_coord_t lv_page_get_width_grid(lv_obj_t * page，uint8_t div，uint8_t span )
+<span class="linenos">145</span>    划分对象的宽度并获得给定列数的宽度。也要考虑背景的填充和可滚动。
+<span class="linenos">146</span>    返回:
+<span class="linenos">147</span>    根据给定参数的宽度
+<span class="linenos">148</span>    形参：
+<span class="linenos">149</span>    page：指向对象的指针
+<span class="linenos">150</span>    div：表示假设有多少列。如果为1，则宽度将设置为父级的宽度；如果为2，则只有父级宽度的一半-父级的内部填充；如果为3，则只有第三个父级宽度-2 *父级的内部填充
+<span class="linenos">151</span>    span：合并了多少列
+<span class="linenos">152</span>
+<span class="linenos">153</span>
+<span class="linenos">154</span>    lv_coord_t lv_page_get_height_grid(lv_obj_t * page，uint8_t div，uint8_t span )
+<span class="linenos">155</span>    划分对象的高度并获得给定列数的宽度。也要考虑背景的填充和可滚动。
+<span class="linenos">156</span>    返回:
+<span class="linenos">157</span>    根据给定参数的高度
+<span class="linenos">158</span>    形参：
+<span class="linenos">159</span>    page：指向对象的指针
+<span class="linenos">160</span>    div：表示假设有多少行。如果为1，则将设置父级的高度；如果为2，则只有父级的一半高度-父级的内部填充；如果只有3，则只有第三级父级的高度-2 *父级的内部填充
+<span class="linenos">161</span>    span：合并了多少行
+<span class="linenos">162</span>
+<span class="linenos">163</span>
+<span class="linenos">164</span>    lv_coord_t lv_page_get_scrl_width(constlv_obj_t *page)
+<span class="linenos">165</span>    获取页面可滚动部分的宽度
+<span class="linenos">166</span>    返回:
+<span class="linenos">167</span>    滚动条的宽度
+<span class="linenos">168</span>    形参：
+<span class="linenos">169</span>    page：指向页面对象的指针
+<span class="linenos">170</span>
+<span class="linenos">171</span>
+<span class="linenos">172</span>    lv_coord_t lv_page_get_scrl_height(constlv_obj_t *page)
+<span class="linenos">173</span>    获取页面可滚动部分的高度
+<span class="linenos">174</span>    返回:
+<span class="linenos">175</span>    滚动条的高度
+<span class="linenos">176</span>    形参：
+<span class="linenos">177</span>    page：指向页面对象的指针
+<span class="linenos">178</span>
+<span class="linenos">179</span>
+<span class="linenos">180</span>    lv_layout_t lv_page_get_scrl_layout(constlv_obj_t *page)
+<span class="linenos">181</span>    获取页面可滚动部分的布局
+<span class="linenos">182</span>    返回:
+<span class="linenos">183</span>    来自“ lv_cont_layout_t”的布局
+<span class="linenos">184</span>    形参：
+<span class="linenos">185</span>    page：指向页面对象的指针
+<span class="linenos">186</span>
+<span class="linenos">187</span>
+<span class="linenos">188</span>    lv_fit_t lv_page_get_scrl_fit_left(constlv_obj_t *page)
+<span class="linenos">189</span>    获取左合身模式
+<span class="linenos">190</span>    返回:
+<span class="linenos">191</span>    的元素 lv_fit_t
+<span class="linenos">192</span>    形参：
+<span class="linenos">193</span>    page：指向页面对象的指针
+<span class="linenos">194</span>
+<span class="linenos">195</span>
+<span class="linenos">196</span>    lv_fit_t lv_page_get_scrl_fit_right(constlv_obj_t *page)
+<span class="linenos">197</span>    获得合适的健身模式
+<span class="linenos">198</span>    返回:
+<span class="linenos">199</span>    的元素 lv_fit_t
+<span class="linenos">200</span>    形参：
+<span class="linenos">201</span>    page：指向页面对象的指针
+<span class="linenos">202</span>
+<span class="linenos">203</span>
+<span class="linenos">204</span>    lv_fit_t lv_page_get_scrl_fit_top(constlv_obj_t *page)
+<span class="linenos">205</span>    获取最适合的模式
+<span class="linenos">206</span>    返回:
+<span class="linenos">207</span>    的元素 lv_fit_t
+<span class="linenos">208</span>    形参：
+<span class="linenos">209</span>    page：指向页面对象的指针
+<span class="linenos">210</span>
+<span class="linenos">211</span>
+<span class="linenos">212</span>    lv_fit_t lv_page_get_scrl_fit_bottom(constlv_obj_t *page)
+<span class="linenos">213</span>    获取最合适的模式
+<span class="linenos">214</span>    返回:
+<span class="linenos">215</span>    的元素 lv_fit_t
+<span class="linenos">216</span>    形参：
+<span class="linenos">217</span>    page：指向页面对象的指针
+<span class="linenos">218</span>
+<span class="linenos">219</span>
+<span class="linenos">220</span>    bool lv_page_on_edge(lv_obj_t * page，lv_page_edge_t edge )
+<span class="linenos">221</span>    查找页面是否已滚动到特定边缘。
+<span class="linenos">222</span>    返回:
+<span class="linenos">223</span>    如果页面在指定的边缘，则为true
+<span class="linenos">224</span>    形参：
+<span class="linenos">225</span>    page：页面对象
+<span class="linenos">226</span>    edge：边缘检查
+<span class="linenos">227</span>
+<span class="linenos">228</span>
+<span class="linenos">229</span>    void lv_page_glue_obj(lv_obj_t * obj，bool glue)
+<span class="linenos">230</span>    将对象粘到页面上。之后，页面也可以与此对象一起移动(拖动)。
+<span class="linenos">231</span>    形参：
+<span class="linenos">232</span>    obj：指向页面上对象的指针
+<span class="linenos">233</span>    glue：true：启用胶水，false：禁用胶水
+<span class="linenos">234</span>
+<span class="linenos">235</span>
+<span class="linenos">236</span>    void lv_page_focus(lv_obj_t *page，constlv_obj_t * obj，lv_anim_enable_t anim_en )
+<span class="linenos">237</span>    专注于一个对象。它确保对象将在页面上可见。
+<span class="linenos">238</span>    形参：
+<span class="linenos">239</span>    page：指向页面对象的指针
+<span class="linenos">240</span>    obj：指向要聚焦的对象的指针(必须在页面上)
+<span class="linenos">241</span>    anim_en：LV_ANIM_ON聚焦动画；LV_ANIM_OFF无需动画即可对焦
+<span class="linenos">242</span>
+<span class="linenos">243</span>
+<span class="linenos">244</span>    void lv_page_scroll_hor(lv_obj_t *page，lv_coord_t dist )
+<span class="linenos">245</span>    水平滚动页面
+<span class="linenos">246</span>    形参：
+<span class="linenos">247</span>    page：指向页面对象的指针
+<span class="linenos">248</span>    dist：滚动距离(&lt;0：向左滚动；&gt; 0向右滚动)
+<span class="linenos">249</span>
+<span class="linenos">250</span>
+<span class="linenos">251</span>    void lv_page_scroll_ver(lv_obj_t *page，lv_coord_t dist )
+<span class="linenos">252</span>    垂直滚动页面
+<span class="linenos">253</span>    形参：
+<span class="linenos">254</span>    page：指向页面对象的指针
+<span class="linenos">255</span>    dist：滚动距离(&lt;0：向下滚动；&gt; 0向上滚动)
+<span class="linenos">256</span>
+<span class="linenos">257</span>
+<span class="linenos">258</span>    void lv_page_start_edge_flash(lv_obj_t *page，lv_page_edge_t edge)
+<span class="linenos">259</span>    不打算由用户直接使用，而是由内部的其他对象类型直接使用。开始边缘Flash动画。
+<span class="linenos">260</span>    形参：
+<span class="linenos">261</span>    page：
+<span class="linenos">262</span>    edge：要闪烁的边缘。可LV_PAGE_EDGE_LEFT/RIGHT/TOP/BOTTOM
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="25_roller.html" class="btn btn-neutral float-right" title="滚筒(lv_roller)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="23_objmask.html" class="btn btn-neutral float-left" title="对象蒙版(lv_objmask)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

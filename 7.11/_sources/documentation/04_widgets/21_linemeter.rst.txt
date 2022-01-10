@@ -1,0 +1,111 @@
+==================================
+仪表(lv_lmeter)
+==================================
+
+概述
+##################################
+线表对象由一些绘制比例的径向线组成。设置线表的值将按比例更改刻度线的颜色。
+
+
+零件和样式
+##################################
+线表只有一个主要部分，称为 ``LV_LINEMETER_PART_MAIN`` 。它使用所有典型的背景属性绘制矩形或圆形背景，并使用line和scale属性绘制比例线。活动行（与较小的值相关，即当前值）的颜色从line_color到scale_grad_color。最后（当前值之后）的行设置为scale_end_color color。
+
+
+用法
+##################################
+
+设定数值
+**********************************
+用 ``lv_linemeter_set_value(linemeter, new_value)`` 设置新值时，比例的比例部分将重新着色。
+
+
+范围和角度
+**********************************
+``lv_linemeter_set_range(linemeter, min, max)`` 函数设置线表的范围。
+
+可以通过 ``lv_linemeter_set_scale(linemeter, angle, line_num)`` 设置比例尺的角度和行数。默认角度为240，默认行号为31。
+
+
+角度偏移
+**********************************
+默认情况下，刻度角相对于y轴对称地解释。这导致“站立”线表。使用 ``lv_linemeter_set_angle_offset`` 可以添加缩放角度的偏移量。它可以用于例如将四分之一线表放到角落或将半线表放到右侧或左侧。
+
+
+
+镜像
+**********************************
+默认情况下，线表的线路是顺时针激活的。可以使用 ``lv_linemeter_set_mirror(linemeter, true/false)`` 进行更改。
+
+
+事件
+##################################
+仅支持 `通用事件`_  。
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键处理
+##################################
+对象类型不处理任何键。 
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单的仪表
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/21_linemeter/01_lv_ex_linemeter_1.png
+	   
+	  简单的仪表
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_LINEMETER
+
+	void lv_ex_linemeter_1(void)
+	{
+		/*Create a line meter */
+		lv_obj_t * lmeter;
+		lmeter = lv_linemeter_create(lv_scr_act(), NULL);
+		lv_linemeter_set_range(lmeter, 0, 100);                   /*Set the range*/
+		lv_linemeter_set_value(lmeter, 80);                       /*Set the current value*/
+		lv_linemeter_set_scale(lmeter, 240, 21);                  /*Set the angle and number of lines*/
+		lv_obj_set_size(lmeter, 150, 150);
+		lv_obj_align(lmeter, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+	#endif
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

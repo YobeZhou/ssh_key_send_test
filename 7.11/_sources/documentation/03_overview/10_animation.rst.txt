@@ -1,0 +1,150 @@
+==================================
+动画效果(Animations)
+==================================
+我们可以使用动画在开始值和结束值之间自动更改变量的值。动画将通过定期调用带有相应 value 参数的 “animator” 函数来发生。
+
+动画功能函数具有以下原型：
+
+.. code-block:: c
+    :linenos:
+
+	void func(void * var, lv_anim_var_t value);
+
+
+该原型与 LVGL 的大多数设置功能兼容。例如 ``lv_obj_set_x(obj，value)`` 或 ``lv_obj_set_width(obj，value)`` 
+
+
+创建动画
+##################################
+要创建动画，必须初始化 ``lv_anim_t`` 变量，并使用 ``lv_anim_set _...()`` 函数进行配置。
+
+.. code-block:: c
+    :linenos:
+
+	/* 初始化动画
+	 *-----------------------*/
+
+	lv_anim_t a;
+	lv_anim_init(&a);
+
+	/* 必选设置
+	 *------------------*/
+
+	/* 设置“动画制作”功能 */
+	lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t) lv_obj_set_x); 
+
+	/* 设置“动画制作”功能 */
+	lv_anim_set_var(&a, obj); 
+
+	/* 动画时长[ms] */
+	lv_anim_set_time(&a, duration);
+
+	/* 设置开始和结束值。例如。 0、150 */
+	lv_anim_set_values(&a, start, end);
+
+	/* 可选设置
+	 *------------------*/
+
+	/* 开始动画之前的等待时间[ms] */
+	lv_anim_set_delay(&a, delay);
+
+	/* 设置路径（曲线）。默认为线性 */
+	lv_anim_set_path(&a, &path);
+
+	/* 设置一个回调以在动画准备好时调用。 */
+	lv_anim_set_ready_cb(&a, ready_cb);
+
+	/* 设置在动画开始时（延迟后）调用的回调。 */
+	lv_anim_set_start_cb(&a, start_cb);
+
+	/* 在此持续时间内，也向后播放动画。默认值为0（禁用）[ms] */
+	lv_anim_set_playback_time(&a, wait_time); 
+
+	/* 播放前延迟。默认值为0（禁用）[ms] */
+	lv_anim_set_playback_delay(&a, wait_time);
+
+	/* 重复次数。默认值为1。LV_ANIM_REPEAT_INFINIT用于无限重复 */
+	lv_anim_set_repeat_count(&a, wait_time);
+
+	/* 重复之前要延迟。默认值为0（禁用）[ms] */
+	lv_anim_set_repeat_delay(&a, wait_time);
+
+	/* true（默认）：立即应用开始值，false：延迟设置动画后再应用开始值。真正开始。 */
+	lv_anim_set_early_apply(&a, true/false);
+
+	/* 应用动画效果
+	 *------------------*/
+	lv_anim_start(&a);                 /* 应用动画效果 */
+
+
+可以同时在同一变量上应用 **多个不同的动画** 。例如，用 ``lv_obj_set_x`` 和 ``lv_obj_set_y`` 设置x和y坐标的动画。但是，只有一个动画可以存在给定的变量和函数对。因此， ``lv_anim_start()`` 将删除已经存在的可变函数动画。
+
+
+动画路径(path)
+##################################
+可以设置 **动画的路径** 。在最简单的情况下，它是线性的，这意味着开始和结束之间的当前值线性变化。路径主要是根据动画的当前状态计算要设置的下一个值的功能。当前，有以下内置路径功能：
+
+- **lv_anim_path_linear** 		线性动画
+- **lv_anim_path_step**	  		一步到位
+- **lv_anim_path_ease_in** 		渐进效果
+- **lv_anim_path_ease_out** 	渐退效果
+- **lv_anim_path_ease_in_out** 	渐进和渐退效果
+- **lv_anim_path_overshoot** 	超出最终值
+- **lv_anim_path_bounce**	 	从最终值反弹一点(就像撞墙一样)
+
+
+可以这样初始化路径：
+
+
+.. code-block:: c
+    :linenos:
+	
+	lv_anim_path_t path;
+	lv_anim_path_init(&path);
+	lv_anim_path_set_cb(&path, lv_anim_path_overshoot);
+	lv_anim_path_set_user_data(&path, &foo); /* 自定义数据(可选) */
+
+	/* 在动画中设置路径 */
+	lv_anim_set_path(&a, &path);
+
+
+速度与时间
+##################################
+默认情况下，可以设置动画时间。但是，在某些情况下，动画速度更加实用。
+
+``lv_anim_speed_to_time(speed, start, end)`` 函数以毫秒为单位计算从给定速度的起始值到结束值所需的时间。速度以单位/秒为单位进行解释。例如， ``lv_anim_speed_to_time(20,0,100)`` 将给出 5000 毫秒。例如，在 ``lv_obj_set_x`` 单位为像素的情况下，因此20表示20 px / sec的速度。
+
+
+删除动画
+##################################
+可以通过提供animation变量及其动画功能来删除 ``lv_anim_del(var，func)`` 的动画。
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

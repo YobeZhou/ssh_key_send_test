@@ -1,0 +1,254 @@
+==================================
+输入设备接口
+==================================
+
+输入设备的类型
+##################################
+
+要设置输入设备，必须初始化 ``lv_indev_drv_t`` 变量：
+
+.. code-block:: c
+    :linenos:
+
+	lv_indev_drv_t indev_drv;
+	lv_indev_drv_init(&indev_drv);      /*Basic initialization*/
+	indev_drv.type =...                 /*See below.*/
+	indev_drv.read_cb =...              /*See below.*/
+	
+	/*Register the driver in LVGL and save the created input device object*/
+	lv_indev_t * my_indev = lv_indev_drv_register(&indev_drv);
+
+
+**类型** (indev_drv.type)可以是：
+
+- **LV_INDEV_TYPE_POINTER** 触摸板或鼠标
+- **LV_INDEV_TYPE_KEYPAD** 键盘或小键盘
+- **LV_INDEV_TYPE_ENCODER** 带有左，右，推动选项的编码器
+- **LV_INDEV_TYPE_BUTTON** 外部按钮按下屏幕
+
+
+**read_cb** (indev_drv.read_cb)是一个函数指针，将定期调用该函数指针以报告输入设备的当前状态。它还可以缓冲数据并在没有更多数据要读取时返回 ``false`` ，或者在缓冲区不为空时返回 ``true`` 。
+
+进一步了解有关 `输入设备`_ 的更多信息。
+
+
+.. _输入设备: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+触摸板，鼠标或任何指针
+##################################
+可以单击屏幕点的输入设备属于此类别。
+
+.. code-block:: c
+    :linenos:
+	
+	indev_drv.type = LV_INDEV_TYPE_POINTER;
+	indev_drv.read_cb = my_input_read;
+
+	...
+
+	bool my_input_read(lv_indev_drv_t * drv, lv_indev_data_t*data)
+	{
+		data->point.x = touchpad_x;
+		data->point.y = touchpad_y;
+		data->state = LV_INDEV_STATE_PR or LV_INDEV_STATE_REL;
+		return false; /*No buffering now so no more data read*/
+	}
+
+
+::
+
+  即使状态为 LV_INDEV_STATE_REL ，触摸板驱动程序也必须返回最后的 X/Y 坐标。
+
+要设置鼠标光标，请使用 ``lv_indev_set_cursor(my_indev,&img_cursor)`` 。( ``my_indev`` 是 ``lv_indev_drv_register`` 的返回值)键盘或键盘
+
+
+触摸板或键盘
+##################################
+带有所有字母的完整键盘或带有一些导航按钮的简单键盘均属于此处。
+
+要使用键盘/触摸板：
+
+
+- 注册具有 LV_INDEV_TYPE_KEYPAD 类型的 read_cb 函数。
+- 在 lv_conf.h 中启用 LV_USE_GROUP
+- 必须创建一个对象组：lv_group_t * g = lv_group_create()，并且必须使用 lv_group_add_obj(g，obj) 向其中添加对象
+- 必须将创建的组分配给输入设备：lv_indev_set_group(my_indev，g)( my_indev 是 lv_indev_drv_register 的返回值)
+- 使用 LV_KEY _... 在组中的对象之间导航。有关可用的密钥，请参见 lv_core/lv_group.h。
+
+
+
+.. code-block:: c
+    :linenos:
+	
+	indev_drv.type = LV_INDEV_TYPE_KEYPAD;
+	indev_drv.read_cb = keyboard_read;
+
+	...
+
+	bool keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
+	  data->key = last_key();            /*Get the last pressed or released key*/
+
+	  if(key_pressed()) data->state = LV_INDEV_STATE_PR;
+	  else data->state = LV_INDEV_STATE_REL;
+
+	  return false; /*No buffering now so no more data read*/
+	}
+
+编码器
+##################################
+可以通过下面四种方式使用编码器：
+
+1. 按下按钮
+#. 长按其按钮
+#. 转左
+#. 右转
+
+简而言之，编码器输入设备的工作方式如下：
+
+- 通过旋转编码器，可以专注于下一个/上一个对象。
+- 在简单对象(如按钮)上按下编码器时，将单击它。
+- 如果将编码器按在复杂的对象(如列表，消息框等)上，则该对象将进入编辑模式，从而转动编码器即可在对象内部导航。
+- 长按按钮，退出编辑模式。
+
+要使用编码器(类似于键盘)，应将对象添加到组中。
+
+
+.. code-block:: c
+    :linenos:
+	
+	
+	indev_drv.type = LV_INDEV_TYPE_ENCODER;
+	indev_drv.read_cb = encoder_read;
+
+	...
+
+	bool encoder_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
+	  data->enc_diff = enc_get_new_moves();
+
+	  if(enc_pressed()) data->state = LV_INDEV_STATE_PR;
+	  else data->state = LV_INDEV_STATE_REL;
+
+	  return false; /*No buffering now so no more data read*/
+	}
+
+
+
+使用带有编码器逻辑的按钮
+**********************************
+除了标准的编码器行为外，您还可以利用其逻辑来使用按钮导航(聚焦)和编辑小部件。如果只有几个按钮可用，或者除编码器滚轮外还想使用其他按钮，这将特别方便。
+
+需要有3个可用的按钮：
+
+- **LV_KEY_ENTER** 将模拟按下或推动编码器按钮
+- **LV_KEY_LEFT** 将向左模拟转向编码器
+- **LV_KEY_RIGHT** 将正确模拟转向编码器
+- 其他键将传递给焦点小部件
+
+如果按住这些键，它将模拟indev_drv.long_press_rep_time中指定的时间段内的编码器单击。
+
+
+.. code-block:: c
+    :linenos:
+	
+	indev_drv.type = LV_INDEV_TYPE_ENCODER;
+	indev_drv.read_cb = encoder_with_keys_read;
+
+	...
+
+	bool encoder_with_keys_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
+	  data->key = last_key();            /*Get the last pressed or released key*/
+										 /* use LV_KEY_ENTER for encoder press */
+	  if(key_pressed()) data->state = LV_INDEV_STATE_PR;
+	  else {
+		  data->state = LV_INDEV_STATE_REL;
+		  /* Optionally you can also use enc_diff, if you have encoder*/
+		  data->enc_diff = enc_get_new_moves();
+	  }
+
+	  return false; /*No buffering now so no more data read*/
+	}
+
+
+按键
+##################################
+按钮是指屏幕旁边的外部“硬件”按钮，它们被分配给屏幕的特定坐标。如果按下按钮，它将模拟在指定坐标上的按下。 (类似于触摸板)
+
+使用 lv_indev_set_button_points(my_indev, points_array) 将按钮分配给坐标。points_array应该看起来像const lv_point_t points_array [] = {{12,30}，{60,90}，...}
+
+
+::
+
+  points_array不能超出范围。将其声明为全局变量或函数内部的静态变量。
+
+
+.. code-block:: c
+    :linenos:
+
+
+	indev_drv.type = LV_INDEV_TYPE_BUTTON;
+	indev_drv.read_cb = button_read;
+
+	...
+
+	bool button_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
+		static uint32_t last_btn = 0;   /*Store the last pressed button*/
+		int btn_pr = my_btn_read();     /*Get the ID (0,1,2...) of the pressed button*/
+		if(btn_pr >= 0) {               /*Is there a button press? (E.g. -1 indicated no button was pressed)*/
+		   last_btn = btn_pr;           /*Save the ID of the pressed button*/
+		   data->state = LV_INDEV_STATE_PR;  /*Set the pressed state*/
+		} else {
+		   data->state = LV_INDEV_STATE_REL; /*Set the released state*/
+		}
+
+		data->btn = last_btn;            /*Save the last button*/
+
+		return false;                    /*No buffering now so no more data read*/
+	}
+
+
+
+其它功能
+##################################
+除了 read_cb 之外，还可以在 lv_indev_drv_t 中指定 feedback_cb 回调。输入设备发送任何类型的事件时，都会调用feedback_cb。 (独立于其类型)。它允许为用户提供反馈，例如在LV_EVENT_CLICK上播放声音。
+
+可以在lv_conf.h中设置以下参数的默认值，但可以在lv_indev_drv_t中覆盖默认值：
+
+
+- **拖拽限制(drag_limit)** 实际拖动对象之前要滑动的像素数 drag_throw 拖曳速度降低[％]。更高的价值意味着更快的减速
+- **(drag_throw)** 拖曳速度降低[％]。更高的价值意味着更快的减速
+- **(long_press_time)** 按下时间发送 LV_EVENT_LONG_PRESSED (以毫秒为单位)
+- **(long_press_rep_time)** 发送 LV_EVENT_LONG_PRESSED_REPEAT 的时间间隔(以毫秒为单位)
+- **(read_task)** 指向读取输入设备的lv_task的指针。可以通过 ``lv_task_...()`` 函数更改其参数
+
+
+每个输入设备都与一个显示器关联。默认情况下，新的输入设备将添加到最后创建的或显式选择的显示设备(使用lv_disp_set_default())。相关的显示已存储，并且可以在驱动程序的显示字段中更改。
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

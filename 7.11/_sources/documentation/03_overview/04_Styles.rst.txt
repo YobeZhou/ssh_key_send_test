@@ -1,0 +1,1050 @@
+==================================
+样式(Styles)
+==================================
+
+简介
+##################################
+
+样式用于设置对象的外观。 lvgl 中的样式在很大程度上受到 CSS 的启发。简而言之，概念如下：
+
+- 样式是 ``lv_style_t`` 变量，可以保存属性，例如边框宽度，文本颜色等。它类似于 CSS 中的类。
+- 并非必须指定所有属性。未指定的属性将使用默认值。
+- 可以将样式分配给对象以更改其外观。
+- 样式可以被任意数量的对象使用。
+- 样式可以级联，也就是可以将多个样式分配给一个对象，并且每种样式可以具有不同的属性。例如，style_btn 可能会导致默认的灰色按钮，并且 style_btn_red 只能添加一个 background-color=red 以覆盖背景色
+- 后面添加的样式具有更高的优先级。这意味着，如果以两种样式指定属性，则将使用后面添加的样式。
+- 如果未在当前对象中指定样式，则某些属性(例如，文本颜色)默认从父对象继承。
+- 对象具有比“普通”样式更高优先级的局部样式。
+- 与 CSS (伪类描述不同的状态，例如： hover )不同，在 lvgl 中，将属性分配给给定的状态。(即“类”与状态无关，但是每个属性都有一个状态)
+- 当对象更改状态时可以使用转场过渡效果。
+
+
+样式的状态(States)
+##################################
+
+- **LV_STATE_DEFAULT** (0x00)：正常，已释放
+- **LV_STATE_CHECKED** (0x01)：切换或选中
+- **LV_STATE_FOCUSED** (0x02)：通过键盘或编码器聚焦或通过触摸板/鼠标单击
+- **LV_STATE_EDITED**  (0x04)：由编码器编辑
+- **LV_STATE_HOVERED** (0x08)：鼠标悬停(现在不支持)
+- **LV_STATE_PRESSED** (0x10)：已按下
+- **LV_STATE_DISABLED** (0x20)：禁用或 void
+
+可以将状态进行组合使用，如： ``LV_STATE_FOCUSED | LV_STATE_PRESSED``
+
+可以在每种状态和状态组合中定义样式的属性。例如，为默认和按下状态设置不同的背景颜色。如果未在状态中定义属性，则将使用最佳匹配状态的属性。通常，它表示带有 ``LV_STATE_DEFAULT`` 状态的属性。如果即使对于默认状态也未设置该属性，则将使用默认值。
+
+但是，“最佳匹配状态的属性”到底是什么意思？优先级由其值显示(请阅读上面：”样式的状态(States)“)。 **值越大，优先级越高** 。
+为了确定要使用哪个属性，我们举一个例子。让我们来看看背景色是怎样定义的：
+
+- ``LV_STATE_DEFAULT`` : white
+- ``LV_STATE_PRESSED`` : gray
+- ``LV_STATE_FOCUSED`` : red
+
+
+1. 默认情况下，对象处于默认状态，因此很简单：该属性在对象的当前状态中定义为白色
+#. 按下对象时，有2个相关属性：默认为白色(默认与每个状态有关)和按下为灰色。按下状态的优先级为0x10，高于默认状态的0x00优先级，因此将使用灰色。
+#. 当物体聚焦时，会发生与按下状态相同的事情，并且将使用红色。(焦点状态的优先级高于默认状态)。
+#. 聚焦并按下对象时，灰色和红色都可以使用，但是按下状态的优先级高于聚焦，因此将使用灰色。
+#. 可以为设置例如玫瑰色。在这种情况下，此组合状态的优先级为0x02 + 0x10 = 0x12，该优先级高于按下状态的优先级，因此将使用玫瑰色。LV_STATE_PRESSED | LV_STATE_FOCUSED
+#. 选中对象后，没有属性可以设置此状态的背景色。因此，在缺少更好的选择的情况下，对象在默认状态的属性中仍为白色。
+
+注意事项：
+
+- 如果要为所有状态设置属性(例如红色背景色)，只需将其设置为默认状态即可。如果对象找不到其当前状态的属性，它将回退到默认状态的属性。
+- 使用ORed状态来描述复杂情况的属性。(例如，按+选中+集中)
+- 对不同的状态使用不同的样式元素可能是一个好主意。例如，很难找到释放，按下，选中+按下，聚焦，聚焦+按下，聚焦+按下+选中 等状态的背景颜色。相反，例如，将背景色用于按下和选中状态，并使用不同的边框颜色指示聚焦状态。
+
+
+级联样式
+##################################
+不需要将所有属性设置为一种样式。可以向对象添加更多样式，然后让后来添加的样式修改或扩展其他样式的属性。例如，创建常规的灰色按钮样式，并为仅设置新的背景色的红色按钮创建新的样式。
+
+在CSS中，所有使用的类都像 ``<div class=".btn .btn-red">`` 一样列出，这是相同的概念。
+
+**较晚添加的样式优先于较早的样式。** 因此，在上面的灰色/红色按钮示例中，应首先添加常规按钮样式，然后再添加红色样式。
+但是，仍然要优先考虑优先级问题。因此，让我们研究以下情况：
+
+
+- 基本的按钮样式定义了默认状态为深灰色和按下状态为浅灰色
+- 红色按钮样式仅在默认状态下将背景色定义为红色
+
+
+在这种情况下，释放按钮时(它处于默认状态)它将是红色的，因为在最后添加的样式(红色样式)中找到了完美的匹配。按下按钮时，浅灰色是更好的搭配，因为它完美地描述了当前状态，因此按钮将是浅灰色的。
+
+
+样式继承
+##################################
+某些属性(通常与文本相关)可以从父对象的样式继承。仅当未以对象的样式(即使在默认状态下)设置给定属性时，才应用继承。
+
+在这种情况下，如果该属性是可继承的，则该属性的值也将在父级中搜索，直到一部分可以告诉该属性的值为止。父母会用自己的状态来说明价值。按下按钮后，文字颜色就从这里来，将使用按下的文字颜色。
+
+
+
+零件(Parts)的样式
+##################################
+对象可以具有自己样式的零件。例如，页面包含四个部分(Parts)：
+
+- 背景(Background)
+- 可卷动(Scrollable)
+- 滚动条(Scrollable)
+- 边缘闪光(Edge flash)
+
+
+对象零件有三种类型：主要(main)，虚拟(virtual)和真实(real)。
+
+主要(main)部分通常是对象的背景和最大部分。某些对象只有一个主要部分。例如，一个按钮只有一个背景。
+
+虚拟(virtual)小部件是实时绘制到主体小部件的其他小部件。它们后面没有“真实”对象。例如，页面的滚动条不是真实的对象，仅在绘制页面背景时才绘制。虚拟小部件始终具有与主要小部件相同的状态。如果可以继承该属性，则在转到父级之前还将考虑主体部分。
+
+真实(real)小部件是由主对象创建和管理的真实对象。例如，页面的可滚动部分是真实对象。实际小部件的状态可能与主要小部件的状态不同。
+
+
+初始化样式并设置、获取属性
+##################################
+样式存储在 ``lv_style_t`` 变量中。样式变量应为 **static** 、 **全局** 或 **动态分配** 。
+也就是说，它们不能是函数中的局部变量，在函数存在时销毁。
+在使用样式之前，应使用 ``lv_style_init(&my_style)`` 进行初始化 。
+初始化后，我们就可以设置样式的属性。
+属性集函数如下所示：``lv_style_set_<property_name>(&style, <state>, <value>);``
+例如，上面提到的示例如下所示：
+
+.. code-block:: c
+    :linenos:
+	
+	static lv_style_t style1;
+    lv_style_init(&style1);
+    lv_style_set_size(&style1, LV_STATE_DEFAULT, 4);
+    lv_style_set_bg_opa(&style1, LV_STATE_DEFAULT, LV_OPA_COVER);
+    lv_style_set_bg_color(&style1, LV_STATE_DEFAULT, lv_color_hex3(0xeee));
+    lv_style_set_radius(&style1, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);
+    lv_style_set_pad_right(&style1, LV_STATE_DEFAULT, 4);
+
+
+可以使用 lv_style_copy(＆style_destination，＆style_source) 复制样式。复制后，仍然可以自由添加属性。
+
+要删除样式的属性，请使用：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_style_remove_prop(&style, LV_STYLE_BG_COLOR | (LV_STATE_PRESSED << LV_STYLE_STATE_POS));
+
+
+要从给定状态的样式中获取值，可以使用以下原型的功能：
+
+.. code-block:: c
+    :linenos:
+	
+	_lv_style_get_color/int/opa/ptr(&style, <prop>, <result buf>);
+
+这样将选择最匹配的属性，并返回其优先级。如果找不到该属性，将返回 ``-1`` 。
+
+函数的形式 (...color/int/opa/ptr) 应根据 ``<prop>`` 的类型使用。
+
+
+例如：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_color_t color;
+	int16_t res;
+	res = _lv_style_get_color(&style1,  LV_STYLE_BG_COLOR | (LV_STATE_PRESSED << LV_STYLE_STATE_POS), &color);
+	if(res >= 0) {
+	  //the bg_color is loaded into `color`
+	}
+
+要重置样式(释放所有数据)，调用：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_style_reset(&style);
+
+
+管理样式列表
+##################################
+样式本身不能发挥作用。只有将其分配给对象使用才能生效。对象的每个部分都存储一个样式列表，该列表是已分配样式的列表。
+
+调用 ``lv_obj_add_style(obj, <part>, &style);`` 将样式添加到对象，例如：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_add_style(btn, LV_BTN_PART_MAIN, &btn);      /*Default button style*/
+	lv_obj_add_style(btn, LV_BTN_PART_MAIN, &btn_red);  /*Overwrite only a some colors to red*/
+
+调用下面的函数重置对象样式列表：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_reset_style_list(obj, <part>);
+
+如果已经分配给对象的样式发生更改(即，其属性之一设置为新值)，则应通过以下方式通知使用该样式的对象： 
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_refresh_style(obj)
+
+要刷新所有零件和属性，调用：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_refresh_style(obj, LV_OBJ_PART_ALL, LV_STYLE_PROP_ALL)
+
+
+要获取属性的最终值，包括级联，继承，局部样式和过渡(请参见下文)，可以使用以下类似的函数获取：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_get_style_<property_name>(obj, <part>);
+
+这些函数使用对象的当前状态，如果没有更好的候选者，则返回默认值。例如：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_color_t color = lv_obj_get_style_bg_color(btn, LV_BTN_PART_MAIN);
+
+
+
+本地风格
+##################################
+
+在对象的样式列表中，也可以存储所谓的局部属性。其与 CSS 的 ``<div style="color:red">`` 概念相同。局部样式与普通样式相同，但是它仅属于给定的对象， **不能与其他对象共享** 。要设置本地属性，请使用函数：
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_set_style_local_<property_name>(obj, <part>, <state>, <value>); 
+
+例如
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_set_style_local_bg_color(btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+
+
+样式过渡
+##################################
+默认情况下，当对象更改状态(例如，按下状态)时，会立即设置新状态下的新属性。但是，通过过渡，可以在状态改变时播放过渡动画。例如：在按下按钮后，可以在300毫秒内将其背景色设置为所按下的颜色。
+
+过渡的参数存储在样式中。可以设置：
+
+- 过渡时间
+- 开始过渡之前的延迟
+- 动画路径(也称为计时功能)
+- 要设置动画的属性
+
+可以为每个状态定义过渡属性。例如，将500 ms过渡时间设置为默认状态将意味着当对象进入默认状态时，将应用500 ms过渡时间。在按下状态下设置100 ms过渡时间将意味着在进入按下状态时100 ms过渡时间。因此，此示例配置将导致快速进入印刷机状态而缓慢回到默认状态。
+
+
+样式属性
+##################################
+样式中可以使用以下属性：
+
+混合属性
+==================================
+
+- **radius(lv_style_int_t)**：			 设置背景的半径。0：无半径，LV_RADIUS_CIRCLE：最大半径。默认值：0。
+- **clip_corner(bool)**：				 为true可以将溢出的内容剪切到圆角(半径> 0)上。默认值：false。
+- **size(lv_style_int_t)**：			 小部件内部元素的大小。是否使用此属性，请参见窗口小部件的文档。默认值：。LV_DPI / 20
+- **transform_width (lv_style_int_t)**： 使用此值使对象在两侧更宽。默认值：0。
+- **transform_height (lv_style_int_t)**：使用此值使对象在两侧都较高。默认值：0。
+- **transform_angle (lv_style_int_t)**： 旋转类似图像的对象。它的uinit为0.1度，对于45度使用450。默认值：0。
+- **transform_zoom (lv_style_int_t)**：	 缩放类似图像的对象。LV_IMG_ZOOM_NONE正常大小为256(或)，一半为128，一半为512，等等。默认值：LV_IMG_ZOOM_NONE。
+- **opa_scale(lv_style_int_t)**：		 继承。按此比例缩小对象的所有不透明度值。由于继承了子对象，因此也会受到影响。默认值：LV_OPA_COVER。
+
+填充和边距属性
+==================================
+填充可在边缘的内侧设置空间。意思是“我不要我的孩子们离我的身体太近，所以要保留这个空间”。填充内部设置了孩子之间的“差距”。 边距在边缘的外侧设置空间。意思是“我想要我周围的空间”。
+如果启用了布局或 自动调整，则这些属性通常由Container对象使用。但是，其他小部件也使用它们来设置间距。有关详细信息，请参见 `小部件(widgets)`_ 的文档。
+
+.. _小部件(widgets): http://lvgl.100ask.net/documentation/04_widgets/01_obj.html
+
+
+- **pad_top(lv_style_int_t)**：			在顶部设置填充。默认值：0。
+- **pad_bottom(lv_style_int_t)**：		在底部设置填充。默认值：0。
+- **pad_left(lv_style_int_t)**：		在左侧设置填充。默认值：0。
+- **pad_right(lv_style_int_t)**：		在右侧设置填充。默认值：0。
+- **pad_inner(lv_style_int_t)**：		设置子对象之间对象内部的填充。默认值：0。
+- **margin_top(lv_style_int_t)**：		在顶部设置边距。默认值：0。
+- **margin_bottom(lv_style_int_t)**：	在底部设置边距。默认值：0。
+- **margin_left(lv_style_int_t)**：		在左边设置边距。默认值：0。
+- **margin_right(lv_style_int_t)**：	在右边设置边距。默认值：0。
+
+
+背景属性
+==================================
+背景是一个简单的矩形，可以具有渐变和半径舍入。
+
+- **bg_color** ( ``lv_color_t`` )：			指定背景的颜色。默认值：**LV_COLOR_WHITE**。
+- **bg_opa** ( ``lv_opa_t`` )：				指定背景的不透明度。默认值：**LV_OPA_TRANSP**。
+- **bg_grad_color** ( ``lv_color_t`` )：		指定背景渐变的颜色。右侧或底部的颜色是： **bg_grad_dir != LV_GRAD_DIR_NONE**。默认值： **LV_COLOR_WHITE**
+- **bg_main_stop** ( ``uint8_t`` )：			指定渐变应从何处开始。0：最左/最上位置，255：最右/最下位置。默认值：0。
+- **bg_grad_stop** ( ``uint8_t`` )：			指定渐变应在何处停止。0：最左/最上位置，255：最右/最下位置。预设值：255。
+- **bg_grad_dir** ( ``lv_grad_dir_t`` )：		指定渐变的方向。可以是 **LV_GRAD_DIR_NONE/HOR/VER**。默认值：**LV_GRAD_DIR_NONE**。
+- **bg_blend_mode** ( ``lv_blend_mode_t`` )：	将混合模式设置为背景。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE)**。默认值：**LV_BLEND_MODE_NORMAL**。
+
+
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_1.png
+	   
+	  渐变的矩形背景
+	  
+	  
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the background style properties
+	 */
+	void lv_ex_style_1(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+
+		/*Make a gradient*/
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+		lv_style_set_bg_grad_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_bg_grad_dir(&style, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
+
+		/*Shift the gradient to the bottom*/
+		lv_style_set_bg_main_stop(&style, LV_STATE_DEFAULT, 128);
+		lv_style_set_bg_grad_stop(&style, LV_STATE_DEFAULT, 192);
+
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+边框属性
+==================================
+边框绘制在背景顶部。它具有圆角 ``半径`` 。
+
+- **border_color** ( ``lv_color_t`` )：			指定边框的颜色。默认值：**LV_COLOR_BLACK**。
+- **border_opa** ( ``lv_opa_t`` )：				指定边框的不透明度。默认值：**LV_OPA_COVER**。
+- **border_width** ( ``lv_style_int_t`` )：		设置边框的宽度。默认值：**0**。
+- **border_side** ( ``lv_border_side_t`` )：		指定要绘制边框的哪一侧。可以是 **LV_BORDER_SIDE_NONE/LEFT/RIGHT/TOP/BOTTOM/FULL** 。ORed值也是可能的。默认值： **LV_BORDER_SIDE_FULL** 。
+- **border_post** ( ``bool`` )：					如果true在绘制完所有子级之后绘制边框。默认值：**false**。
+- **border_blend_mode** ( ``lv_blend_mode_t`` )：	设置边框的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值： **LV_BLEND_MODE_NORMAL**
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_2.png
+	   
+	  设置圆角边框
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the border style properties
+	 */
+	void lv_ex_style_2(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 20);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Add border to the bottom+right*/
+		lv_style_set_border_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_border_width(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_border_opa(&style, LV_STATE_DEFAULT, LV_OPA_50);
+		lv_style_set_border_side(&style, LV_STATE_DEFAULT, LV_BORDER_SIDE_BOTTOM | LV_BORDER_SIDE_RIGHT);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+轮廓属性
+==================================
+轮廓类似于边框，但绘制在对象外部。
+
+- **outline_color** ( ``lv_color_t`` )：指定轮廓的颜色。默认值： **LV_COLOR_BLACK** 。
+- **outline_opa** ( ``lv_opa_t`` )：指定轮廓的不透明度。默认值：**LV_OPA_COVER**。
+- **outline_width** ( ``lv_style_int_t`` )：设置轮廓的宽度。默认值：**0**。
+- **outline_pad** ( ``lv_style_int_t`` )：设置对象和轮廓之间的空间。默认值：**0**。
+- **outline_blend_mode** ( ``lv_blend_mode_t`` )：设置轮廓的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值： **LV_BLEND_MODE_NORMAL** 。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_3.png
+	   
+	  设置轮廓
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the outline style properties
+	 */
+	void lv_ex_style_3(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Add outline*/
+		lv_style_set_outline_width(&style, LV_STATE_DEFAULT, 2);
+		lv_style_set_outline_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_outline_pad(&style, LV_STATE_DEFAULT, 8);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+阴影属性
+==================================
+
+阴影是对象下方的模糊区域。
+
+
+- **shadow_color** ( ``lv_color_t`` )：指定阴影的颜色。默认值： **LV_COLOR_BLACK**。
+- **shadow_opa** ( ``lv_opa_t`` )：指定阴影的不透明度。默认值：**LV_OPA_TRANSP**。
+- **shadow_width** ( ``lv_style_int_t`` )：设置轮廓的宽度(模糊大小)。默认值：**0**。
+- **shadow_ofs_x** ( ``lv_style_int_t`` )：设置阴影的X偏移量。默认值：**0**。
+- **shadow_ofs_y** ( ``lv_style_int_t`` )：设置阴影的Y偏移量。默认值：**0**。
+- **shadow_spread** ( ``lv_style_int_t`` )：在每个方向上使阴影大于背景的值达到此值。默认值：**0**。
+- **shadow_blend_mode** ( ``lv_blend_mode_t`` )：设置阴影的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE** 。默认值：**LV_BLEND_MODE_NOR**
+
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_4.png
+	   
+	  设置阴影
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+	
+	/**
+	 * Using the Shadow style properties
+	 */
+	void lv_ex_style_4(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Add a shadow*/
+		lv_style_set_shadow_width(&style, LV_STATE_DEFAULT, 8);
+		lv_style_set_shadow_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_shadow_ofs_x(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_shadow_ofs_y(&style, LV_STATE_DEFAULT, 20);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+图案属性
+==================================
+图案是在背景中间绘制或重复以填充整个背景的图像(或符号)。
+
+- **pattern_image** (``const void *``)：指向 **lv_img_dsc_t** 变量的指针，图像文件或符号的路径。默认值：**NULL** 。
+- **pattern_opa** (``lv_opa_t``) ：指定图案的不透明度。默认值： **LV_OPA_COVER** 。
+- **pattern_recolor** (``lv_color_t``) ：将此颜色混合到图案图像中。如果是符号(文本)，它将是文本颜色。默认值： **LV_COLOR_BLACK** 。
+- **pattern_recolor_opa** (``lv_opa_t``) ：重新着色的强度。默认值： **LV_OPA_TRANSP** (不重新着色)。
+- **pattern_repeat** (``bool``)： ``true`` 图案将作为马赛克重复。 **false** ：将图案放置在背景中间。默认值： **false** 。
+- **pattern_blend_mode** (``lv_blend_mode_t``) ：设置图案的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值：**LV_BLEND_MODE_NORMAL**。
+
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_5.png
+	   
+	  设置图案
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the pattern style properties
+	 */
+	void lv_ex_style_5(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Add a repeating pattern*/
+		lv_style_set_pattern_image(&style, LV_STATE_DEFAULT, LV_SYMBOL_OK);
+		lv_style_set_pattern_recolor(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_pattern_opa(&style, LV_STATE_DEFAULT, LV_OPA_50);
+		lv_style_set_pattern_repeat(&style, LV_STATE_DEFAULT, true);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+
+数值属性
+==================================
+
+值是绘制到背景的任意文本。它可以是创建标签对象的轻量级替代。
+
+- **value_str** ( ``const char *`` )：指向要显示的文本的指针。仅保存指针！(不要将局部变量与 lv_style_set_value_str 一起使用，而应使用静态，全局或动态分配的数据)。默认值： **NULL**
+- **value_color** ( ``lv_color_t`` )：文本的颜色。默认值：**LV_COLOR_BLACK**。
+- **value_opa** ( ``lv_opa_t`` )：文本的不透明度。默认值：**LV_OPA_COVER**。
+- **value_font** ( ``const lv_font_t *`` )**：指向文本字体的指针。默认值：**NULL**
+- **value_letter_space** ( ``lv_style_int_t`` )：文本的字母空间。默认值：**0**。
+- **value_line_space** ( ``lv_style_int_t`` )：文本的行距。默认值：**0**。
+- **value_align** ( ``lv_align_t`` )：文本的对齐方式。可以是 **LV_ALIGN_...** 。默认值：**LV_ALIGN_CENTER**。
+- **value_ofs_x** ( ``lv_style_int_t`` )：与路线原始位置的X偏移量。默认值：**0**。
+- **value_ofs_y** ( ``lv_style_int_t`` )：从路线的原始位置偏移Y。默认值：**0**。
+- **value_blend_mode** ( ``lv_blend_mode_t`` )：设置文本的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值：**LV_BLEND_MODE_NORMAL**。
+
+
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_6.png
+
+	  设置图案
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the value style properties
+	 */
+	void lv_ex_style_6(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Add a value text properties*/
+		lv_style_set_value_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_value_align(&style, LV_STATE_DEFAULT, LV_ALIGN_IN_BOTTOM_RIGHT);
+		lv_style_set_value_ofs_x(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_value_ofs_y(&style, LV_STATE_DEFAULT, 10);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Add a value text to the local style. This way every object can have different text*/
+		lv_obj_set_style_local_value_str(obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, "Text");
+	}
+
+
+文字属性
+==================================
+
+文本对象的属性。
+
+- **text_color** ( ``lv_color_t`` )：文本的颜色。默认值：**LV_COLOR_BLACK** 。
+- **text_opa** ( ``lv_opa_t`` )：文本的不透明度。默认值：**LV_OPA_COVER** 。
+- **text_font** ( ``const lv_font_t *`` )：指向文本字体的指针。默认值：。**NULL** 
+- **text_letter_space** ( ``lv_style_int_t`` )：文本的字母空间。默认值：**0** 。
+- **text_line_space** ( ``lv_style_int_t`` )：文本的行距。默认值：**0** 。
+- **text_decor** ( ``lv_text_decor_t`` )：添加文字修饰。可以是 **LV_TEXT_DECOR_NONE/UNDERLINE/STRIKETHROUGH**  。默认值：**LV_TEXT_DECOR_NONE**。
+- **text_sel_color** ( ``lv_color_t`` )：设置文本选择的背景色。默认值：**LV_COLOR_BLACK**
+- **text_blend_mode** ( ``lv_blend_mode_t`` )：设置文本的混合模式。可以**LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE** 。默认值：**LV_BLEND_MODE_NORMAL**。
+
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_7.png
+	   
+	  设置文字
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../lv_examples.h"
+	
+	/**
+	 * Using the text style properties
+	 */
+	void lv_ex_style_7(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+		lv_style_set_border_width(&style, LV_STATE_DEFAULT, 2);
+		lv_style_set_border_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+
+		lv_style_set_pad_top(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_bottom(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_left(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_right(&style, LV_STATE_DEFAULT, 10);
+
+		lv_style_set_text_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_text_letter_space(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_text_line_space(&style, LV_STATE_DEFAULT, 20);
+		lv_style_set_text_decor(&style, LV_STATE_DEFAULT, LV_TEXT_DECOR_UNDERLINE);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_label_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_LABEL_PART_MAIN, &style);
+		lv_label_set_text(obj, "Text of\n"
+								"a label");
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+线属性
+==================================
+
+线的属性。
+
+- **line_color** ( ``lv_color_t`` )：线条的颜色。默认值：**LV_COLOR_BLACK**
+- **line_opa** ( ``lv_opa_t`` )：直线的不透明度。默认值：**LV_OPA_COVER**
+- **line_width** ( ``lv_style_int_t`` )：线的宽度。默认值：**0**。
+- **line_dash_width** ( ``lv_style_int_t`` )：破折号的宽度。仅对水平或垂直线绘制虚线。**0**：禁用破折号。默认值：**0**。
+- **line_dash_gap** ( ``lv_style_int_t`` )：两条虚线之间的间隙。仅对水平或垂直线绘制虚线。**0**：禁用破折号。默认值：**0**。
+- **line_rounded** ( ``bool`` )：**true**：绘制圆角的线尾。默认值：**false**。
+- **line_blend_mode** ( ``lv_blend_mode_t`` )：设置线条的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值：**LV_BLEND_MODE_NORMAL**。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_8.png
+	   
+	  设置线条
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the line style properties
+	 */
+	void lv_ex_style_8(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		lv_style_set_line_color(&style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+		lv_style_set_line_width(&style, LV_STATE_DEFAULT, 6);
+		lv_style_set_line_rounded(&style, LV_STATE_DEFAULT, true);
+	#if LV_USE_LINE
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_line_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_LINE_PART_MAIN, &style);
+
+		static lv_point_t p[] = {{10, 30}, {30, 50}, {100, 0}};
+		lv_line_set_points(obj, p, 3);
+
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	#endif
+	}
+
+
+图象属性
+==================================
+
+图像的属性。
+
+- **image_recolor** ( ``lv_color_t`` )：将此颜色混合到图案图像中。如果是符号(文本)，它将是文本颜色。默认值： **LV_COLOR_BLACK**
+- **image_recolor_opa** ( ``lv_opa_t`` )：重新着色的强度。默认值：( **LV_OPA_TRANSP** 不重新着色)。默认值： **LV_OPA_TRANSP**
+- **image_opa** ( ``lv_opa_t`` )：图像的不透明度。默认值：**LV_OPA_COVER**
+- **image_blend_mode** ( ``lv_blend_mode_t`` )：设置图像的混合模式。可以是 **LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE**。默认值：**LV_BLEND_MODE_NORMAL**。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_9.png
+	   
+	  设置图象
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+	
+	/**
+	 * Using the image style properties
+	 */
+	void lv_ex_style_9(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+		lv_style_set_border_width(&style, LV_STATE_DEFAULT, 2);
+		lv_style_set_border_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+
+		lv_style_set_pad_top(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_bottom(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_left(&style, LV_STATE_DEFAULT, 10);
+		lv_style_set_pad_right(&style, LV_STATE_DEFAULT, 10);
+
+		lv_style_set_image_recolor(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_image_recolor_opa(&style, LV_STATE_DEFAULT, LV_OPA_50);
+
+	#if LV_USE_IMG
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_img_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_IMG_PART_MAIN, &style);
+		LV_IMG_DECLARE(img_cogwheel_argb);
+		lv_img_set_src(obj, &img_cogwheel_argb);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	#endif
+	}
+
+
+转换属性
+==================================
+
+用于描述状态更改动画的属性。
+
+- **transition_time** ( ``lv_style_int_t`` )：过渡时间。默认值：**0**。
+- **transition_delay** ( ``lv_style_int_t`` )：转换前的延迟。默认值：**0**。
+- **transition_prop_1** ( ``property name`` )：应在其上应用过渡的属性。将属性名称与大写字母一起使用，例如：**LV_STYLE_LV_STYLE_BG_COLOR**。默认值：**0(none)**。
+- **transition_prop_2** ( ``property name`` )：与transition_1相同，只是另一个属性。默认值：**0(none)**。
+- **transition_prop_3** ( ``property name`` )：与transition_1相同，只是另一个属性。默认值：**0(none)**。
+- **transition_prop_4** ( ``property name`` )：与transition_1相同，只是另一个属性。默认值：**0(none)**。
+- **transition_prop_5** ( ``property name`` )：与transition_1相同，只是另一个属性。默认值：**0(none)**。
+- **transition_prop_6** ( ``property name`` )：与transition_1相同，只是另一个属性。默认值：**0(none)**。
+- **transition_path** ( ``lv_anim_path_t`` )：过渡的动画路径(path)。(需要为静态或全局变量，因为仅保存了其指针)。默认值： **lv_anim_path_def** (线性路径)。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_10.png
+	   
+	  转换属性
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the transitions style properties
+	 */
+	void lv_ex_style_10(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Set different background color in pressed state*/
+		lv_style_set_bg_color(&style, LV_STATE_PRESSED, LV_COLOR_GRAY);
+
+		/*Set different transition time in default and pressed state
+		 *fast press, slower revert to default*/
+		lv_style_set_transition_time(&style, LV_STATE_DEFAULT, 500);
+		lv_style_set_transition_time(&style, LV_STATE_PRESSED, 200);
+
+		/*Small delay to make transition more visible*/
+		lv_style_set_transition_delay(&style, LV_STATE_DEFAULT, 100);
+
+		/*Add `bg_color` to transitioned properties*/
+		lv_style_set_transition_prop_1(&style, LV_STATE_DEFAULT, LV_STYLE_BG_COLOR);
+
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_obj_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_OBJ_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+
+
+比例属性
+==================================
+
+鳞片状元素的辅助属性。体重秤具有正常区域和末端区域。顾名思义，结束区域是标度的结束，可以是临界值或void值。正常区域在结束区域之前。两个区域可能具有不同的属性。
+
+- **scale_grad_color** ( ``lv_color_t`` )：在正常区域中，在比例尺线上对该颜色进行渐变。默认值：**LV_COLOR_BLACK**。
+- **scale_end_color** ( ``lv_color_t`` )：结束区域中刻度线的颜色。默认值：**LV_COLOR_BLACK**。
+- **scale_width** ( ``lv_style_int_t`` )：比例尺的宽度。默认值：。默认值：**LV_DPI/8**
+- **scale_border_width** ( ``lv_style_int_t`` )：在标准区域的比例尺外侧绘制的边框的宽度。默认值：**0**。
+- **scale_end_border_width** ( ``lv_style_int_t`` )：在结束区域的刻度外侧上绘制边框的宽度。默认值：**0**。
+- **scale_end_line_width** ( ``lv_style_int_t`` )：结束区域中比例线的宽度。默认值：**0**。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_style_11.png
+	   
+	  轮盘比例效果
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+
+	/**
+	 * Using the scale style properties
+	 */
+	void lv_ex_style_11(void)
+	{
+		static lv_style_t style;
+		lv_style_init(&style);
+
+		/*Set a background color and a radius*/
+		lv_style_set_radius(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_bg_opa(&style, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+
+		/*Set some paddings*/
+		lv_style_set_pad_inner(&style, LV_STATE_DEFAULT, 20);
+		lv_style_set_pad_top(&style, LV_STATE_DEFAULT, 20);
+		lv_style_set_pad_left(&style, LV_STATE_DEFAULT, 5);
+		lv_style_set_pad_right(&style, LV_STATE_DEFAULT, 5);
+
+		lv_style_set_scale_end_color(&style, LV_STATE_DEFAULT, LV_COLOR_RED);
+		lv_style_set_line_color(&style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+		lv_style_set_scale_grad_color(&style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+		lv_style_set_line_width(&style, LV_STATE_DEFAULT, 2);
+		lv_style_set_scale_end_line_width(&style, LV_STATE_DEFAULT, 4);
+		lv_style_set_scale_end_border_width(&style, LV_STATE_DEFAULT, 4);
+
+		/*Gauge has a needle but for simplicity its style is not initialized here*/
+	#if LV_USE_GAUGE
+		/*Create an object with the new style*/
+		lv_obj_t * obj = lv_gauge_create(lv_scr_act(), NULL);
+		lv_obj_add_style(obj, LV_GAUGE_PART_MAIN, &style);
+		lv_obj_align(obj, NULL, LV_ALIGN_CENTER, 0, 0);
+	#endif
+	}
+
+在小部件的文档中，您将看到诸如“小部件使用典型的背景属性”之类的句子。 “典型背景”属性是：
+
+- 背景
+- 边境
+- 大纲
+- 阴影
+- 模式
+- 值
+
+	
+
+主题
+##################################
+
+主题是样式的集合。始终有一个活动主题，在创建对象时会自动应用其样式。它为UI提供了默认外观，可以通过添加其他样式来对其进行修改。 
+
+
+默认的主题被设定在 ``lv_conf.h`` 与 ``LV_THEME_...`` 中定义。每个主题都具有以下属性：
+
+
+- 原色
+- 二次色
+- 小字体
+- 普通字体
+- 字幕字体
+- 标题字体
+- 标志(特定于给定主题)
+
+
+如何使用这些属性取决于主题。
+有3个内置主题：
+
+- **empty** 空：未添加默认样式
+- **material** 材质：令人印象深刻的现代主题-单声道：用于黑白显示的简单黑白主题
+- **template** 模板：一个非常简单的主题，可以将其复制以创建自定义主题
+
+
+	
+
+扩展主题
+==================================
+
+内置主题可以通过自定义主题进行扩展。如果创建了自定义主题，则可以选择“基本主题”。基本主题的样式将添加到自定义主题之前。可以链接任何数量的主题。例如，材料主题->自定义主题->黑暗主题。
+
+这是有关如何基于当前活动的内置主题创建自定义主题的示例。
+
+
+.. code-block:: c
+    :linenos:
+	
+	/*Get the current theme (e.g. material). It will be the base of the custom theme.*/   
+	lv_theme_t * base_theme = lv_theme_get_act();
+
+	/*Initialize a custom theme*/
+	static lv_theme_t custom_theme;                         /*Declare a theme*/
+	lv_theme_copy(&custom_theme, )base_theme;               /*Initialize the custom theme from the base theme*/                           
+	lv_theme_set_apply_cb(&custom_theme, custom_apply_cb);  /*Set a custom theme apply callback*/
+	lv_theme_set_base(custom_theme, base_theme);            /*Set the base theme of the csutom theme*/
+
+	/*Initialize styles for the new theme*/
+	static lv_style_t style1;
+	lv_style_init(&style1);
+	lv_style_set_bg_color(&style1, LV_STATE_DEFAULT, custom_theme.color_primary);
+
+	...
+
+	/*Add a custom apply callback*/
+	static void custom_apply_cb(lv_theme_t * th, lv_obj_t * obj, lv_theme_style_t name)
+	{
+		lv_style_list_t * list;
+
+		switch(name) {
+			case LV_THEME_BTN:
+				list = lv_obj_get_style_list(obj, LV_BTN_PART_MAIN);
+				_lv_style_list_add_style(list, &my_style);
+				break;
+		}
+	}
+	
+
+
+示例
+##################################
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/04_styles/lv_ex_get_started_2.png
+	   
+	  造型按钮
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../lv_examples.h"
+
+
+	/**
+	 * Create styles from scratch for buttons.
+	 */
+	void lv_ex_get_started_2(void)
+	{
+		static lv_style_t style_btn;
+		static lv_style_t style_btn_red;
+
+		/*Create a simple button style*/
+		lv_style_init(&style_btn);
+		lv_style_set_radius(&style_btn, LV_STATE_DEFAULT, 10);
+		lv_style_set_bg_opa(&style_btn, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_bg_color(&style_btn, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+		lv_style_set_bg_grad_color(&style_btn, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+		lv_style_set_bg_grad_dir(&style_btn, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
+
+		/*Swap the colors in pressed state*/
+		lv_style_set_bg_color(&style_btn, LV_STATE_PRESSED, LV_COLOR_GRAY);
+		lv_style_set_bg_grad_color(&style_btn, LV_STATE_PRESSED, LV_COLOR_SILVER);
+
+		/*Add a border*/
+		lv_style_set_border_color(&style_btn, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+		lv_style_set_border_opa(&style_btn, LV_STATE_DEFAULT, LV_OPA_70);
+		lv_style_set_border_width(&style_btn, LV_STATE_DEFAULT, 2);
+
+		/*Different border color in focused state*/
+		lv_style_set_border_color(&style_btn, LV_STATE_FOCUSED, LV_COLOR_BLUE);
+		lv_style_set_border_color(&style_btn, LV_STATE_FOCUSED | LV_STATE_PRESSED, LV_COLOR_NAVY);
+
+		/*Set the text style*/
+		lv_style_set_text_color(&style_btn, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+
+		/*Make the button smaller when pressed*/
+		lv_style_set_transform_height(&style_btn, LV_STATE_PRESSED, -5);
+		lv_style_set_transform_width(&style_btn, LV_STATE_PRESSED, -10);
+	#if LV_USE_ANIMATION
+		/*Add a transition to the size change*/
+		static lv_anim_path_t path;
+		lv_anim_path_init(&path);
+		lv_anim_path_set_cb(&path, lv_anim_path_overshoot);
+
+		lv_style_set_transition_prop_1(&style_btn, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_HEIGHT);
+		lv_style_set_transition_prop_2(&style_btn, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_WIDTH);
+		lv_style_set_transition_time(&style_btn, LV_STATE_DEFAULT, 300);
+		lv_style_set_transition_path(&style_btn, LV_STATE_DEFAULT, &path);
+	#endif
+
+		/*Create a red style. Change only some colors.*/
+		lv_style_init(&style_btn_red);
+		lv_style_set_bg_color(&style_btn_red, LV_STATE_DEFAULT, LV_COLOR_RED);
+		lv_style_set_bg_grad_color(&style_btn_red, LV_STATE_DEFAULT, LV_COLOR_MAROON);
+		lv_style_set_bg_color(&style_btn_red, LV_STATE_PRESSED, LV_COLOR_MAROON);
+		lv_style_set_bg_grad_color(&style_btn_red, LV_STATE_PRESSED, LV_COLOR_RED);
+		lv_style_set_text_color(&style_btn_red, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+	#if LV_USE_BTN
+		/*Create buttons and use the new styles*/
+		lv_obj_t * btn = lv_btn_create(lv_scr_act(), NULL);     /*Add a button the current screen*/
+		lv_obj_set_pos(btn, 10, 10);                            /*Set its position*/
+		lv_obj_set_size(btn, 120, 50);                          /*Set its size*/
+		lv_obj_reset_style_list(btn, LV_BTN_PART_MAIN);         /*Remove the styles coming from the theme*/
+		lv_obj_add_style(btn, LV_BTN_PART_MAIN, &style_btn);
+
+		lv_obj_t * label = lv_label_create(btn, NULL);          /*Add a label to the button*/
+		lv_label_set_text(label, "Button");                     /*Set the labels text*/
+
+		/*Create a new button*/
+		lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), btn);
+		lv_obj_set_pos(btn2, 10, 80);
+		lv_obj_set_size(btn2, 120, 50);                             /*Set its size*/
+		lv_obj_reset_style_list(btn2, LV_BTN_PART_MAIN);         /*Remove the styles coming from the theme*/
+		lv_obj_add_style(btn2, LV_BTN_PART_MAIN, &style_btn);
+		lv_obj_add_style(btn2, LV_BTN_PART_MAIN, &style_btn_red);   /*Add the red style on top of the current */
+		lv_obj_set_style_local_radius(btn2, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE); /*Add a local style*/
+
+		label = lv_label_create(btn2, NULL);          /*Add a label to the button*/
+		lv_label_set_text(label, "Button 2");                     /*Set the labels text*/
+	#endif
+	}
+
+
+
+
+
+

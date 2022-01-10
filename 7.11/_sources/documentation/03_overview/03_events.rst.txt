@@ -1,0 +1,180 @@
+==================================
+事件(Events)
+==================================
+LVGL中可触发事件，用于与用户进行交互。例如一个对应对象的事件可以有：
+
+- 被点击
+- 被拖拽
+- 被更改了数值
+- 等等
+
+我们可以将回调函数分配给对象以处理这些事件。例如：
+
+.. code-block:: c
+    :linenos:
+
+    lv_obj_t * btn = lv_btn_create(lv_scr_act(), NULL);
+    lv_obj_set_event_cb(btn, my_event_cb);      /* 指定一个事件回调函数 */
+
+	...
+
+	static void my_event_cb(lv_obj_t * obj, lv_event_t event)
+	{
+		switch(event) {
+			case LV_EVENT_PRESSED:              /* 对象被按下 */
+				printf("Pressed\n");
+				break;
+
+			case LV_EVENT_SHORT_CLICKED:        /* 对象被点击 */
+				printf("Short clicked\n");
+				break;
+
+			case LV_EVENT_CLICKED:              /* 对象被短点击 */
+				printf("Clicked\n");
+				break;
+
+			case LV_EVENT_LONG_PRESSED:         /* 对象被长按 */
+				printf("Long press\n");
+				break;
+
+			case LV_EVENT_LONG_PRESSED_REPEAT:  /* 对象被重复长按 */
+				printf("Long press repeat\n");
+				break;
+
+			case LV_EVENT_RELEASED:             /* 对象被释放 */
+				printf("Released\n");
+				break;
+		}
+
+		   /*Etc.*/
+	}
+
+
+注意：多个对象可以使用同一回调函数。
+
+
+事件类型
+##################################
+
+事件类型有如下几种：
+
+通用事件
+**********************************
+所有对象（例如 Buttons/Labels/Sliders 等）都可以接收这些通用事件。
+
+与输入设备有关的事件
+**********************************
+当用户按下/释放对象时，将发送这些消息。它们不仅用于指针，还可以用于键盘，编码器和按钮输入设备。访问输入设备概述部分以了解有关它们的更多信息。
+
+- **LV_EVENT_PRESSED** 				该对象被按下
+- **LV_EVENT_PRESSING** 			按下对象（按下时连续发送）
+- **LV_EVENT_PRESS_LOST** 			输入设备仍在按，但不再在对象上
+- **LV_EVENT_SHORT_CLICKED**		在 ``LV_INDEV_LONG_PRESS_TIME`` 时间之前发布。如果拖动则不调用。
+- **LV_EVENT_LONG_PRESSED** 		按下 ``LV_INDEV_LONG_PRESS_TIME`` 时间。如果拖动则不调用。
+- **LV_EVENT_LONG_PRESSED_REPEAT**	在每 ``LV_INDEV_LONG_PRESS_REP_TIME`` 毫秒的 ``LV_INDEV_LONG_PRESS_TIME`` 之后调用。如果拖动则不调用。
+- **LV_EVENT_CLICKED** 				如果未拖动则调用释放（无论长按）
+- **LV_EVENT_RELEASED**  			在上面每种情况下都被调用，即使对象已被拖动也被释放。如果在按下并从对象外部释放时从对象上滑出，则不会调用。在这种情况下，将发送 ``LV_EVENT_PRESS_LOST`` 。
+
+指针相关的事件
+**********************************
+这些事件仅由类似指针的输入设备（例如鼠标或触摸板）触发
+
+- **LV_EVENT_DRAG_BEGIN** 		开始拖动对象
+- **LV_EVENT_DRAG_END** 		拖动完成（包括拖动）
+- **LV_EVENT_DRAG_THROW_BEGIN**	拖动开始（用“动量”拖动后释放）
+
+
+与键盘和编码器相关的事件
+**********************************
+这些事件由键盘和编码器输入设备发送。在 [overview/indev](输入设备)部分中了解有关组的更多信息。
+
+- **LV_EVENT_KEY** 			键值发送到对象。通常在按下它或在长按之后重复时。可以通过以下方式检索键值 ``uint32_t * key = lv_event_get_data()``
+- **LV_EVENT_FOCUSED** 		该对象集中在其组中
+- **LV_EVENT_DEFOCUSED** 	该对象在其组中散焦
+
+
+一般事件
+**********************************
+LVGL库发送的其他一般事件。
+
+- **LV_EVENT_DELETE** 该对象正在被删除。释放相关的用户分配数据。
+
+
+
+特殊事件
+**********************************
+这些事件特定于特定的对象类型。
+
+- **LV_EVENT_VALUE_CHANGED** 	对象值已更改（例如，对于滑块）
+- **LV_EVENT_INSERT** 			有内容插入到对象中。 （通常到文本区域）
+- **LV_EVENT_APPLY** 			单击“确定”，“应用”或类似的特定按钮。 （通常来自键盘对象）
+- **LV_EVENT_CANCEL** 			单击“关闭”，“取消”或类似的特定按钮。 （通常来自键盘对象）
+- **LV_EVENT_REFRESH** 			查询以刷新对象。永远不会由库发送，但可以由用户发送。
+
+请访问特定对象类型的文档，以了解对象类型使用了哪些事件。
+
+
+自定义事件包含的数据
+##################################
+一些事件可能包含自定义数据。
+例如，在某些情况下， ``LV_EVENT_VALUE_CHANGED`` 会告知新值。有关更多信息，请参见特定对象类型的文档。
+要在事件回调中获取自定义数据，请使用 ``lv_event_get_data()`` 。
+
+自定义数据的类型取决于发送对象，但如果是下面两种情况需要特殊对待：
+
+- 数值，则为 uint32_t * 或 int32_t * 类型
+- 字符，则为 char * 或 const char * 类型
+
+
+
+手动发送事件
+##################################
+
+任意事件
+**********************************
+要将事件手动发送到对象，请使用 ``lv_event_send(obj, LV_EVENT_..., &custom_data)`` 。
+
+例如，它可以通过模拟按钮按下来手动关闭消息框（尽管有更简单的方法）：
+
+.. code-block:: c
+    :linenos:
+	
+	/*Simulate the press of the first button (indexes start from zero)*/
+	uint32_t btn_id = 0;
+	lv_event_send(mbox, LV_EVENT_VALUE_CHANGED, &btn_id);
+
+
+刷新事件
+**********************************
+``LV_EVENT_REFRESH`` 是特殊事件，因为它旨在供用户用来通知对象刷新自身。一些例子：
+
+- 通知标签根据一个或多个变量（例如当前时间）刷新其文本
+- 语言更改时刷新标签
+- 如果满足某些条件，请启用按钮（例如，输入正确的PIN）
+- 如果超出限制，则向对象添加样式/从对象删除样式等
+
+处理类似情况的最简单方法是利用以下函数：
+
+``lv_event_send_refresh(obj)`` 只是 ``lv_event_send(obj, LV_EVENT_REFRESH, NULL)`` 的包装。因此，它仅向对象发送 ``LV_EVENT_REFRESH`` 。
+
+``lv_event_send_refresh_recursive(obj)`` 将 ``LV_EVENT_REFRESH`` 事件发送给对象及其所有子对象。如果将 ``NULL`` 作为参数传递，则将刷新所有显示的所有对象。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>⭐建立一个lvgl项目 &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="显示接口" href="03_display.html" />
+    <link rel="prev" title="系统框架" href="01_sys.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_sys.html">系统框架</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">⭐建立一个lvgl项目</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">初始化lvgl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#windows-cdoe-blocks">Windows初始化示例(Cdoe::Blocks)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux初始化示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stm32f103">STM32F103初始化示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>⭐建立一个lvgl项目</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/02_porting/02_project.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lvgl">
+<h1>⭐建立一个lvgl项目<a class="headerlink" href="#lvgl" title="永久链接至标题">¶</a></h1>
+<p>要在我们的项目中使用 lvgl ，我们起码需要获取到官方的这两个库：</p>
+<ul class="simple">
+<li><p>lvgl(lvgl)核心图形库的官方 GitHub 仓库地址：<a class="reference external" href="https://github.com/lvgl/lvgl">https://github.com/lvgl/lvgl</a>。</p></li>
+<li><p>lvgl(lv_drivers)输入输出设备驱动官方 GitHub 仓库地址：<a class="reference external" href="https://github.com/lvgl/lv_drivers">https://github.com/lvgl/lv_drivers</a></p></li>
+</ul>
+<p>我们可以克隆或下载这两个库的最新版本，将它们复制到我们的项目中，然后进行适配。</p>
+<ul class="simple">
+<li><p>目录 lvgl 就是 lvgl 的官方图形库</p></li>
+<li><p>目录 lv_drivers 是 lvgl 输入输出设备驱动官方示例配置</p></li>
+<li><p>目录 <a class="reference external" href="https://github.com/lvgl/lv_examples">lv_examples</a> 是 lvgl 的官方demo(可选，但不要直接使用到实际项目中)</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="http://photos.100ask.net/lvgl/02_poring/02_project/01_lvgl_library.png" src="http://photos.100ask.net/lvgl/02_poring/02_project/01_lvgl_library.png" />
+</div>
+<div class="section" id="id1">
+<h2>配置文件<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>上面的三个库中有一个类似名为 <strong>lv_conf_template.h</strong> 的配置头文件(template就是模板的意思)。通过它可以设置库的基本行为，裁剪不需要模块和功能，在编译时调整内存缓冲区的大小等等。</p>
+<ol class="arabic simple">
+<li><p>将 <strong>lvgl/lv_conf_template.h</strong> 复制到 lvgl 同级目录下，并将其重命名为 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 。打开文件并将开头的 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">0</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">1</span></code> 以使能其内容。</p></li>
+<li><p>将 <strong>lv_drivers/lv_drv_conf_template.h</strong> 复制到 lv_drivers 同级目录下，并将其重命名为 <code class="docutils literal notranslate"><span class="pre">lv_drv_conf.h</span></code> 。打开文件并将开头的 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">0</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">1</span></code> 以使能其内容。</p></li>
+<li><p>(可选)将 <strong>lv_examples/lv_ex_conf_template.h</strong> 复制到 lv_examples 同级目录下，并将其重命名为 <code class="docutils literal notranslate"><span class="pre">lv_ex_conf.h</span></code> 。打开文件并将开头的 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">0</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">1</span></code> 以使能其内容。</p></li>
+</ol>
+<div class="figure align-default" id="id4">
+<img alt="http://photos.100ask.net/lvgl/02_poring/02_project/02_lvgl_conf.png" src="http://photos.100ask.net/lvgl/02_poring/02_project/02_lvgl_conf.png" />
+<p class="caption"><span class="caption-text">准备lvgl配置文件</span><a class="headerlink" href="#id4" title="永久链接至图片">¶</a></p>
+</div>
+<div class="figure align-default" id="id5">
+<img alt="http://photos.100ask.net/lvgl/02_poring/02_project/03_change_conf_file.png" src="http://photos.100ask.net/lvgl/02_poring/02_project/03_change_conf_file.png" />
+<p class="caption"><span class="caption-text">使能配置文件</span><a class="headerlink" href="#id5" title="永久链接至图片">¶</a></p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>lv_conf.h 也可以复制到其他位置，但是应该在编译器选项中添加 ``LV_CONF_INCLUDE_SIMPLE`` 定义 (例如，对于 gcc 编译器为 ``-DLV_CONF_INCLUDE_SIMPLE`` ) 并手动设置包含路径。
+</pre></div>
+</div>
+<p>在配置文件中，注释说明了各个选项的含义。我们在移植时至少要检查以下三个配置选项，其他配置根据具体的需要进行修改：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_HOR_RES_MAX</span></code> 显示器的水平分辨率。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_VER_RES_MAX</span></code> 显示器的垂直分辨率。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> 颜色深度，其可以是：</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>8  - RG332</p></li>
+<li><p>16 - RGB565</p></li>
+<li><p>32 - (RGB888和ARGB8888)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h2>初始化lvgl<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>准备好这三个库：lvgl、lv_drivers、lv_examples 后，我们就要开始使用lvgl带给我们的功能了。使用 lvgl 图形库之前，我们还必须初始化 lvlg 以及相关其他组件。初始化的顺序为：</p>
+<ol class="arabic simple">
+<li><p>调用 lv_init() 初始化 lvgl 库;</p></li>
+<li><p>初始化驱动程序；</p></li>
+<li><p>在 LVGL 中注册显示和输入设备驱动程序；</p></li>
+<li><p>在中断中每隔 <code class="docutils literal notranslate"><span class="pre">x毫秒</span></code> 调用 <code class="docutils literal notranslate"><span class="pre">lv_tick_inc(x)</span></code> 用以告知 lvgl 经过的时间；</p></li>
+<li><p>每隔 <code class="docutils literal notranslate"><span class="pre">x毫秒</span></code> 定期调用 <code class="docutils literal notranslate"><span class="pre">lv_task_handler()</span></code> 用以处理与 lvgl 相关的任务。</p></li>
+</ol>
+<div class="section" id="windows-cdoe-blocks">
+<h3>Windows初始化示例(Cdoe::Blocks)<a class="headerlink" href="#windows-cdoe-blocks" title="永久链接至标题">¶</a></h3>
+<p>如果你是基于 windows上的IDE模拟器(推荐) 进行学习，请先 <a class="reference external" href="http://download.100ask.org/gui/lvgl/100ask_lvgl.html">点击这里下载配置好的项目工程</a> 及 <code class="docutils literal notranslate"><span class="pre">windows上的IDE模拟器(Cdoe::Blocks)</span></code> 用于后面的学习。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#if WIN32</span>
+<span class="linenos"> 2</span>    <span class="kt">int</span> <span class="n">APIENTRY</span> <span class="n">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span> <span class="n">hInstance</span><span class="p">,</span> <span class="n">HINSTANCE</span> <span class="n">hPrevInstance</span><span class="p">,</span> <span class="n">LPSTR</span> <span class="n">szCmdLine</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nCmdShow</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="cp">#else</span>
+<span class="linenos"> 4</span>    <span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="p">{</span>
+<span class="linenos"> 6</span>            <span class="cm">/*Initialize LittlevGL*/</span>
+<span class="linenos"> 7</span>            <span class="n">lv_init</span><span class="p">();</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>            <span class="cm">/*Initialize the HAL for LittlevGL*/</span>
+<span class="linenos">10</span>            <span class="n">hal_init</span><span class="p">();</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>            <span class="cm">/*Check the themes too*/</span>
+<span class="linenos">13</span>            <span class="n">lv_disp_set_default</span><span class="p">(</span><span class="n">lv_windows_disp</span><span class="p">);</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>            <span class="cm">/*Run your APP here */</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="cp">#if WIN32</span>
+<span class="linenos">19</span>            <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">lv_win_exit_flag</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">20</span>    <span class="cp">#else</span>
+<span class="linenos">21</span>            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">22</span>    <span class="cp">#endif </span><span class="c1">// WIN32</span>
+<span class="linenos">23</span>                    <span class="cm">/* Periodically call the lv_task handler.</span>
+<span class="linenos">24</span><span class="cm">                     * It could be done in a timer interrupt or an OS task too.*/</span>
+<span class="linenos">25</span>                    <span class="n">lv_task_handler</span><span class="p">();</span>
+<span class="linenos">26</span>                    <span class="n">usleep</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span>       <span class="cm">/*Just to let the system breath*/</span>
+<span class="linenos">27</span>                    <span class="n">lv_tick_inc</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+<span class="linenos">28</span>            <span class="p">}</span>
+<span class="linenos">29</span>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">30</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux">
+<h3>Linux初始化示例<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h3>
+<p>如果你是基于 Linux开发板 进行学习，请先 <a class="reference external" href="http://download.100ask.org/gui/lvgl/100ask_lvgl.html">点击这里下载配置好的项目工程</a> 用于后面的学习。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 2</span>    <span class="p">{</span>
+<span class="linenos"> 3</span>            <span class="cm">/* LittlevGL init */</span>
+<span class="linenos"> 4</span>            <span class="n">lv_init</span><span class="p">();</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>            <span class="cm">/* Linux frame buffer device init */</span>
+<span class="linenos"> 7</span>            <span class="n">fbdev_init</span><span class="p">();</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>            <span class="cm">/* A small buffer for LittlevGL to draw the screen&#39;s content */</span>
+<span class="linenos">10</span>            <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">buf</span><span class="p">[</span><span class="n">DISP_BUF_SIZE</span><span class="p">];</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>            <span class="cm">/* Initialize a descriptor for the buffer */</span>
+<span class="linenos">13</span>            <span class="k">static</span> <span class="n">lv_disp_buf_t</span> <span class="n">disp_buf</span><span class="p">;</span>
+<span class="linenos">14</span>            <span class="n">lv_disp_buf_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">DISP_BUF_SIZE</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="cm">/* Initialize and register a display driver */</span>
+<span class="linenos">17</span>            <span class="n">lv_disp_drv_t</span> <span class="n">disp_drv</span><span class="p">;</span>
+<span class="linenos">18</span>            <span class="n">lv_disp_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">disp_drv</span><span class="p">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">;</span>
+<span class="linenos">20</span>            <span class="n">disp_drv</span><span class="p">.</span><span class="n">flush_cb</span> <span class="o">=</span> <span class="n">fbdev_flush</span><span class="p">;</span>
+<span class="linenos">21</span>            <span class="n">lv_disp_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>            <span class="c1">//hal_init</span>
+<span class="linenos">24</span>            <span class="n">lv_disp_set_default</span> <span class="n">lv_windows_disp</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>            <span class="cm">/* Linux input device init */</span>
+<span class="linenos">28</span>            <span class="n">evdev_init</span><span class="p">();</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>            <span class="cm">/* Initialize and register a display input driver */</span>
+<span class="linenos">31</span>            <span class="n">lv_indev_drv_t</span> <span class="n">indev_drv</span><span class="p">;</span>
+<span class="linenos">32</span>            <span class="n">lv_indev_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>      <span class="cm">/*Basic initialization*/</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">LV_INDEV_TYPE_POINTER</span><span class="p">;</span>
+<span class="linenos">35</span>            <span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span> <span class="o">=</span> <span class="n">evdev_read</span><span class="p">;</span>   <span class="c1">//lv_gesture_dir_t lv_indev_get_gesture_dir(const lv_indev_t * indev)</span>
+<span class="linenos">36</span>            <span class="n">lv_indev_t</span> <span class="o">*</span> <span class="n">my_indev</span> <span class="o">=</span> <span class="n">lv_indev_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>            <span class="cm">/*Run your APP here */</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>            <span class="cm">/*Handle LitlevGL tasks (tickless mode)*/</span>
+<span class="linenos">44</span>            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">45</span>                    <span class="n">lv_task_handler</span><span class="p">();</span>
+<span class="linenos">46</span>                    <span class="n">usleep</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+<span class="linenos">47</span>                    <span class="n">lv_tick_inc</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span>
+<span class="linenos">48</span>            <span class="p">}</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">51</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stm32f103">
+<h3>STM32F103初始化示例<a class="headerlink" href="#stm32f103" title="永久链接至标题">¶</a></h3>
+<p>如果你是基于 STM32F103 进行学习，请先 <a class="reference external" href="http://download.100ask.org/gui/lvgl/100ask_lvgl.html">点击这里下载配置好的项目工程</a> 用于后面的学习。</p>
+<p>TODO</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="03_display.html" class="btn btn-neutral float-right" title="显示接口" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="01_sys.html" class="btn btn-neutral float-left" title="系统框架" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

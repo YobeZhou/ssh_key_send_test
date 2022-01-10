@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>图片(Images) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="文件系统(File system)" href="09_file-system.html" />
+    <link rel="prev" title="字体(Fonts)" href="07_font.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">图片(Images)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">储存图片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">变量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">色彩格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">添加和使用图像</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">在线转换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">手动创建图像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">使用图片</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">图像解码器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">自定义图像格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">注册图像解码器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">手动使用图像解码器</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">图像缓存</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">缓存大小</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">图片价值</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">内存使用情况</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">清理缓存</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_widgets/34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>图片(Images)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/03_overview/08_image.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="images">
+<h1>图片(Images)<a class="headerlink" href="#images" title="永久链接至标题">¶</a></h1>
+<p>图像可以是存储位图本身和一些元数据的文件或变量。</p>
+<div class="section" id="id1">
+<h2>储存图片<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>我们可以将图像存储在两个位置</p>
+<ul class="simple">
+<li><p>作为内部存储器（RAM或ROM）中的变量</p></li>
+<li><p>作为文件</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>变量<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>内部存储在变量中的图像主要由具有以下字段的lv_img_dsc_t结构组成：</p>
+<ul class="simple">
+<li><p>标头</p>
+<ul>
+<li><p>cf 颜色格式。见下文</p></li>
+<li><p>w 宽度（以像素为单位）（&lt;= 2048）</p></li>
+<li><p>h 高度（以像素为单位）（&lt;= 2048）</p></li>
+<li><p>始终为零 3位需要始终为零</p></li>
+<li><p>reserved 保留以备将来使用</p></li>
+</ul>
+</li>
+<li><p>指向存储图像本身的数组的数据指针</p></li>
+<li><p>data_size 数据的长度（以字节为单位）</p></li>
+</ul>
+<p>这些通常作为C文件存储在项目中。它们像其他任何常量数据一样链接到生成的可执行文件中。</p>
+</div>
+<div class="section" id="id3">
+<h2>文件<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>要处理文件，您需要将驱动器添加到LVGL。简而言之，驱动器是在LVGL中注册的用于文件操作的功能的集合（打开，读取，关闭等）。您可以向标准文件系统（SD卡上的FAT32）添加接口，也可以创建简单的文件系统以从SPI闪存读取数据。在每种情况下，驱动器都只是一种将数据读取和/或写入内存的抽象。请参阅文件系统部分以了解更多信息。</p>
+<p>存储为文件的图像未链接到生成的可执行文件中，并且在绘制之前必须将其读取到RAM中。结果，它们不像可变图像那样对资源友好。但是，它们更容易替换，而无需重新编译主程序。</p>
+</div>
+<div class="section" id="id4">
+<h2>色彩格式<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>lvgl支持多种内置颜色格式：</p>
+<ul class="simple">
+<li><p><strong>LV_IMG_CF_TRUE_COLOR</strong> 只需存储RGB颜色（使用LVGL配置的任何颜色深度）。</p></li>
+<li><p><strong>LV_IMG_CF_TRUE_COLOR_ALPHA</strong> 与LV_IMG_CF_TRUE_COLOR类似，但它还会为每个像素添加一个alpha（透明度）字节。</p></li>
+<li><p><strong>LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED</strong> 与LV_IMG_CF_TRUE_COLOR类似，但是如果像素具有LV_COLOR_TRANSP（在lv_conf.h中设置）颜色，则该像素将是透明的。</p></li>
+<li><p><strong>LV_IMG_CF_INDEXED_1/2/4/8BIT</strong> 使用2、4、16或256色调色板，并以1、2、4或8位存储每个像素。</p></li>
+<li><p><strong>LV_IMG_CF_ALPHA_1/2/4/8BIT</strong> <strong>仅将Alpha值存储在1、2、4或8位上。</strong>  像素采用style.image.color和设置的不透明度的颜色。源图像必须是Alpha通道。这对于类似于字体的位图是理想的（整个图像是一种颜色，但是您希望能够更改它）。</p></li>
+</ul>
+<p>LV_IMG_CF_TRUE_COLOR图像的字节按以下顺序存储。</p>
+<p>对于32位色深：</p>
+<ul class="simple">
+<li><p>Byte 0: 蓝色(Blue)</p></li>
+<li><p>Byte 1: 绿色(Green)</p></li>
+<li><p>Byte 2: 红色(Red)</p></li>
+<li><p>Byte 3: 透明度(Alpha)</p></li>
+</ul>
+<p>对于16位色深：</p>
+<ul class="simple">
+<li><p>Byte 0: 绿色(Green )3位低位，蓝色(Blue)5位</p></li>
+<li><p>Byte 1: 红色(Red)5位，绿色(Green )3位</p></li>
+<li><p>Byte 2: 透明度(Alpha)字节（仅适用于LV_IMG_CF_TRUE_COLOR_ALPHA）</p></li>
+</ul>
+<p>对于8位色深：</p>
+<ul class="simple">
+<li><p>Byte 0: Red 3 bit, Green 3 bit, Blue 2 bit</p></li>
+<li><p>Byte 2: Alpha byte (only with LV_IMG_CF_TRUE_COLOR_ALPHA)</p></li>
+</ul>
+<p>我们可以将图像以Raw格式存储，以指示它不是内置的颜色格式，并且需要使用外部Image解码器来解码图像。</p>
+<ul class="simple">
+<li><p><strong>LV_IMG_CF_RAW</strong> 表示基本的原始图像（例如PNG或JPG图像）。</p></li>
+<li><p><strong>LV_IMG_CF_RAW_ALPHA</strong> 表示图像具有Alpha，并且为每个像素添加了Alpha字节。</p></li>
+<li><p><strong>LV_IMG_CF_RAW_CHROME_KEYED</strong> 表示该图像已按chrome键锁定，如上文LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED中所述。</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>添加和使用图像<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>可以通过下面两种方式将图像添加到LVGL：</p>
+<ul class="simple">
+<li><p>使用在线转换器</p></li>
+<li><p>手动创建图像</p></li>
+</ul>
+<div class="section" id="id6">
+<h3>在线转换器<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>在线图像转换器可在这里找到：https：//lvgl.io/tools/imageconverter</p>
+<p>通过在线转换器可以很容易地将图像转换并添加到LVGL。</p>
+<ol class="arabic simple">
+<li><p>准备好要转换的BMP，PNG或JPG图像。</p></li>
+<li><p>给图像起一个将在LVGL中使用的名称。</p></li>
+<li><p>选择颜色格式。</p></li>
+<li><p>选择所需的图像类型。选择二进制文件将生成一个.bin文件，该文件必须单独存储并使用文件支持进行读取。选择一个变量将生成一个标准的C文件，该文件可以链接到您的项目中。</p></li>
+<li><p>点击转换按钮。转换完成后，浏览器将自动下载结果文件。</p></li>
+</ol>
+<p>在转换器C数组（变量）中，所有颜色深度（1、8、16或32）的位图都包含在C文件中，但是只有与lv_conf.h中的LV_COLOR_DEPTH匹配的颜色深度才会实际链接到生成的可执行文件。</p>
+<p>如果是二进制文件，则需要指定所需的颜色格式：</p>
+<ul class="simple">
+<li><p>RGB332用于8位色深</p></li>
+<li><p>RGB565用于16位色深</p></li>
+<li><p>RGB565交换为16位颜色深度（交换了两个字节）</p></li>
+<li><p>RGB888用于32位色深</p></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>手动创建图像<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>如果要在运行时生成图像，则可以制作图像变量以使用LVGL显示它。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="kt">uint8_t</span> <span class="n">my_img_data</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="p">...};</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="k">static</span> <span class="n">lv_img_dsc_t</span> <span class="n">my_img_dsc</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos"> 4</span>            <span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">always_zero</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 5</span>            <span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
+<span class="linenos"> 6</span>            <span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+<span class="linenos"> 7</span>            <span class="p">.</span><span class="n">data_size</span> <span class="o">=</span> <span class="mi">80</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">LV_COLOR_DEPTH</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span>
+<span class="linenos"> 8</span>            <span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">cf</span> <span class="o">=</span> <span class="n">LV_IMG_CF_TRUE_COLOR</span><span class="p">,</span>          <span class="cm">/*Set the color format*/</span>
+<span class="linenos"> 9</span>            <span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">my_img_data</span><span class="p">,</span>
+<span class="linenos">10</span>    <span class="p">};</span>
+</pre></div>
+</div>
+<p>如果颜色格式为LV_IMG_CF_TRUE_COLOR_ALPHA，则可以将data_size设置为80 * 60 * LV_IMG_PX_SIZE_ALPHA_BYTE。</p>
+<p>在运行时创建和显示图像的另一个（可能更简单）的选项是使用Canvas对象。</p>
+</div>
+<div class="section" id="id8">
+<h3>使用图片<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>在LVGL中使用图像的最简单方法是使用lv_img对象显示图像：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">icon</span> <span class="o">=</span> <span class="n">lv_img_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span>    <span class="cm">/*From variable*/</span>
+<span class="linenos">4</span>    <span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_icon_dsc</span><span class="p">);</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span>    <span class="cm">/*From file*/</span>
+<span class="linenos">7</span>    <span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span> <span class="s">&quot;S:my_icon.bin&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>如果图像是使用在线转换器转换的，则应使用LV_IMG_DECLARE（my_icon_dsc）在文件中声明要使用它的位置。</p>
+</div>
+<div class="section" id="id9">
+<h3>图像解码器<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>如您在“颜色格式”部分中所见，LVGL支持多种内置图像格式。在许多情况下，这些都是您所需要的。 LVGL不直接支持通用图像格式，例如PNG或JPG。</p>
+<p>要处理非内置图像格式，您需要使用外部库，并通过图像解码器接口将它们附加到LVGL。</p>
+<p>图像解码器包含4个回调：</p>
+<ul class="simple">
+<li><p><strong>info</strong> 获取有关图像的一些基本信息（宽度，高度和颜色格式）。</p></li>
+<li><p><strong>open</strong> 打开图像：存储解码后的图像或将其设置为NULL以指示可以逐行读取图像。</p></li>
+<li><p><strong>read</strong> 如果打开未完全打开图像，则此功能应从给定位置提供一些解码数据（最多1行）。</p></li>
+<li><p><strong>close</strong> 关闭打开的图像，释放分配的资源。</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>自定义图像格式<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>创建自定义图像的最简单方法是使用在线图像转换器，并将Raw，Raw设置为alpha或chrome键设置为Raw。它只会占用您上传的二进制文件的每个字节，并将其写为图像“位图”。然后，您需要连接一个图像解码器，它将解析该位图并生成真实的可渲染位图。</p>
+<p>header.cf将分别为LV_IMG_CF_RAW，LV_IMG_CF_RAW_ALPHA或LV_IMG_CF_RAW_CHROME_KEYED。您应该根据需要选择正确的格式：完全不透明的图像，使用Alpha通道或使用色度键。</p>
+<p>解码后，原始格式被库视为真彩色。换句话说，图像解码器必须根据[＃color-formats]（颜色格式）部分中所述的格式将Raw图像解码为True color。</p>
+<p>如果要创建自定义图像，则应使用LV_IMG_CF_USER_ENCODED_0..7颜色格式。但是，该库只能以True color格式（或Raw，但最终应该以True color格式）绘制图像。
+因此，库不知道LV_IMG_CF_USER_ENCODED _…格式，因此应从[＃color-formats]（颜色格式）部分将其解码为已知格式之一。
+可以先将图像解码为非真彩色格式，例如LV_IMG_INDEXED_4BITS，然后调用内置的解码器函数将其转换为真彩色。</p>
+<p>对于用户编码格式，应根据新格式更改打开功能（dsc-&gt; header.cf）中的颜色格式。</p>
+</div>
+<div class="section" id="id11">
+<h3>注册图像解码器<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>这是使LVGL与PNG图像配合使用的示例。</p>
+<p>首先，需要先创建一个新的图像解码器并设置一些功能来打开/关闭PNG文件。它看起来应该像这样：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cm">/*Create a new decoder and register functions */</span>
+<span class="linenos"> 2</span>    <span class="n">lv_img_decoder_t</span> <span class="o">*</span> <span class="n">dec</span> <span class="o">=</span> <span class="n">lv_img_decoder_create</span><span class="p">();</span>
+<span class="linenos"> 3</span>    <span class="n">lv_img_decoder_set_info_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="n">decoder_info</span><span class="p">);</span>
+<span class="linenos"> 4</span>    <span class="n">lv_img_decoder_set_open_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="n">decoder_open</span><span class="p">);</span>
+<span class="linenos"> 5</span>    <span class="n">lv_img_decoder_set_close_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="n">decoder_close</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="cm">/**</span>
+<span class="linenos"> 8</span><span class="cm">     * Get info about a PNG image</span>
+<span class="linenos"> 9</span><span class="cm">     * @param decoder pointer to the decoder where this function belongs</span>
+<span class="linenos">10</span><span class="cm">     * @param src can be file name or pointer to a C array</span>
+<span class="linenos">11</span><span class="cm">     * @param header store the info here</span>
+<span class="linenos">12</span><span class="cm">     * @return LV_RES_OK: no error; LV_RES_INV: can&#39;t get the info</span>
+<span class="linenos">13</span><span class="cm">     */</span>
+<span class="linenos">14</span>    <span class="k">static</span> <span class="n">lv_res_t</span> <span class="nf">decoder_info</span><span class="p">(</span><span class="n">lv_img_decoder_t</span> <span class="o">*</span> <span class="n">decoder</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">src</span><span class="p">,</span> <span class="n">lv_img_header_t</span> <span class="o">*</span> <span class="n">header</span><span class="p">)</span>
+<span class="linenos">15</span>    <span class="p">{</span>
+<span class="linenos">16</span>      <span class="cm">/*Check whether the type `src` is known by the decoder*/</span>
+<span class="linenos">17</span>      <span class="k">if</span><span class="p">(</span><span class="n">is_png</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="nb">false</span><span class="p">)</span> <span class="k">return</span> <span class="n">LV_RES_INV</span><span class="p">;</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>      <span class="cm">/* Read the PNG header and find `width` and `height` */</span>
+<span class="linenos">20</span>      <span class="p">...</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>      <span class="n">header</span><span class="o">-&gt;</span><span class="n">cf</span> <span class="o">=</span> <span class="n">LV_IMG_CF_RAW_ALPHA</span><span class="p">;</span>
+<span class="linenos">23</span>      <span class="n">header</span><span class="o">-&gt;</span><span class="n">w</span> <span class="o">=</span> <span class="n">width</span><span class="p">;</span>
+<span class="linenos">24</span>      <span class="n">header</span><span class="o">-&gt;</span><span class="n">h</span> <span class="o">=</span> <span class="n">height</span><span class="p">;</span>
+<span class="linenos">25</span>    <span class="p">}</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>    <span class="cm">/**</span>
+<span class="linenos">28</span><span class="cm">     * Open a PNG image and return the decided image</span>
+<span class="linenos">29</span><span class="cm">     * @param decoder pointer to the decoder where this function belongs</span>
+<span class="linenos">30</span><span class="cm">     * @param dsc pointer to a descriptor which describes this decoding session</span>
+<span class="linenos">31</span><span class="cm">     * @return LV_RES_OK: no error; LV_RES_INV: can&#39;t get the info</span>
+<span class="linenos">32</span><span class="cm">     */</span>
+<span class="linenos">33</span>    <span class="k">static</span> <span class="n">lv_res_t</span> <span class="nf">decoder_open</span><span class="p">(</span><span class="n">lv_img_decoder_t</span> <span class="o">*</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">lv_img_decoder_dsc_t</span> <span class="o">*</span> <span class="n">dsc</span><span class="p">)</span>
+<span class="linenos">34</span>    <span class="p">{</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>      <span class="cm">/*Check whether the type `src` is known by the decoder*/</span>
+<span class="linenos">37</span>      <span class="k">if</span><span class="p">(</span><span class="n">is_png</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="nb">false</span><span class="p">)</span> <span class="k">return</span> <span class="n">LV_RES_INV</span><span class="p">;</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>      <span class="cm">/*Decode and store the image. If `dsc-&gt;img_data` is `NULL`, the `read_line` function will be called to get the image data line-by-line*/</span>
+<span class="linenos">40</span>      <span class="n">dsc</span><span class="o">-&gt;</span><span class="n">img_data</span> <span class="o">=</span> <span class="n">my_png_decoder</span><span class="p">(</span><span class="n">src</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span>      <span class="cm">/*Change the color format if required. For PNG usually &#39;Raw&#39; is fine*/</span>
+<span class="linenos">43</span>      <span class="n">dsc</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">cf</span> <span class="o">=</span> <span class="n">LV_IMG_CF_</span><span class="p">...</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>      <span class="cm">/*Call a built in decoder function if required. It&#39;s not required if`my_png_decoder` opened the image in true color format.*/</span>
+<span class="linenos">46</span>      <span class="n">lv_res_t</span> <span class="n">res</span> <span class="o">=</span> <span class="n">lv_img_decoder_built_in_open</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span> <span class="n">dsc</span><span class="p">);</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>      <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="linenos">49</span>    <span class="p">}</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span>    <span class="cm">/**</span>
+<span class="linenos">52</span><span class="cm">     * Decode `len` pixels starting from the given `x`, `y` coordinates and store them in `buf`.</span>
+<span class="linenos">53</span><span class="cm">     * Required only if the &quot;open&quot; function can&#39;t open the whole decoded pixel array. (dsc-&gt;img_data == NULL)</span>
+<span class="linenos">54</span><span class="cm">     * @param decoder pointer to the decoder the function associated with</span>
+<span class="linenos">55</span><span class="cm">     * @param dsc pointer to decoder descriptor</span>
+<span class="linenos">56</span><span class="cm">     * @param x start x coordinate</span>
+<span class="linenos">57</span><span class="cm">     * @param y start y coordinate</span>
+<span class="linenos">58</span><span class="cm">     * @param len number of pixels to decode</span>
+<span class="linenos">59</span><span class="cm">     * @param buf a buffer to store the decoded pixels</span>
+<span class="linenos">60</span><span class="cm">     * @return LV_RES_OK: ok; LV_RES_INV: failed</span>
+<span class="linenos">61</span><span class="cm">     */</span>
+<span class="linenos">62</span>    <span class="n">lv_res_t</span> <span class="nf">decoder_built_in_read_line</span><span class="p">(</span><span class="n">lv_img_decoder_t</span> <span class="o">*</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">lv_img_decoder_dsc_t</span> <span class="o">*</span> <span class="n">dsc</span><span class="p">,</span> <span class="n">lv_coord_t</span> <span class="n">x</span><span class="p">,</span>
+<span class="linenos">63</span>                                                                                                      <span class="n">lv_coord_t</span> <span class="n">y</span><span class="p">,</span> <span class="n">lv_coord_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">buf</span><span class="p">)</span>
+<span class="linenos">64</span>    <span class="p">{</span>
+<span class="linenos">65</span>       <span class="cm">/*With PNG it&#39;s usually not required*/</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span>       <span class="cm">/*Copy `len` pixels from `x` and `y` coordinates in True color format to `buf` */</span>
+<span class="linenos">68</span>
+<span class="linenos">69</span>    <span class="p">}</span>
+<span class="linenos">70</span>
+<span class="linenos">71</span>    <span class="cm">/**</span>
+<span class="linenos">72</span><span class="cm">     * Free the allocated resources</span>
+<span class="linenos">73</span><span class="cm">     * @param decoder pointer to the decoder where this function belongs</span>
+<span class="linenos">74</span><span class="cm">     * @param dsc pointer to a descriptor which describes this decoding session</span>
+<span class="linenos">75</span><span class="cm">     */</span>
+<span class="linenos">76</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">decoder_close</span><span class="p">(</span><span class="n">lv_img_decoder_t</span> <span class="o">*</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">lv_img_decoder_dsc_t</span> <span class="o">*</span> <span class="n">dsc</span><span class="p">)</span>
+<span class="linenos">77</span>    <span class="p">{</span>
+<span class="linenos">78</span>      <span class="cm">/*Free all allocated data*/</span>
+<span class="linenos">79</span>
+<span class="linenos">80</span>      <span class="cm">/*Call the built-in close function if the built-in open/read_line was used*/</span>
+<span class="linenos">81</span>      <span class="n">lv_img_decoder_built_in_close</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span> <span class="n">dsc</span><span class="p">);</span>
+<span class="linenos">82</span>
+<span class="linenos">83</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<p>因此，总而言之：</p>
+<p>在解码器信息(decoder_info)中，您应该收集有关图像的一些基本信息，并将其存储在标头中。</p>
+<p>在decoder_open中，应尝试打开dsc-&gt; src指向的图像源。它的类型已经在dsc-&gt; src_type == LV_IMG_SRC_FILE / VARIABLE中。如果解码器不支持此格式/类型，请返回LV_RES_INV。但是，如果可以打开图像，则应在dsc-&gt; img_data中设置指向已解码的真彩色图像的指针。如果格式已知，但您不想在图像解码时（例如没有内存）将dsc-&gt; img_data = NULL设置为调用read_line以获取像素。</p>
+<p>在decoder_close中，您应该释放所有分配的资源。</p>
+<p>coder_read是可选的。解码整个图像需要额外的内存和一些计算开销。但是，如果可以解码图像的一行而不解码整个图像，则可以节省内存和时间。为了表明这一点，应该使用行读取功能，在打开功能中设置dsc-&gt; img_data = NULL。</p>
+</div>
+<div class="section" id="id12">
+<h3>手动使用图像解码器<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>如果您尝试绘制原始图像（即使用lv_img对象），LVGL将自动使用注册的图像解码器，但是您也可以手动使用它们。创建一个lv_img_decoder_dsc_t变量来描述解码会话，然后调用lv_img_decoder_open（）。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_res_t</span> <span class="n">res</span><span class="p">;</span>
+<span class="linenos">2</span>    <span class="n">lv_img_decoder_dsc_t</span> <span class="n">dsc</span><span class="p">;</span>
+<span class="linenos">3</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">lv_img_decoder_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dsc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_img_dsc</span><span class="p">,</span> <span class="n">LV_COLOR_WHITE</span><span class="p">);</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span>    <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="n">LV_RES_OK</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">6</span>      <span class="cm">/*Do something with `dsc-&gt;img_data`*/</span>
+<span class="linenos">7</span>      <span class="n">lv_img_decoder_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dsc</span><span class="p">);</span>
+<span class="linenos">8</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id13">
+<h2>图像缓存<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>有时打开图像需要很多时间。连续解码PNG图像或从速度较慢的外部存储器加载图像会效率低下，并且不利于用户体验。</p>
+<p>因此，LVGL缓存给定数量的图像。缓存意味着一些图像将保持打开状态，因此LVGL可以从dsc-&gt; img_data快速访问它们，而无需再次对其进行解码。</p>
+<p>当然，缓存图像会占用大量资源，因为它使用更多的RAM（用于存储解码的图像）。LVGL尝试尽可能地优化流程（请参见下文），但是您仍然需要评估这是否对您的平台有利。如果您有一个深度嵌入的目标，可以从相对较快的存储介质中解码小图像，则不建议使用图像缓存。</p>
+<div class="section" id="id14">
+<h3>缓存大小<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>可以在lv_conf.h的LV_IMG_CACHE_DEF_SIZE中定义高速缓存条目的数量。默认值为1，因此只有最近使用的图像将保持打开状态。</p>
+<p>可以在运行时使用lv_img_cache_set_size（entry_num）更改缓存的大小。</p>
+</div>
+<div class="section" id="id15">
+<h3>图片价值<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>当使用的图像多于缓存条目时，LVGL无法缓存所有图像。而是，库将关闭其中一个缓存的图像（以释放空间）。</p>
+<p>为了决定关闭哪个图像，LVGL使用它先前对打开图像所花费的时间进行的测量。保存打开速度较慢的图像的高速缓存条目被认为更有价值，并尽可能长时间地保留在高速缓存中。</p>
+<p>如果要或需要覆盖LVGL的测量值，则可以在dsc-&gt; time_to_open = time_ms的解码器打开功能中手动设置打开时间的值，以提供更高或更低的值。 （将其保留以让LVGL对其进行设置。）</p>
+<p>每个缓存条目都有一个“生命”值。每次通过缓存打开图像时，所有条目的寿命都会减少，从而使它们更旧。使用缓存的图像时，其使用寿命会随着打开值的时间增加而增加，从而使其更加生动。</p>
+<p>如果缓存中没有更多空间，则始终关闭寿命最小的条目。</p>
+</div>
+<div class="section" id="id16">
+<h3>内存使用情况<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>请注意，缓存的图像可能会不断消耗内存。例如，如果缓存了3个PNG图像，则它们在打开时将消耗内存。</p>
+<p>因此，用户有责任确保有足够的RAM来缓存，即使同时是最大的图像。</p>
+</div>
+<div class="section" id="id17">
+<h3>清理缓存<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>假设您已将PNG图片加载到lv_img_dsc_t my_png变量中，并在lv_img对象中使用了它。如果图像已被缓存，然后您更改了基础PNG文件，则需要通知LVGL重新缓存图像。否则，没有简单的方法可以检测到基础文件已更改并且LVGL仍会绘制旧图像。</p>
+<p>为此，请使用lv_img_cache_invalidate_src（＆my_png）。如果将NULL作为参数传递，则将清除整个缓存。</p>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="09_file-system.html" class="btn btn-neutral float-right" title="文件系统(File system)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="07_font.html" class="btn btn-neutral float-left" title="字体(Fonts)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

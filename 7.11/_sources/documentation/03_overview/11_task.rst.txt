@@ -1,0 +1,143 @@
+==================================
+任务(Task)
+==================================
+LVGL具有内置的任务系统。您可以注册一个函数以使其定期被调用。在lv_task_handler（）中处理和调用任务，该任务需要每几毫秒定期调用一次。有关更多信息，请参见移植。
+
+任务是非抢占式的，这意味着一个任务无法中断另一个任务。因此，您可以在任务中调用任何与LVGL相关的功能。
+
+
+创建一个任务
+##################################
+要创建新任务，请使用 ``lv_task_create(task_cb, period_ms, LV_TASK_PRIO_OFF/LOWEST/LOW/MID/HIGH/HIGHEST, user_data)`` 。它将创建一个lv_task_t *变量，以后可用于修改任务的参数。 lv_task_create_basic（）也可以使用。它允许您创建新任务而无需指定任何参数。
+
+任务回调应具有void（* lv_task_cb_t）（lv_task_t *）;原型。
+
+范例：
+
+.. code-block:: c
+    :linenos:
+
+	void my_task(lv_task_t * task)
+	{
+	  /*Use the user_data*/
+	  uint32_t * user_data = task->user_data;
+	  printf("my_task called with user data: %d\n", *user_data);
+
+	  /*Do something with LVGL*/
+	  if(something_happened) {
+		something_happened = false;
+		lv_btn_create(lv_scr_act(), NULL);
+	  }
+	}
+
+	...
+
+	static uint32_t user_data = 10;
+	lv_task_t * task = lv_task_create(my_task, 500, LV_TASK_PRIO_MID, &user_data);
+
+
+准备并重置
+##################################
+lv_task_ready（task）使任务在lv_task_handler（）的下一次调用上运行。
+
+lv_task_reset（task）重置任务的周期。在定义的毫秒周期过去后，它将再次调用。
+
+
+设定参数
+##################################
+
+您可以稍后修改任务的一些参数：
+
+
+- ``lv_task_set_cb(task, new_cb)``
+- ``lv_task_set_period(task, new_period)``
+- ``lv_task_set_prio(task, new_priority)``
+
+
+一次行的任务
+##################################
+通过调用lv_task_once（task），可以使任务仅运行一次。首次调用该任务后，该任务将自动删除。
+
+
+测量空闲时间
+##################################
+您可以使用lv_task_get_idle（）获得空闲百分比时间lv_task_handler。请注意，它不会衡量整个系统的空闲时间，只会衡量lv_task_handler。如果您使用操作系统并在任务中调用lv_task_handler，可能会产生误导，因为它实际上无法衡量OS在空闲线程中花费的时间。
+
+
+异步调用
+##################################
+在某些情况下，无法立即执行某些操作。例如，您不能立即删除对象，因为其他对象仍在使用它，或者您不想立即阻止执行。
+对于这些情况，可以使用lv_async_call（my_function，data_p）在下一次调用lv_task_handler时调用my_function。调用data_p时会将其传递给函数。
+请注意，仅保存了数据的指针，因此您需要确保在调用函数时变量将为“有效”。您可以使用静态，全局或动态分配的数据。
+
+
+例如：
+
+.. code-block:: c
+    :linenos:
+
+	void my_screen_clean_up(void * scr)
+	{
+	  /*Free some resources related to `scr`*/
+
+	  /*Finally delete the screen*/
+	  lv_obj_del(scr);  
+	}
+
+	...
+
+	/*Do somethings with the object on the current screen*/
+
+	/*Delete screen on next call of `lv_task_handler`. So not now.*/
+	lv_async_call(my_screen_clean_up, lv_scr_act());
+
+	/*The screen is still valid so you can do other things with it*/
+
+
+如果只想删除一个对象，而无需清除my_screen_cleanup中的任何内容，则可以使用lv_obj_del_async，它将在下一次调用lv_task_handler时删除该对象。
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

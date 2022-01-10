@@ -1,0 +1,1794 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>基础对象(lv_obj) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="弧(lv_arc)" href="02_arc.html" />
+    <link rel="prev" title="画画(Drawing)" href="../03_overview/12_drawing.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">基础对象(lv_obj)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">坐标</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">尺寸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">位置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">对齐</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">父子关系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">屏幕</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">层次</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">事件处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">部件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">状态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">风格</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">属性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">保护</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">组</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">扩展点击区域</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id25">按键</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id28">具有自定义样式的基础对象</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#typedefs">Typedefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enums">enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>基础对象(lv_obj)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/01_obj.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-obj">
+<h1>基础对象(lv_obj)<a class="headerlink" href="#lv-obj" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p><strong>基础对象</strong> 实现了屏幕上小部件的基本属性，例如：</p>
+<ul class="simple">
+<li><p>座标</p></li>
+<li><p>父对象</p></li>
+<li><p>子对象</p></li>
+<li><p>主要风格</p></li>
+<li><p>属性，例如点击启用、拖动启用等。</p></li>
+</ul>
+<p>在面向对象的思想中，它是继承 LVGL 中所有其他对象的基类。这尤其有助于减少代码重复。</p>
+<p>Base 对象的功能也可以与其他小部件一起使用。例如 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(slider，100)</span></code></p>
+<p>Base 对象可以直接用作简单的小部件。然后就是矩形。</p>
+</div>
+<div class="section" id="id2">
+<h2>坐标<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>尺寸<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(obj，new_width)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_height(obj，new_height)</span></code> 在单个坐标轴方向(横向、纵向)上修改对象的大小，或者可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_size(obj，new_width，new_height)</span></code> 同时修改两个坐标轴方向(横向及纵向)的大小。</p>
+<p>样式可以向对象添加边距。 Margin(边距)说 “我想要我周围的空间” 。那么我们可以设置对象的宽度： <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width_margin(obj，new_width)</span></code> 或高度： <code class="docutils literal notranslate"><span class="pre">lv_obj_set_height_margin(obj，new_height)</span></code> 。更确切地讲是这样： <code class="docutils literal notranslate"><span class="pre">new_width</span> <span class="pre">=</span> <span class="pre">left_margin</span> <span class="pre">+</span> <span class="pre">object_width</span> <span class="pre">+</span> <span class="pre">right_margin</span></code> .</p>
+<p>要获取包含边距的宽度或高度，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_width/height_margin(obj)</span></code> 。</p>
+<p>样式也可以向对象添加填充。填充的意思是 <strong>我不要我的孩子们离我的身体太近，所以要保留这个空间</strong> 。通过 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width_fit(obj，new_width)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_height_fit(obj，new_height)</span></code> 设置需要填充减小的宽度或高度。</p>
+<p>可以以更精确的方式： <code class="docutils literal notranslate"><span class="pre">new_width</span> <span class="pre">=</span> <span class="pre">left_pad</span> <span class="pre">+</span> <span class="pre">object_width</span> <span class="pre">+</span> <span class="pre">right_pad</span></code> 。 要获得通过填充减少的宽度或高度，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_width/height_fit(obj)</span></code> 。可以将其视为 <strong>对象的有用大小</strong> 。</p>
+<p>当其他窗口小部件使用布局或自动调整时，边距和填充变得很重要。</p>
+</div>
+<div class="section" id="id4">
+<h3>位置<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x(obj，new_x)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_y(obj，new_y)</span></code> 设置对象相对于父级的x和y坐标，或者同时使用lv_obj_set_pos(obj，new_x，new_y)设置相对于父级的x和y坐标。</p>
+</div>
+<div class="section" id="id5">
+<h3>对齐<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_align(obj,</span> <span class="pre">obj_ref,</span> <span class="pre">LV_ALIGN_...,</span> <span class="pre">x_ofs,</span> <span class="pre">y_ofs)</span></code> 将对象与另一个对象对齐。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">obj</span></code> 是要对齐的对象。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obj_ref</span></code> 是参考对象。<code class="docutils literal notranslate"><span class="pre">obj</span></code> 将与其对齐。如果 <code class="docutils literal notranslate"><span class="pre">obj_ref</span> <span class="pre">=</span> <span class="pre">NULL</span></code> ，则将使用 <code class="docutils literal notranslate"><span class="pre">obj</span></code> 的父级。</p></li>
+<li><p>第三个参数是对齐方式的类型。这些是可能的选项：</p></li>
+</ul>
+<a class="reference internal image-reference" href="http://photos.100ask.net/lvgl/04_widgets/01_obj/01_align.png"><img alt="LVGL中的对齐类型" class="align-center" src="http://photos.100ask.net/lvgl/04_widgets/01_obj/01_align.png" /></a>
+<p>对齐类型的构建类似于LV_ALIGN_OUT_TOP_MID。
+- 最后两个参数允许在对齐对象 <strong>后</strong> 将其移动指定数量的像素。</p>
+<p>例如，要在图像下方对齐文本：<code class="docutils literal notranslate"><span class="pre">lv_obj_align(text,</span> <span class="pre">image,</span> <span class="pre">LV_ALIGN_OUT_BOTTOM_MID,</span> <span class="pre">0,</span> <span class="pre">10)</span></code> 。
+或在父级中间对齐文本： <code class="docutils literal notranslate"><span class="pre">lv_obj_align(text,</span> <span class="pre">NULL,</span> <span class="pre">LV_ALIGN_CENTER,</span> <span class="pre">0,</span> <span class="pre">0)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_align_origo</span></code> 的工作方式与 <code class="docutils literal notranslate"><span class="pre">lv_obj_align</span></code> 类似，但它使对象的中心对齐。</p>
+<p>例如， <code class="docutils literal notranslate"><span class="pre">lv_obj_align_origo(btn,</span> <span class="pre">image,</span> <span class="pre">LV_ALIGN_OUT_BOTTOM_MID,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> 将使按钮的中心与图像底部对齐。</p>
+<p>如果在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 中启用了 <code class="docutils literal notranslate"><span class="pre">LV_USE_OBJ_REALIGN</span></code> ，则路线的参数将保存在对象中。然后，只需调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_realign(obj)</span></code> 即可重新对齐对象。等效于使用相同的参数再次调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_align</span></code> 。</p>
+<p>如果对齐是通过 <code class="docutils literal notranslate"><span class="pre">lv_obj_align_origo</span></code> 进行的，则在重新对齐对象时将使用它。</p>
+<p>函数 <code class="docutils literal notranslate"><span class="pre">lv_obj_align_x/y</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_obj_align_origo_x/y</span></code> 只能在一个轴上对齐。</p>
+<p>如果使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_auto_realign(obj,</span> <span class="pre">true)</span></code> ，并且对象的大小在 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width/height/size()</span></code> 函数中更改，则对象将自动重新对齐。当将尺寸动画应用于对象并且需要保留原始位置时，这非常有用。</p>
+<p>(<strong>请注意，屏幕的坐标无法更改。尝试在屏幕上使用这些功能将导致不确定的行为。</strong></p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>父子关系<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_parent(obj，new_parent)</span></code> 为对象设置新的父对象。要获取当前的父对象，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_parent(obj)</span></code> 。</p>
+<p>要获取对象的子代，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_child(obj，child_prev)</span></code> ( <strong>从最后到第一</strong> )或 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_child_back(obj，child_prev)</span></code> ( <strong>从第一到最后</strong> )。 <strong>要获得第一个子代</strong> ，请将 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 作为第二个参数传递，并使用返回值遍历子代。如果没有更多的子级，该函数将返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">child</span> <span class="o">=</span> <span class="n">lv_obj_get_child</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">2</span>    <span class="k">while</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">3</span>            <span class="cm">/*Do something with &quot;child&quot; */</span>
+<span class="linenos">4</span>            <span class="n">child</span> <span class="o">=</span> <span class="n">lv_obj_get_child</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">);</span>
+<span class="linenos">5</span>    <span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_count_children(obj)</span></code> 告知对象上的子代数。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_count_children_recursive(obj)</span></code> 也会告知子代数，使用递归计算子代数。</p>
+</div>
+<div class="section" id="id7">
+<h2>屏幕<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>创建了 <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span> <span class="pre">*</span> <span class="pre">screen</span> <span class="pre">=</span> <span class="pre">lv_obj_create(NULL，NULL)</span></code> 之类的屏幕后，可以使用 <code class="docutils literal notranslate"><span class="pre">lv_scr_load(screen)</span></code> 加载它。  <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> 函数提供了指向当前屏幕的指针。</p>
+<p>如果有更多的显示，那么我们就要知道这些功能，可以在最后创建的或明确选择的显示上运行(使用 <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default</span></code> )。</p>
+<p>要获取对象的屏幕，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_screen(obj)</span></code> 函数。</p>
+</div>
+<div class="section" id="id8">
+<h2>层次<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>有两个自动生成的层：</p>
+<ul class="simple">
+<li><p>顶层 lv_layer_top()</p></li>
+<li><p>系统层 lv_layer_sys()</p></li>
+</ul>
+<p>它们独立于屏幕(lv_scr_act())，并且将显示在每个屏幕上。顶层位于屏幕上每个对象的上方，而系统层也位于顶层上方。可以将任何弹出窗口自由添加到顶层。但是，系统层仅限于 <strong>系统级</strong> 的内容(例如，鼠标光标将放在 <code class="docutils literal notranslate"><span class="pre">lv_indev_set_cursor()</span></code> 中)。</p>
+<p>层级关系： lv_scr_act() &lt; lv_layer_top() &lt; lv_layer_sys()</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_layer_top()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_layer_sys()</span></code> 函数提供了指向顶层或系统层的指针。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_move_foreground(obj)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_obj_move_background(obj)</span></code> 将对象置于前景或发送至背景。</p>
+<p>阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/02_Layers.html">对象层级(Layers)</a>  部分，以了解有关图层的更多信息。</p>
+</div>
+<div class="section" id="id9">
+<h2>事件处理<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>要为对象设置事件回调，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_event_cb(obj,</span> <span class="pre">event_cb)</span></code> ，</p>
+<p>要将事件手动发送到对象，请使用 <code class="docutils literal notranslate"><span class="pre">lv_event_send(obj,</span> <span class="pre">LV_EVENT</span> <span class="pre">_...,</span> <span class="pre">data)</span></code></p>
+<p>阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件概述</a> 以了解有关事件的更多信息。</p>
+</div>
+<div class="section" id="id11">
+<h2>部件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>小部件可以包含多个部分。例如，按钮仅具有主要部分，而滑块则由背景，指示器和旋钮组成。</p>
+<p>零件名称的构造类似于 <code class="docutils literal notranslate"><span class="pre">LV_</span> <span class="pre">+</span> <span class="pre">&lt;TYPE&gt;</span> <span class="pre">_PART_</span> <span class="pre">&lt;NAME&gt;</span></code> 。例如 <code class="docutils literal notranslate"><span class="pre">LV_BTN_PART_MAIN</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LV_SLIDER_PART_KNOB</span></code> 通常在将样式添加到对象时使用零件。使用零件可以将不同的样式分配给对象的不同零件。</p>
+<p>要了解有关零件的更多信息，请阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/04_styles.html">样式概述</a> 的相关部分。</p>
+</div>
+<div class="section" id="id13">
+<h2>状态<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>对象可以处于以下状态的组合：</p>
+<ul class="simple">
+<li><p><strong>LV_STATE_DEFAULT</strong>  默认或正常状态</p></li>
+<li><p><strong>LV_STATE_CHECKED</strong>  选中或点击</p></li>
+<li><p><strong>LV_STATE_FOCUSED</strong>  通过键盘或编码器聚焦或通过触摸板/鼠标单击</p></li>
+<li><p><strong>LV_STATE_EDITED</strong>   由编码器编辑</p></li>
+<li><p><strong>LV_STATE_HOVERED</strong>  鼠标悬停(现在还不支持)</p></li>
+<li><p><strong>LV_STATE_PRESSED</strong>  按下</p></li>
+<li><p><strong>LV_STATE_DISABLED</strong> 禁用或无效</p></li>
+</ul>
+<p>当用户按下、释放、聚焦等对象时，状态通常由库自动检测更改。当然状态也可以手动检测更改。</p>
+<p>要完全覆盖当前状态，调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE...)</span></code></p>
+<p>要设置或清除某个状态(但不更改其他状态)，调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_add/clear_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE_...)</span></code></p>
+<p>可以组合使用状态值。例如： <code class="docutils literal notranslate"><span class="pre">lv_obj_set_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE_PRESSED</span> <span class="pre">|</span> <span class="pre">LV_PRESSED_CHECKED)</span></code> .</p>
+<p>要了解有关状态的更多信息，请阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/04_styles.html">样式概述</a> 的相关部分。</p>
+</div>
+<div class="section" id="id15">
+<h2>风格<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h2>
+<p>确保首先阅读了解了 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/04_styles.html">样式概述</a> 部分内容。</p>
+<p>要将样式添加到对象，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_add_style(obj,</span> <span class="pre">part,</span> <span class="pre">&amp;new_style)</span></code> 函数。基础对象使用所有类似矩形的样式属性。</p>
+<p>要从对象中删除所有样式，请使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_reset_style_list(obj,</span> <span class="pre">part)</span></code></p>
+<p>如果修改对象已使用的样式，为了刷新受影响的对象，可以使用每个对象在对象上使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_refresh_style(obj)</span></code> 或使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_report_style_mod(＆style)</span></code> 通知具有给定样式的所有对象。如果 <code class="docutils literal notranslate"><span class="pre">lv_obj_report_style_mod</span></code> 的参数为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ，则将通知所有对象。</p>
+</div>
+<div class="section" id="id17">
+<h2>属性<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h2>
+<p>调用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_...(obj,</span> <span class="pre">true/false)</span></code> 可以启用/禁用一些属性：</p>
+<ul class="simple">
+<li><p><strong>hidden</strong> - 隐藏对象。它不会被绘制，输入设备会将其视为不存在。它的子项也将被隐藏。</p></li>
+<li><p><strong>click</strong> - 允许通过输入设备单击对象。如果禁用，则单击事件将传递到此事件后面的对象。 (默认情况下无法点击标签)</p></li>
+<li><p><strong>top</strong> - 如果启用，则单击此对象或其任何子级时，该对象将进入前台。</p></li>
+<li><p><strong>drag</strong> - 启用拖动(通过输入设备移动)</p></li>
+<li><p><strong>drag_dir</strong> - 启用仅在特定方向上拖动。可以是LV_DRAG_DIR_HOR / VER / ALL。</p></li>
+<li><p><strong>drag_throw</strong> - 通过拖动启用“投掷”，就像对象将具有动量一样</p></li>
+<li><p><strong>drag_parent</strong> - 如果启用，则对象的父对象将在拖动过程中移动。看起来就像拖动父级。递归检查，因此也可以传播给祖父母。</p></li>
+<li><p><strong>parent_event</strong> - 也将事件传播给父母。递归检查，因此也可以传播给祖父母。</p></li>
+<li><p><strong>opa_scale_enable</strong> - 启用不透明度缩放。请参见[＃opa-scale](Opa比例尺)部分。</p></li>
+</ul>
+</div>
+<div class="section" id="id18">
+<h2>保护<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h2>
+<p>库中有一些自动发生的特定操作。为防止一种或多种此类行为，可以保护对象免受它们侵害。存在以下保护：</p>
+<ul class="simple">
+<li><p><strong>LV_PROTECT_NONE</strong> 没有保护</p></li>
+<li><p><strong>LV_PROTECT_POS</strong> 防止自动定位(例如容器中的布局)</p></li>
+<li><p><strong>LV_PROTECT_FOLLOW</strong> 防止在自动排序(例如容器布局)中遵循该对象(“换行”)</p></li>
+<li><p><strong>LV_PROTECT_PARENT</strong> 防止自动更改父母。 (例如，页面将在背景上创建的子代移动到可滚动页面)</p></li>
+<li><p><strong>LV_PROTECT_PRESS_LOST</strong> 防止手指滑过对象时丢失。 (例如，如果按下某个按钮，则可以将其释放)</p></li>
+<li><p><strong>LV_PROTECT_CLICK_FOCUS</strong> 如果对象在“组”中并且启用了单击焦点，则阻止其自动聚焦。</p></li>
+<li><p><strong>LV_PROTECT_CHILD_CHG</strong> 禁用子对象更换信号。库内部使用</p></li>
+</ul>
+<p>lv_obj_add/clear_protect(obj, <a href="#id31"><span class="problematic" id="id32">LV_PROTECT_</span></a>…) 设置/清除保护。也可以使用保护类型的“或”值。</p>
+</div>
+<div class="section" id="id19">
+<h2>组<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h2>
+<p>一旦将对象添加到具有 <code class="docutils literal notranslate"><span class="pre">lv_group_add_obj(group,</span> <span class="pre">obj)</span></code> 的组中，则可以通过 <code class="docutils literal notranslate"><span class="pre">lv_obj_get_group(obj)</span></code> 获得该对象的当前组。</p>
+<p>lv_obj_is_focused(obj)告知对象当前是否集中在其组上。如果未将对象添加到组中，则将返回false。</p>
+<p>阅读 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">输入设备概述</a> 以了解有关组的更多信息。</p>
+</div>
+<div class="section" id="id21">
+<h2>扩展点击区域<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h2>
+<p>默认情况下，只能在对象的坐标上单击对象，但是可以使用 <code class="docutils literal notranslate"><span class="pre">lv_obj_set_ext_click_area(obj,</span> <span class="pre">left,</span> <span class="pre">right,</span> <span class="pre">top,</span> <span class="pre">bottom)</span></code> 扩展该区域。左侧(left)/右侧(right)/顶部(top)/底部(bottom) 描述了可点击区域应在每个方向上超出默认范围的程度。</p>
+<p>前提是要在 <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> 使能 <code class="docutils literal notranslate"><span class="pre">LV_USE_EXT_CLICK_AREA</span></code>  启用此功能。可能的值为：</p>
+<ul class="simple">
+<li><p><strong>LV_EXT_CLICK_AREA_FULL</strong> 将所有 4 个坐标存储为 <code class="docutils literal notranslate"><span class="pre">lv_coord_t</span></code></p></li>
+<li><p><strong>LV_EXT_CLICK_AREA_TINY</strong> 仅将水平和垂直坐标(使用 左/右和上/下 的较大值)存储为 <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code></p></li>
+<li><p><strong>LV_EXT_CLICK_AREA_OFF</strong> 禁用此功能</p></li>
+</ul>
+</div>
+<div class="section" id="id22">
+<h2>事件<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h2>
+<p>仅 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a> 是按对象类型发送的。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多信息。</p>
+</div>
+<div class="section" id="id25">
+<h2>按键<a class="headerlink" href="#id25" title="永久链接至标题">¶</a></h2>
+<p>对象类型不处理任何输入按键。</p>
+<p>进一步了解 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a> 。</p>
+</div>
+<div class="section" id="id27">
+<h2>范例<a class="headerlink" href="#id27" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id28">
+<h3>具有自定义样式的基础对象<a class="headerlink" href="#id28" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id30">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/01_obj/02_base_object.png" src="http://photos.100ask.net/lvgl/04_widgets/01_obj/02_base_object.png" />
+<p class="caption"><span class="caption-text">lvgl中基础对象演示</span><a class="headerlink" href="#id30" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="kt">void</span> <span class="nf">lv_ex_obj_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 4</span>    <span class="p">{</span>
+<span class="linenos"> 5</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj1</span><span class="p">;</span>
+<span class="linenos"> 6</span>            <span class="n">obj1</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos"> 7</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+<span class="linenos"> 8</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">-60</span><span class="p">,</span> <span class="mi">-30</span><span class="p">);</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>            <span class="cm">/*Copy the previous object and enable drag*/</span>
+<span class="linenos">11</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj2</span><span class="p">;</span>
+<span class="linenos">12</span>            <span class="n">obj2</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="n">obj1</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">14</span>            <span class="n">lv_obj_set_drag</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>            <span class="k">static</span> <span class="n">lv_style_t</span> <span class="n">style_shadow</span><span class="p">;</span>
+<span class="linenos">17</span>            <span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_shadow</span><span class="p">);</span>
+<span class="linenos">18</span>            <span class="n">lv_style_set_shadow_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_shadow</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="linenos">19</span>            <span class="n">lv_style_set_shadow_spread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_shadow</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_style_set_shadow_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_shadow</span><span class="p">,</span> <span class="n">LV_STATE_DEFAULT</span><span class="p">,</span> <span class="n">LV_COLOR_BLUE</span><span class="p">);</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="cm">/*Copy the previous object (drag is already enabled)*/</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj3</span><span class="p">;</span>
+<span class="linenos">24</span>            <span class="n">obj3</span> <span class="o">=</span> <span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="n">obj2</span><span class="p">);</span>
+<span class="linenos">25</span>            <span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj3</span><span class="p">,</span> <span class="n">LV_OBJ_PART_MAIN</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">style_shadow</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj3</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="linenos">27</span>    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<div class="section" id="typedefs">
+<h3>Typedefs<a class="headerlink" href="#typedefs" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_design_mode_t</span>
+<span class="linenos"> 2</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_design_res_t</span>
+<span class="linenos"> 3</span>    <span class="cm">/* 设计回调用于在屏幕上绘制对象。它接受对象,遮罩区域以及绘制对象的方式。*/</span>
+<span class="linenos"> 4</span>    <span class="n">Typedefs</span> <span class="n">lv_design_res_t</span><span class="p">(</span><span class="o">*</span> <span class="n">lv_design_cb_t</span><span class="p">)(</span><span class="k">struct</span> <span class="nc">_lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span><span class="n">constlv_area_t</span> <span class="o">*</span> <span class="n">clip_area</span><span class="p">,</span><span class="n">lv_design_mode_t</span> <span class="n">mode</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="cm">/* 发送到对象的事件类型。*/</span>
+<span class="linenos"> 7</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_event_t</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="cm">/* 事件回调。事件用于通知用户对该对象正在执行的某些操作。有关详细信息,请参见 lv_event_t。*/</span>
+<span class="linenos">10</span>    <span class="n">Typedefs</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span> <span class="n">lv_event_cb_t</span><span class="p">)(</span><span class="k">struct</span> <span class="nc">_lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span><span class="n">lv_event_t</span> <span class="n">event</span> <span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_signal_t</span>
+<span class="linenos">14</span>    <span class="n">Typedefs</span> <span class="n">lv_res_t</span><span class="p">(</span><span class="o">*</span> <span class="n">lv_signal_cb_t</span><span class="p">)(</span><span class="k">struct</span> <span class="nc">_lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span><span class="n">lv_signal_t</span> <span class="n">sign</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span> <span class="n">param</span> <span class="p">)</span>
+<span class="linenos">15</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_protect_t</span>
+<span class="linenos">16</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_state_t</span>
+<span class="linenos">17</span>    <span class="n">Typedefs</span> <span class="k">struct</span> <span class="nc">_lv_obj_tlv_obj_t</span>
+<span class="linenos">18</span>    <span class="n">Typedefs</span> <span class="kt">uint8_t</span> <span class="n">lv_obj_part_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enums">
+<h3>enums<a class="headerlink" href="#enums" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>    enum [anonymous]
+<span class="linenos">  2</span>    设计模式
+<span class="linenos">  3</span>
+<span class="linenos">  4</span>    值：
+<span class="linenos">  5</span>    enumerator LV_DESIGN_DRAW_MAIN /* 绘制对象的主要部分 */
+<span class="linenos">  6</span>    enumerator LV_DESIGN_DRAW_POST /* 在对象上绘画 */
+<span class="linenos">  7</span>    enumerator LV_DESIGN_COVER_CHK /* 检查对象是否完全覆盖“ mask_p”区域 */
+<span class="linenos">  8</span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span>    enum [anonymous]
+<span class="linenos"> 11</span>    设计结果
+<span class="linenos"> 12</span>    值：
+<span class="linenos"> 13</span>    enumerator LV_DESIGN_RES_OK        /* 准备好 */
+<span class="linenos"> 14</span>    enumerator LV_DESIGN_RES_COVER     /* LV_DESIGN_COVER_CHK 如果区域完全覆盖,则返回 */
+<span class="linenos"> 15</span>    enumerator LV_DESIGN_RES_NOT_COVER /* LV_DESIGN_COVER_CHK 如果未覆盖区域,则返回 */
+<span class="linenos"> 16</span>    enumerator LV_DESIGN_RES_MASKED    /* LV_DESIGN_COVER_CHK 如果区域被遮盖,则返回(子类也不会遮盖)*/
+<span class="linenos"> 17</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span>    enum [anonymous]
+<span class="linenos"> 20</span>    值：
+<span class="linenos"> 21</span>    enumerator LV_EVENT_PRESSED             /* 该对象已被按下 */
+<span class="linenos"> 22</span>    enumerator LV_EVENT_PRESSING            /* 按下对象(按下时连续调用)*/
+<span class="linenos"> 23</span>    enumerator LV_EVENT_PRESS_LOST          /* 用户仍在按,但将光标/手指滑离对象 */
+<span class="linenos"> 24</span>    enumerator LV_EVENT_SHORT_CLICKED       /* 用户在短时间内按下对象,然后释放它。如果拖动则不调用。*/
+<span class="linenos"> 25</span>    enumerator LV_EVENT_LONG_PRESSED        /* 对象已被按下至少LV_INDEV_LONG_PRESS_TIME。如果拖动则不调用。*/
+<span class="linenos"> 26</span>    enumerator LV_EVENT_LONG_PRESSED_REPEAT /* LV_INDEV_LONG_PRESS_TIME每LV_INDEV_LONG_PRESS_REP_TIME毫秒调用一次。如果拖动则不调用。*/
+<span class="linenos"> 27</span>    enumerator LV_EVENT_CLICKED             /* 如果未拖动则调用释放(无论长按) */
+<span class="linenos"> 28</span>    enumerator LV_EVENT_RELEASED            /* 在对象释放后的每种情况下调用 */
+<span class="linenos"> 29</span>    enumerator LV_EVENT_DRAG_BEGIN
+<span class="linenos"> 30</span>    enumerator LV_EVENT_DRAG_END
+<span class="linenos"> 31</span>    enumerator LV_EVENT_DRAG_THROW_BEGIN
+<span class="linenos"> 32</span>    enumerator LV_EVENT_GESTURE  /* 对象已被手势 */
+<span class="linenos"> 33</span>    enumerator LV_EVENT_KEY
+<span class="linenos"> 34</span>    enumerator LV_EVENT_FOCUSED
+<span class="linenos"> 35</span>    enumerator LV_EVENT_DEFOCUSED
+<span class="linenos"> 36</span>    enumerator LV_EVENT_LEAVE
+<span class="linenos"> 37</span>    enumerator LV_EVENT_VALUE_CHANGED /* 对象的值已更改(即,滑块已移动) */
+<span class="linenos"> 38</span>    enumerator LV_EVENT_INSERT
+<span class="linenos"> 39</span>    enumerator LV_EVENT_REFRESH
+<span class="linenos"> 40</span>    enumerator LV_EVENT_APPLY   /* 单击“确定”,“应用”或类似的特定按钮 */
+<span class="linenos"> 41</span>    enumerator LV_EVENT_CANCEL  /* 单击了“关闭”,“取消”或类似的特定按钮 */
+<span class="linenos"> 42</span>    enumerator LV_EVENT_DELETE  /* 对象被删除 */
+<span class="linenos"> 43</span>    enumerator _LV_EVENT_LAST   /* 活动数量 */
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span>
+<span class="linenos"> 46</span>    enum [anonymous]
+<span class="linenos"> 47</span>    信号供对象本身使用或扩展对象的功能。应用程序应使用lv_obj_set_event_cb来通知对象上发生的事件。
+<span class="linenos"> 48</span>    值：
+<span class="linenos"> 49</span>    enumerator LV_SIGNAL_CLEANUP   /* 对象被删除 */
+<span class="linenos"> 50</span>    enumerator LV_SIGNAL_CHILD_CHG /* 子项已删除/添加 */
+<span class="linenos"> 51</span>    enumerator LV_SIGNAL_COORD_CHG /* 对象坐标/大小已更改 */
+<span class="linenos"> 52</span>    enumerator LV_SIGNAL_PARENT_SIZE_CHG /* 父类的大小已更改 */
+<span class="linenos"> 53</span>    enumerator LV_SIGNAL_STYLE_CHG       /* 对象的样式已更改 */
+<span class="linenos"> 54</span>    enumerator LV_SIGNAL_BASE_DIR_CHG    /* 基本目录已更改 */
+<span class="linenos"> 55</span>    enumerator LV_SIGNAL_REFR_EXT_DRAW_PAD /* 对象的额外填充已更改 */
+<span class="linenos"> 56</span>    enumerator LV_SIGNAL_GET_TYPELVGL      /* 需要检索对象的类型 */
+<span class="linenos"> 57</span>    enumerator LV_SIGNAL_GET_STYLE         /* 获取对象的样式 */
+<span class="linenos"> 58</span>    enumerator LV_SIGNAL_GET_STATE_DSC     /* 获取对象的状态 */
+<span class="linenos"> 59</span>    enumerator LV_SIGNAL_HIT_TEST          /* 命中测试 */
+<span class="linenos"> 60</span>    enumerator LV_SIGNAL_PRESSED           /* 该对象已被按下 */
+<span class="linenos"> 61</span>    enumerator LV_SIGNAL_PRESSING          /* 按下对象(按下时连续调用) */
+<span class="linenos"> 62</span>    enumerator LV_SIGNAL_PRESS_LOST        /* 用户仍在按,但将光标/手指滑离对象 */
+<span class="linenos"> 63</span>    enumerator LV_SIGNAL_RELEASED          /* 用户在短时间内按下对象,然后释放它。如果拖动则不调用。 */
+<span class="linenos"> 64</span>    enumerator LV_SIGNAL_LONG_PRESS        /* 对象已被按下至少LV_INDEV_LONG_PRESS_TIME。如果拖动则不调用。 */
+<span class="linenos"> 65</span>    enumerator LV_SIGNAL_LONG_PRESS_REP    /* LV_INDEV_LONG_PRESS_TIME每LV_INDEV_LONG_PRESS_REP_TIME毫秒调用一次。如果拖动则不调用。 */
+<span class="linenos"> 66</span>    enumerator LV_SIGNAL_DRAG_BEGIN
+<span class="linenos"> 67</span>    enumerator LV_SIGNAL_DRAG_THROW_BEGIN
+<span class="linenos"> 68</span>    enumerator LV_SIGNAL_DRAG_END
+<span class="linenos"> 69</span>    enumerator LV_SIGNAL_GESTURE  /* 对象已被手势 */
+<span class="linenos"> 70</span>    enumerator LV_SIGNAL_LEAVE    /* 通过输入设备单击或选择另一个对象 */
+<span class="linenos"> 71</span>    enumerator LV_SIGNAL_FOCUS
+<span class="linenos"> 72</span>    enumerator LV_SIGNAL_DEFOCUS
+<span class="linenos"> 73</span>    enumerator LV_SIGNAL_CONTROL
+<span class="linenos"> 74</span>    enumerator LV_SIGNAL_GET_EDITABLE
+<span class="linenos"> 75</span>
+<span class="linenos"> 76</span>    enum [anonymous]
+<span class="linenos"> 77</span>    值：
+<span class="linenos"> 78</span>    enumerator LV_PROTECT_NONE
+<span class="linenos"> 79</span>    enumerator LV_PROTECT_CHILD_CHG /* 禁用子类更换信号。被库使用 */
+<span class="linenos"> 80</span>    enumerator LV_PROTECT_PARENT    /* 防止自动更改父级(例如,在lv_page中) */
+<span class="linenos"> 81</span>    enumerator LV_PROTECT_POS       /* 防止自动定位(例如,在lv_cont布局中) */
+<span class="linenos"> 82</span>    enumerator LV_PROTECT_FOLLOW    /* 防止在自动排序中遵循对象(例如,在lv_cont PRETTY布局中) */
+<span class="linenos"> 83</span>    enumerator LV_PROTECT_PRESS_LOST  /* 如果indev按的是该对象,但在按时却扫了出去,请勿搜索其他对象。 */
+<span class="linenos"> 84</span>    enumerator LV_PROTECT_CLICK_FOCUS /* 单击以防止聚焦对象 */
+<span class="linenos"> 85</span>    enumerator LV_PROTECT_EVENT_TO_DISABLED /* 甚至将事件传递给禁用的对象 */
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span>    enum [anonymous]
+<span class="linenos"> 89</span>    值：
+<span class="linenos"> 90</span>    enumerator LV_STATE_DEFAULT  /* 默认 */
+<span class="linenos"> 91</span>    enumerator LV_STATE_CHECKED  /* 选中 */
+<span class="linenos"> 92</span>    enumerator LV_STATE_FOCUSED  /* 聚焦 */
+<span class="linenos"> 93</span>    enumerator LV_STATE_EDITED   /* 编辑 */
+<span class="linenos"> 94</span>    enumerator LV_STATE_HOVERED  /* 盘旋 */
+<span class="linenos"> 95</span>    enumerator LV_STATE_PRESSED  /* 按下 */
+<span class="linenos"> 96</span>    enumerator LV_STATE_DISABLED /* 禁用 */
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    enum [anonymous]
+<span class="linenos"> 99</span>    值：
+<span class="linenos">100</span>    enumerator LV_OBJ_PART_MAIN
+<span class="linenos">101</span>    enumerator _LV_OBJ_PART_VIRTUAL_LAST
+<span class="linenos">102</span>    enumerator _LV_OBJ_PART_REAL_LAST
+<span class="linenos">103</span>    enumerator LV_OBJ_PART_ALL
+</pre></div>
+</div>
+</div>
+<div class="section" id="id29">
+<h3>函数<a class="headerlink" href="#id29" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">   1</span>    void lv_init( void )   /* LVGL初始化 */
+<span class="linenos">   2</span>    void lv_deinit( void ) /*取消初始化“ lv”库当前仅在不使用自定义分配器或启用GC时实现。*/
+<span class="linenos">   3</span>    lv_obj_t * lv_obj_create(lv_obj_t *parent,constlv_obj_t * copy)
+<span class="linenos">   4</span>    功能：创建一个基本对象
+<span class="linenos">   5</span>    返回：指向新对象的指针
+<span class="linenos">   6</span>    形参：
+<span class="linenos">   7</span>    parent：指向父对象的指针。如果为NULL,则将创建一个屏幕
+<span class="linenos">   8</span>    copy：  指向基础对象的指针,如果不为NULL,则将从其复制新对象
+<span class="linenos">   9</span>
+<span class="linenos">  10</span>
+<span class="linenos">  11</span>    lv_res_t lv_obj_del(lv_obj_t * obj )
+<span class="linenos">  12</span>    功能：删除“ obj”及其所有子项
+<span class="linenos">  13</span>    返回：LV_RES_INV,因为对象已删除
+<span class="linenos">  14</span>    形参：
+<span class="linenos">  15</span>    obj：指向要删除的对象的指针
+<span class="linenos">  16</span>
+<span class="linenos">  17</span>
+<span class="linenos">  18</span>    void lv_obj_del_anim_ready_cb(lv_anim_t * a )
+<span class="linenos">  19</span>    功能：动画就绪回调中易于使用的函数,可在动画就绪时删除对象
+<span class="linenos">  20</span>    形参：
+<span class="linenos">  21</span>    a：指向动画的指针
+<span class="linenos">  22</span>
+<span class="linenos">  23</span>
+<span class="linenos">  24</span>    void lv_obj_del_async(struct _lv_obj_t * obj )
+<span class="linenos">  25</span>    功能：辅助函数,用于异步删除对象。在无法直接在LV_EVENT_DELETE处理程序(即父级)中删除对象的情况下很有用。
+<span class="linenos">  26</span>    形参：
+<span class="linenos">  27</span>    obj：要删除的对象
+<span class="linenos">  28</span>
+<span class="linenos">  29</span>
+<span class="linenos">  30</span>    void lv_obj_clean(lv_obj_t * obj )
+<span class="linenos">  31</span>    功能：删除对象的所有子对象
+<span class="linenos">  32</span>    形参：
+<span class="linenos">  33</span>    obj：指向对象的指针
+<span class="linenos">  34</span>
+<span class="linenos">  35</span>
+<span class="linenos">  36</span>    void lv_obj_invalidate_area(constlv_obj_t * obj,constlv_area_t *area)
+<span class="linenos">  37</span>    功能：将对象的区域标记为void 。此区域将由“ lv_refr_task”重绘
+<span class="linenos">  38</span>    形参：
+<span class="linenos">  39</span>    obj：指向对象的指针
+<span class="linenos">  40</span>    area：要重绘的区域
+<span class="linenos">  41</span>
+<span class="linenos">  42</span>
+<span class="linenos">  43</span>    void lv_obj_invalidate(constlv_obj_t * obj )
+<span class="linenos">  44</span>    功能：将对象标记为void ,因此将通过“ lv_refr_task”重绘其当前位置
+<span class="linenos">  45</span>    形参：
+<span class="linenos">  46</span>    obj：指向对象的指针
+<span class="linenos">  47</span>
+<span class="linenos">  48</span>
+<span class="linenos">  49</span>    bool lv_obj_area_is_visible(constlv_obj_t * obj,lv_area_t * area )
+<span class="linenos">  50</span>    判断对象的某个区域现在是否可见(甚至部分可见)
+<span class="linenos">  51</span>    返回:true：可见；假：不可见(隐藏,在父母之外,在其他屏幕上等)
+<span class="linenos">  52</span>    形参：
+<span class="linenos">  53</span>    obj：指向对象的指针
+<span class="linenos">  54</span>    area：检查。该区域的可见部分将写回到这里。
+<span class="linenos">  55</span>
+<span class="linenos">  56</span>
+<span class="linenos">  57</span>    bool lv_obj_is_visible(constlv_obj_t * obj )
+<span class="linenos">  58</span>    功能：判断一个对象现在是否可见(甚至部分可见)
+<span class="linenos">  59</span>    返回:true：可见；假：不可见(隐藏,在父母之外,在其他屏幕上等)
+<span class="linenos">  60</span>    形参：
+<span class="linenos">  61</span>    obj：指向对象的指针
+<span class="linenos">  62</span>
+<span class="linenos">  63</span>
+<span class="linenos">  64</span>    void lv_obj_set_parent(lv_obj_t * obj,lv_obj_t *parent)
+<span class="linenos">  65</span>    功能：为对象设置一个新的父对象。其相对位置将相同。
+<span class="linenos">  66</span>    形参：
+<span class="linenos">  67</span>    obj：指向对象的指针。不能是屏幕。
+<span class="linenos">  68</span>    parent：指向新父对象的指针。(不能为NULL)
+<span class="linenos">  69</span>
+<span class="linenos">  70</span>
+<span class="linenos">  71</span>    void lv_obj_move_foreground(lv_obj_t * obj )
+<span class="linenos">  72</span>    功能：移动并反对前景
+<span class="linenos">  73</span>    形参：
+<span class="linenos">  74</span>    obj：指向对象的指针
+<span class="linenos">  75</span>
+<span class="linenos">  76</span>
+<span class="linenos">  77</span>    void lv_obj_move_background(lv_obj_t * obj )
+<span class="linenos">  78</span>    功能：移动并反对背景
+<span class="linenos">  79</span>    形参：
+<span class="linenos">  80</span>    obj：指向对象的指针
+<span class="linenos">  81</span>
+<span class="linenos">  82</span>
+<span class="linenos">  83</span>    void lv_obj_set_pos(lv_obj_t * obj,lv_coord_t x,lv_coord_t y )
+<span class="linenos">  84</span>    功能：设置对象的相对位置(相对于父对象)
+<span class="linenos">  85</span>    形参：
+<span class="linenos">  86</span>    obj：指向对象的指针
+<span class="linenos">  87</span>    x：距父级左侧的新距离
+<span class="linenos">  88</span>    y：距父级顶部的新距离
+<span class="linenos">  89</span>
+<span class="linenos">  90</span>
+<span class="linenos">  91</span>    void lv_obj_set_x(lv_obj_t * obj,lv_coord_t x )
+<span class="linenos">  92</span>    功能：设置对象的x坐标
+<span class="linenos">  93</span>    形参：
+<span class="linenos">  94</span>    obj：指向对象的指针
+<span class="linenos">  95</span>    x：从父级到左侧的新距离
+<span class="linenos">  96</span>
+<span class="linenos">  97</span>
+<span class="linenos">  98</span>    void lv_obj_set_y(lv_obj_t * obj,lv_coord_t y )
+<span class="linenos">  99</span>    功能：设置对象的y坐标
+<span class="linenos"> 100</span>    形参：
+<span class="linenos"> 101</span>    obj：指向对象的指针
+<span class="linenos"> 102</span>    y：距父级顶部的新距离
+<span class="linenos"> 103</span>
+<span class="linenos"> 104</span>
+<span class="linenos"> 105</span>    void lv_obj_set_size(lv_obj_t * obj,lv_coord_t w,lv_coord_t h )
+<span class="linenos"> 106</span>    功能：设置对象的大小
+<span class="linenos"> 107</span>    形参：
+<span class="linenos"> 108</span>    obj：指向对象的指针
+<span class="linenos"> 109</span>    w：新宽度
+<span class="linenos"> 110</span>    h：新高度
+<span class="linenos"> 111</span>
+<span class="linenos"> 112</span>
+<span class="linenos"> 113</span>    void lv_obj_set_width(lv_obj_t * obj,lv_coord_t w )
+<span class="linenos"> 114</span>    功能：设置对象的宽度
+<span class="linenos"> 115</span>    形参：
+<span class="linenos"> 116</span>    obj：指向对象的指针
+<span class="linenos"> 117</span>    w：新宽度
+<span class="linenos"> 118</span>
+<span class="linenos"> 119</span>
+<span class="linenos"> 120</span>    void lv_obj_set_height(lv_obj_t * obj,lv_coord_t h )
+<span class="linenos"> 121</span>    功能：设定物件的高度
+<span class="linenos"> 122</span>    形参：
+<span class="linenos"> 123</span>    obj：指向对象的指针
+<span class="linenos"> 124</span>    h：新高度
+<span class="linenos"> 125</span>
+<span class="linenos"> 126</span>
+<span class="linenos"> 127</span>    void lv_obj_set_width_fit(lv_obj_t * obj,lv_coord_t w )
+<span class="linenos"> 128</span>    功能：设置通过左右填充减少的宽度。
+<span class="linenos"> 129</span>    形参：
+<span class="linenos"> 130</span>    obj：指向对象的指针
+<span class="linenos"> 131</span>    w：没有填充的宽度
+<span class="linenos"> 132</span>
+<span class="linenos"> 133</span>
+<span class="linenos"> 134</span>    void lv_obj_set_height_fit(lv_obj_t * obj,lv_coord_t h )
+<span class="linenos"> 135</span>    功能：设置通过顶部和底部填充减小的高度。
+<span class="linenos"> 136</span>    形参：
+<span class="linenos"> 137</span>    obj：指向对象的指针
+<span class="linenos"> 138</span>    h：不带衬垫的高度
+<span class="linenos"> 139</span>
+<span class="linenos"> 140</span>
+<span class="linenos"> 141</span>    void lv_obj_set_width_margin(lv_obj_t * obj,lv_coord_t w )
+<span class="linenos"> 142</span>    功能：通过考虑左边距和右边距来设置对象的宽度。物体的宽度为obj_w = w - margin_left - margin_right
+<span class="linenos"> 143</span>    形参：
+<span class="linenos"> 144</span>    obj：指向对象的指针
+<span class="linenos"> 145</span>    w：包括边距在内的新高度
+<span class="linenos"> 146</span>
+<span class="linenos"> 147</span>
+<span class="linenos"> 148</span>    void lv_obj_set_height_margin(lv_obj_t * obj,lv_coord_t h )
+<span class="linenos"> 149</span>    功能：通过考虑顶部和底部边距来设置对象的高度。物体高度将为obj_h = h - margin_top - margin_bottom
+<span class="linenos"> 150</span>    形参：
+<span class="linenos"> 151</span>    obj：指向对象的指针
+<span class="linenos"> 152</span>    h：包括边距在内的新高度
+<span class="linenos"> 153</span>
+<span class="linenos"> 154</span>
+<span class="linenos"> 155</span>    void lv_obj_align(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs,lv_coord_t y_ofs )
+<span class="linenos"> 156</span>    功能：将一个对象与另一个对象对齐。
+<span class="linenos"> 157</span>    形参：
+<span class="linenos"> 158</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 159</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 160</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 161</span>    x_ofs：对齐后的x坐标偏移
+<span class="linenos"> 162</span>    y_ofs：对齐后的y坐标偏移
+<span class="linenos"> 163</span>
+<span class="linenos"> 164</span>
+<span class="linenos"> 165</span>    void lv_obj_align_x(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs )
+<span class="linenos"> 166</span>    功能：将一个对象与另一个对象水平对齐。
+<span class="linenos"> 167</span>    形参：
+<span class="linenos"> 168</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 169</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 170</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 171</span>    x_ofs：对齐后的x坐标偏移
+<span class="linenos"> 172</span>
+<span class="linenos"> 173</span>
+<span class="linenos"> 174</span>    void lv_obj_align_y(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t y_ofs )
+<span class="linenos"> 175</span>    功能：将一个对象与另一个对象垂直对齐。
+<span class="linenos"> 176</span>    形参：
+<span class="linenos"> 177</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 178</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 179</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 180</span>    y_ofs：对齐后的y坐标偏移
+<span class="linenos"> 181</span>
+<span class="linenos"> 182</span>
+<span class="linenos"> 183</span>    void lv_obj_align_mid(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs,lv_coord_t y_ofs )
+<span class="linenos"> 184</span>    功能：将一个对象与另一个对象对齐。
+<span class="linenos"> 185</span>    形参：
+<span class="linenos"> 186</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 187</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 188</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 189</span>    x_ofs：对齐后的x坐标偏移
+<span class="linenos"> 190</span>    y_ofs：对齐后的y坐标偏移
+<span class="linenos"> 191</span>
+<span class="linenos"> 192</span>
+<span class="linenos"> 193</span>    void lv_obj_align_mid_x(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t x_ofs )
+<span class="linenos"> 194</span>    功能：将对象的中点与另一个对象水平对齐。
+<span class="linenos"> 195</span>    形参：
+<span class="linenos"> 196</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 197</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 198</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 199</span>    x_ofs：对齐后的x坐标偏移
+<span class="linenos"> 200</span>
+<span class="linenos"> 201</span>
+<span class="linenos"> 202</span>    void lv_obj_align_mid_y(lv_obj_t * obj,constlv_obj_t * base,lv_align_t align,lv_coord_t y_ofs )
+<span class="linenos"> 203</span>    功能：将对象的中点与另一个对象垂直对齐。
+<span class="linenos"> 204</span>    形参：
+<span class="linenos"> 205</span>    obj：指向要对齐的对象的指针
+<span class="linenos"> 206</span>    base：指向对象的指针(如果为NULL,则使用父对象)。&#39;obj&#39;将与其对齐。
+<span class="linenos"> 207</span>    align：对齐类型(请参见“ lv_align_t”enum )
+<span class="linenos"> 208</span>    y_ofs：对齐后的y坐标偏移
+<span class="linenos"> 209</span>
+<span class="linenos"> 210</span>
+<span class="linenos"> 211</span>    void lv_obj_realign(lv_obj_t * obj )
+<span class="linenos"> 212</span>    功能：根据最后一个lv_obj_align参数重新对齐对象。
+<span class="linenos"> 213</span>    形参：
+<span class="linenos"> 214</span>    obj：指向对象的指针
+<span class="linenos"> 215</span>
+<span class="linenos"> 216</span>
+<span class="linenos"> 217</span>    void lv_obj_set_auto_realign(lv_obj_t * obj,bool en )
+<span class="linenos"> 218</span>    功能：当对象的大小根据最后一个lv_obj_align参数更改时,启用对象的自动重新对齐。
+<span class="linenos"> 219</span>    形参：
+<span class="linenos"> 220</span>    obj：指向对象的指针
+<span class="linenos"> 221</span>    en：true：启用自动重新对齐；false：禁用自动重新对齐
+<span class="linenos"> 222</span>
+<span class="linenos"> 223</span>
+<span class="linenos"> 224</span>    void lv_obj_set_ext_click_area(lv_obj_t * OBJ,lv_coord_t left,lv_coord_t right,lv_coord_t top,lv_coord_t bottom)
+<span class="linenos"> 225</span>    功能：设置扩展的可点击区域的大小
+<span class="linenos"> 226</span>    形参：
+<span class="linenos"> 227</span>    obj：指向对象的指针
+<span class="linenos"> 228</span>    left：可扩展点击位于左侧[px]
+<span class="linenos"> 229</span>    right：可扩展点击位于右侧[px]
+<span class="linenos"> 230</span>    top：扩展的可点击位于顶部[px]
+<span class="linenos"> 231</span>    bottom：可扩展点击位于底部[px]
+<span class="linenos"> 232</span>
+<span class="linenos"> 233</span>
+<span class="linenos"> 234</span>    void lv_obj_add_style(lv_obj_t * obj,uint8_t part,lv_style_t * style )
+<span class="linenos"> 235</span>    功能：将新样式添加到对象的样式列表。
+<span class="linenos"> 236</span>    形参：
+<span class="linenos"> 237</span>    obj：指向对象的指针
+<span class="linenos"> 238</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 239</span>    style：指向要添加样式的指针(仅会保存其指针)
+<span class="linenos"> 240</span>
+<span class="linenos"> 241</span>
+<span class="linenos"> 242</span>    void lv_obj_remove_style(lv_obj_t * obj,uint8_t part,lv_style_t * style )
+<span class="linenos"> 243</span>    功能：从对象的样式列表中删除样式。
+<span class="linenos"> 244</span>    形参：
+<span class="linenos"> 245</span>    obj：指向对象的指针
+<span class="linenos"> 246</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 247</span>    style：指向要删除的样式的指针
+<span class="linenos"> 248</span>
+<span class="linenos"> 249</span>
+<span class="linenos"> 250</span>    void lv_obj_clean_style_list(lv_obj_t * obj,uint8_t part )
+<span class="linenos"> 251</span>    功能：将样式重置为默认(空)状态。释放所有已使用的内存,并取消待处理的相关转换。通常用于`LV_SIGN_CLEAN_UP。
+<span class="linenos"> 252</span>    形参：
+<span class="linenos"> 253</span>    obj：指向对象的指针
+<span class="linenos"> 254</span>    part：应重置样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 255</span>
+<span class="linenos"> 256</span>
+<span class="linenos"> 257</span>    void lv_obj_reset_style_list(lv_obj_t * obj,uint8_t part )
+<span class="linenos"> 258</span>    功能：将样式重置为默认(空)状态。释放所有已使用的内存,并取消待处理的相关转换。还通知对象有关样式更改的信息。
+<span class="linenos"> 259</span>    形参：
+<span class="linenos"> 260</span>    obj：指向对象的指针
+<span class="linenos"> 261</span>    part：应重置样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 262</span>
+<span class="linenos"> 263</span>
+<span class="linenos"> 264</span>    void lv_obj_refresh_style(lv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 265</span>    功能：通知对象(及其子对象)其样式已修改
+<span class="linenos"> 266</span>    形参：
+<span class="linenos"> 267</span>    obj：指向对象的指针
+<span class="linenos"> 268</span>    prop：LV_STYLE_PROP_ALL或LV_STYLE_...财产。它用于优化需要刷新的内容。
+<span class="linenos"> 269</span>
+<span class="linenos"> 270</span>
+<span class="linenos"> 271</span>    void lv_obj_report_style_mod( lv_style_t *style)
+<span class="linenos"> 272</span>    功能：修改样式时通知所有对象
+<span class="linenos"> 273</span>    形参：
+<span class="linenos"> 274</span>    style：指向样式的指针。仅具有这种样式的对象将被通知(NULL通知所有对象)
+<span class="linenos"> 275</span>
+<span class="linenos"> 276</span>    void _lv_obj_set_style_local_color(lv_obj_t * OBJ,uint8_t part,lv_style_property_t prop,lv_color_t the)
+<span class="linenos"> 277</span>    功能：在给定状态下设置对象的一部分的局部样式属性。
+<span class="linenos"> 278</span>    注意：
+<span class="linenos"> 279</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 280</span>    2.由于性能原因,不会检查属性是否确实具有颜色类型
+<span class="linenos"> 281</span>    形参：
+<span class="linenos"> 282</span>    obj：指向对象的指针
+<span class="linenos"> 283</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 284</span>    prop：样式属性与状态或。例如LV_STYLE_BORDER_COLOR | (LV_STATE_PRESSED &lt;&lt; LV_STYLE_STATE_POS)
+<span class="linenos"> 285</span>    the：要设置的值
+<span class="linenos"> 286</span>
+<span class="linenos"> 287</span>
+<span class="linenos"> 288</span>    void _lv_obj_set_style_local_int(lv_obj_t * OBJ,uint8_t part,lv_style_property_t prop,lv_style_int_t the)
+<span class="linenos"> 289</span>    功能：在给定状态下设置对象的一部分的局部样式属性。
+<span class="linenos"> 290</span>    注意：
+<span class="linenos"> 291</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 292</span>    2.出于性能原因,不检查该属性是否确实具有整数类型
+<span class="linenos"> 293</span>    形参：
+<span class="linenos"> 294</span>    obj：指向对象的指针
+<span class="linenos"> 295</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 296</span>    prop：样式属性与状态或。例如LV_STYLE_BORDER_WIDTH | (LV_STATE_PRESSED &lt;&lt; LV_STYLE_STATE_POS)
+<span class="linenos"> 297</span>    the：要设置的值
+<span class="linenos"> 298</span>
+<span class="linenos"> 299</span>
+<span class="linenos"> 300</span>    void _lv_obj_set_style_local_opa(lv_obj_t * obj,uint8_t part,lv_style_property_t prop,lv_opa_t opa )
+<span class="linenos"> 301</span>    功能：在给定状态下设置对象的一部分的局部样式属性。
+<span class="linenos"> 302</span>    注意：
+<span class="linenos"> 303</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 304</span>    2.由于性能原因,不检查属性是否确实具有不透明度类型
+<span class="linenos"> 305</span>    形参：
+<span class="linenos"> 306</span>    obj：指向对象的指针
+<span class="linenos"> 307</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 308</span>    prop：样式属性与状态或。例如LV_STYLE_BORDER_OPA | (LV_STATE_PRESSED &lt;&lt; LV_STYLE_STATE_POS)
+<span class="linenos"> 309</span>    the：要设置的值
+<span class="linenos"> 310</span>
+<span class="linenos"> 311</span>
+<span class="linenos"> 312</span>    void _lv_obj_set_style_local_ptr(lv_obj_t * obj,uint8_t type,lv_style_property_t prop,constvoid *the)
+<span class="linenos"> 313</span>    功能：在给定状态下设置对象的一部分的局部样式属性。
+<span class="linenos"> 314</span>    注意：
+<span class="linenos"> 315</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 316</span>    2.出于性能原因,不检查该属性是否确实具有指针类型
+<span class="linenos"> 317</span>    形参：
+<span class="linenos"> 318</span>    obj：指向对象的指针
+<span class="linenos"> 319</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 320</span>    prop：样式属性与状态或。例如LV_STYLE_TEXT_FONT | (LV_STATE_PRESSED &lt;&lt; LV_STYLE_STATE_POS)
+<span class="linenos"> 321</span>    the：要设置的值
+<span class="linenos"> 322</span>
+<span class="linenos"> 323</span>
+<span class="linenos"> 324</span>    bool lv_obj_remove_style_local_prop(lv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 325</span>    功能：从具有给定状态的对象的一部分中删除局部样式属性。
+<span class="linenos"> 326</span>    注意：
+<span class="linenos"> 327</span>    不应直接使用。请改用特定的属性删除功能。例如：lv_obj_style_remove_border_opa()
+<span class="linenos"> 328</span>    返回:true：已找到并删除了该属性；false：找不到该属性
+<span class="linenos"> 329</span>    形参：
+<span class="linenos"> 330</span>    obj：指向对象的指针
+<span class="linenos"> 331</span>    part：对象的应删除样式属性的部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 332</span>    prop：样式属性与状态或。例如LV_STYLE_TEXT_FONT | (LV_STATE_PRESSED &lt;&lt; LV_STYLE_STATE_POS)
+<span class="linenos"> 333</span>
+<span class="linenos"> 334</span>
+<span class="linenos"> 335</span>    void _lv_obj_disable_style_caching(lv_obj_t * obj,bool dis )
+<span class="linenos"> 336</span>    功能：启用/禁用对象的样式缓存
+<span class="linenos"> 337</span>    形参：
+<span class="linenos"> 338</span>    obj：指向对象的指针
+<span class="linenos"> 339</span>    dis：true：禁用；false：启用(重新启用)
+<span class="linenos"> 340</span>
+<span class="linenos"> 341</span>
+<span class="linenos"> 342</span>    void lv_obj_set_hidden(lv_obj_t * obj,bool en )
+<span class="linenos"> 343</span>    功能：隐藏对象。它不会显示和单击。
+<span class="linenos"> 344</span>    形参：
+<span class="linenos"> 345</span>    obj：指向对象的指针
+<span class="linenos"> 346</span>    en：true：隐藏对象
+<span class="linenos"> 347</span>
+<span class="linenos"> 348</span>    void lv_obj_set_adv_hittest(lv_obj_t * obj,bool en )
+<span class="linenos"> 349</span>    功能：设置是否在对象上启用高级命中测试
+<span class="linenos"> 350</span>    形参：
+<span class="linenos"> 351</span>    obj：指向对象的指针
+<span class="linenos"> 352</span>    en：true：启用高级命中测试
+<span class="linenos"> 353</span>
+<span class="linenos"> 354</span>
+<span class="linenos"> 355</span>    void lv_obj_set_click(lv_obj_t * obj,bool en )
+<span class="linenos"> 356</span>    功能：启用或禁用对象单击
+<span class="linenos"> 357</span>    形参：
+<span class="linenos"> 358</span>    obj：指向对象的指针
+<span class="linenos"> 359</span>    en：true：使对象可点击
+<span class="linenos"> 360</span>
+<span class="linenos"> 361</span>
+<span class="linenos"> 362</span>    void lv_obj_set_top(lv_obj_t * obj,bool en )
+<span class="linenos"> 363</span>    功能：如果单击该对象或其任何子对象,则启用该对象
+<span class="linenos"> 364</span>    形参：
+<span class="linenos"> 365</span>    obj：指向对象的指针
+<span class="linenos"> 366</span>    en：true：启用自动顶部功能
+<span class="linenos"> 367</span>
+<span class="linenos"> 368</span>
+<span class="linenos"> 369</span>    void lv_obj_set_drag(lv_obj_t * obj,bool en )
+<span class="linenos"> 370</span>    功能：启用对象拖动
+<span class="linenos"> 371</span>    形参：
+<span class="linenos"> 372</span>    obj：指向对象的指针
+<span class="linenos"> 373</span>    en：true：使对象可拖动
+<span class="linenos"> 374</span>
+<span class="linenos"> 375</span>
+<span class="linenos"> 376</span>    void lv_obj_set_drag_dir(lv_obj_t * obj,lv_drag_dir_t drag_dir )
+<span class="linenos"> 377</span>    功能：设置可以拖动对象的方向
+<span class="linenos"> 378</span>    形参：
+<span class="linenos"> 379</span>    obj：指向对象的指针
+<span class="linenos"> 380</span>    drag_dir：允许的拖动方向的按位或
+<span class="linenos"> 381</span>
+<span class="linenos"> 382</span>
+<span class="linenos"> 383</span>    void lv_obj_set_drag_throw(lv_obj_t * obj,bool en )
+<span class="linenos"> 384</span>    功能：拖动后启用对象投掷
+<span class="linenos"> 385</span>    形参：
+<span class="linenos"> 386</span>    obj：指向对象的指针
+<span class="linenos"> 387</span>    en：true：启用拖动
+<span class="linenos"> 388</span>
+<span class="linenos"> 389</span>
+<span class="linenos"> 390</span>    void lv_obj_set_drag_parent(lv_obj_t * obj,bool en )
+<span class="linenos"> 391</span>    功能：启用将父项用于拖动相关的操作。如果尝试拖动对象,则将父对象移动
+<span class="linenos"> 392</span>    形参：
+<span class="linenos"> 393</span>    obj：指向对象的指针
+<span class="linenos"> 394</span>    en：true：为对象启用“拖动父对象”
+<span class="linenos"> 395</span>
+<span class="linenos"> 396</span>
+<span class="linenos"> 397</span>    void lv_obj_set_focus_parent(lv_obj_t * obj,bool en )
+<span class="linenos"> 398</span>    功能：启用以将父级用于焦点状态。当对象聚焦时,父级将获得状态(仅可见)
+<span class="linenos"> 399</span>    形参：
+<span class="linenos"> 400</span>    obj：指向对象的指针
+<span class="linenos"> 401</span>    en：true：为对象启用“焦点父对象”
+<span class="linenos"> 402</span>
+<span class="linenos"> 403</span>
+<span class="linenos"> 404</span>    void lv_obj_set_gesture_parent(lv_obj_t * obj,bool en )
+<span class="linenos"> 405</span>    功能：启用将父项用于手势相关操作。如果尝试手势对象,则将父对象移动
+<span class="linenos"> 406</span>    形参：
+<span class="linenos"> 407</span>    obj：指向对象的指针
+<span class="linenos"> 408</span>    en：true：为对象启用“手势父级”
+<span class="linenos"> 409</span>
+<span class="linenos"> 410</span>
+<span class="linenos"> 411</span>    void lv_obj_set_parent_event(lv_obj_t * obj,bool en )
+<span class="linenos"> 412</span>    功能：也将事件传播给父级
+<span class="linenos"> 413</span>    形参：
+<span class="linenos"> 414</span>    obj：指向对象的指针
+<span class="linenos"> 415</span>    en：true：启用事件传播
+<span class="linenos"> 416</span>
+<span class="linenos"> 417</span>
+<span class="linenos"> 418</span>    void lv_obj_set_base_dir(lv_obj_t * obj,lv_bidi_dir_t dir )
+<span class="linenos"> 419</span>    功能：设置对象的基本方向
+<span class="linenos"> 420</span>    注意：
+<span class="linenos"> 421</span>    仅在启用LV_USE_BIDI的情况下才有效。
+<span class="linenos"> 422</span>    形参：
+<span class="linenos"> 423</span>    obj：指向对象的指针
+<span class="linenos"> 424</span>    dir：新的基本方向。 LV_BIDI_DIR_LTR/RTL/AUTO/INHERIT
+<span class="linenos"> 425</span>
+<span class="linenos"> 426</span>
+<span class="linenos"> 427</span>    void lv_obj_add_protect(lv_obj_t * obj,uint8_t prot )
+<span class="linenos"> 428</span>    功能：在保护字段中设置一个或多个位
+<span class="linenos"> 429</span>    形参：
+<span class="linenos"> 430</span>    obj：指向对象的指针
+<span class="linenos"> 431</span>    prot：来自“或”的值 lv_protect_t
+<span class="linenos"> 432</span>
+<span class="linenos"> 433</span>
+<span class="linenos"> 434</span>    void lv_obj_clear_protect(lv_obj_t * obj,uint8_t prot )
+<span class="linenos"> 435</span>    功能：清除保护字段中的一个或多个位
+<span class="linenos"> 436</span>    形参：
+<span class="linenos"> 437</span>    obj：指向对象的指针
+<span class="linenos"> 438</span>    prot：来自“或”的值 lv_protect_t
+<span class="linenos"> 439</span>
+<span class="linenos"> 440</span>
+<span class="linenos"> 441</span>    void lv_obj_set_state(lv_obj_t * obj,lv_state_t state)
+<span class="linenos"> 442</span>    功能：设置对象的状态(完全覆盖)。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+<span class="linenos"> 443</span>    形参：
+<span class="linenos"> 444</span>    obj：指向对象的指针
+<span class="linenos"> 445</span>    state：新状态
+<span class="linenos"> 446</span>
+<span class="linenos"> 447</span>
+<span class="linenos"> 448</span>    void lv_obj_add_state(lv_obj_t * obj,lv_state_t state)
+<span class="linenos"> 449</span>    功能：将一个或多个给定状态添加到对象。其他状态位将保持不变。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+<span class="linenos"> 450</span>    形参：
+<span class="linenos"> 451</span>    obj：指向对象的指针
+<span class="linenos"> 452</span>    state：要添加的状态位。例如LV_STATE_PRESSED | LV_STATE_FOCUSED
+<span class="linenos"> 453</span>
+<span class="linenos"> 454</span>
+<span class="linenos"> 455</span>    void lv_obj_clear_state(lv_obj_t * obj,lv_state_t state)
+<span class="linenos"> 456</span>    功能：删除对象的给定状态。其他状态位将保持不变。如果在样式中指定,则过渡动画将从前一状态开始到当前状态
+<span class="linenos"> 457</span>    形参：
+<span class="linenos"> 458</span>    obj：指向对象的指针
+<span class="linenos"> 459</span>    state：要删除的状态位。例如LV_STATE_PRESSED | LV_STATE_FOCUSED
+<span class="linenos"> 460</span>
+<span class="linenos"> 461</span>
+<span class="linenos"> 462</span>    void lv_obj_finish_transitions(lv_obj_t * obj,uint8_t part )
+<span class="linenos"> 463</span>    功能：在对象的一部分上完成所有挂起的过渡
+<span class="linenos"> 464</span>    形参：
+<span class="linenos"> 465</span>    obj：指向对象的指针
+<span class="linenos"> 466</span>    part：对象的一部分,例如LV_BRN_PART_MAIN或LV_OBJ_PART_ALL所有部分
+<span class="linenos"> 467</span>
+<span class="linenos"> 468</span>
+<span class="linenos"> 469</span>    void lv_obj_set_event_cb(lv_obj_t * obj,lv_event_cb_t event_cb )
+<span class="linenos"> 470</span>    功能：为对象设置事件处理函数。用户用于对对象发生的事件做出反应。
+<span class="linenos"> 471</span>    形参：
+<span class="linenos"> 472</span>    obj：指向对象的指针
+<span class="linenos"> 473</span>    event_cb：新事件功能
+<span class="linenos"> 474</span>
+<span class="linenos"> 475</span>
+<span class="linenos"> 476</span>    lv_res_t lv_event_send(lv_obj_t * obj,lv_event_t event,constvoid * data)
+<span class="linenos"> 477</span>    功能：向对象发送事件
+<span class="linenos"> 478</span>    返回:LV_RES_OK：obj在事件中没有被删除；LV_RES_INV：obj在事件中被删除
+<span class="linenos"> 479</span>    形参：
+<span class="linenos"> 480</span>    obj：指向对象的指针
+<span class="linenos"> 481</span>    event：来自的事件类型lv_event_t。
+<span class="linenos"> 482</span>    data：取决于对象类型和事件的任意数据。(通常NULL)
+<span class="linenos"> 483</span>
+<span class="linenos"> 484</span>
+<span class="linenos"> 485</span>    lv_res_t lv_event_send_refresh(lv_obj_t * obj )
+<span class="linenos"> 486</span>    功能：将LV_EVENT_REFRESH事件发送到对象
+<span class="linenos"> 487</span>    返回:LV_RES_OK：成功,LV_RES_INV：对象由于该事件而变得void (例如,删除)。
+<span class="linenos"> 488</span>    形参：
+<span class="linenos"> 489</span>    obj：指向一个对象。(不能为NULL)
+<span class="linenos"> 490</span>
+<span class="linenos"> 491</span>
+<span class="linenos"> 492</span>    void lv_event_send_refresh_recursive(lv_obj_t * obj )
+<span class="linenos"> 493</span>    功能：将LV_EVENT_REFRESH事件发送给对象及其所有子对象
+<span class="linenos"> 494</span>    形参：
+<span class="linenos"> 495</span>    obj：指向一个对象的指针,或者为NULL以刷新所有显示的所有对象
+<span class="linenos"> 496</span>
+<span class="linenos"> 497</span>
+<span class="linenos"> 498</span>    lv_res_t lv_event_send_func(lv_event_cb_t event_xcb,lv_obj_t * obj,lv_event_t event,constvoid *data)
+<span class="linenos"> 499</span>    功能：使用对象,事件和数据调用事件函数。
+<span class="linenos"> 500</span>    返回:LV_RES_OK：obj在事件中没有被删除；LV_RES_INV：obj在事件中被删除
+<span class="linenos"> 501</span>    形参：
+<span class="linenos"> 502</span>    event_xcb：事件回调函数。如果NULL LV_RES_OK返回,则不执行任何操作。(参数名称中的“ x”表示它不是完全通用的函数,因为它不遵循约定)func_name(object, callback, ...)
+<span class="linenos"> 503</span>    obj：指向与事件关联的对象的指针(可以NULL简单地调用event_cb)
+<span class="linenos"> 504</span>    event： 一个事件
+<span class="linenos"> 505</span>    data：指向自定义数据的指针
+<span class="linenos"> 506</span>
+<span class="linenos"> 507</span>
+<span class="linenos"> 508</span>    constvoid * lv_event_get_data(void )
+<span class="linenos"> 509</span>    功能：获取data当前事件的参数
+<span class="linenos"> 510</span>    返回
+<span class="linenos"> 511</span>    该data参数
+<span class="linenos"> 512</span>
+<span class="linenos"> 513</span>    void lv_obj_set_signal_cb(lv_obj_t * obj,lv_signal_cb_t signal_cb )
+<span class="linenos"> 514</span>    功能：设置对象的信号功能。由库内部使用。始终在新信号中调用前一个信号功能。
+<span class="linenos"> 515</span>    形参：
+<span class="linenos"> 516</span>    obj：指向对象的指针
+<span class="linenos"> 517</span>    signal_cb：新信号功能
+<span class="linenos"> 518</span>
+<span class="linenos"> 519</span>
+<span class="linenos"> 520</span>    lv_res_t lv_signal_send(lv_obj_t * obj,lv_signal_t signal,void * param )
+<span class="linenos"> 521</span>    功能：向对象发送事件
+<span class="linenos"> 522</span>    返回:LV_RES_OK或LV_RES_INV
+<span class="linenos"> 523</span>    形参：
+<span class="linenos"> 524</span>    obj：指向对象的指针
+<span class="linenos"> 525</span>    event：来自的事件类型lv_event_t。
+<span class="linenos"> 526</span>
+<span class="linenos"> 527</span>
+<span class="linenos"> 528</span>    void lv_obj_set_design_cb(lv_obj_t * obj,lv_design_cb_t design_cb )
+<span class="linenos"> 529</span>    功能：为对象设置新的设计功能
+<span class="linenos"> 530</span>    形参：
+<span class="linenos"> 531</span>    obj：指向对象的指针
+<span class="linenos"> 532</span>    design_cb：新的设计功能
+<span class="linenos"> 533</span>
+<span class="linenos"> 534</span>
+<span class="linenos"> 535</span>    void * lv_obj_allocate_ext_attr(lv_obj_t * obj,uint16_t ext_size )
+<span class="linenos"> 536</span>    功能：分配一个新的分机。对象的数据
+<span class="linenos"> 537</span>    返回:指向分配的ext的指针
+<span class="linenos"> 538</span>    形参：
+<span class="linenos"> 539</span>    obj：指向对象的指针
+<span class="linenos"> 540</span>    ext_size：新分机的大小。数据
+<span class="linenos"> 541</span>
+<span class="linenos"> 542</span>
+<span class="linenos"> 543</span>    void lv_obj_refresh_ext_draw_pad(lv_obj_t * obj )
+<span class="linenos"> 544</span>    功能：向对象发送“ LV_SIGNAL_REFR_EXT_SIZE”信号以刷新扩展的绘制区域。lv_obj_invalidate(obj)此功能后,需要手动使对象void 。
+<span class="linenos"> 545</span>    形参：
+<span class="linenos"> 546</span>    obj：指向对象的指针
+<span class="linenos"> 547</span>
+<span class="linenos"> 548</span>
+<span class="linenos"> 549</span>    lv_obj_t * lv_obj_get_screen(constlv_obj_t * obj )
+<span class="linenos"> 550</span>    功能：返回对象的屏幕
+<span class="linenos"> 551</span>    返回:指向屏幕的指针
+<span class="linenos"> 552</span>    形参：
+<span class="linenos"> 553</span>    obj：指向对象的指针
+<span class="linenos"> 554</span>
+<span class="linenos"> 555</span>
+<span class="linenos"> 556</span>    lv_disp_t * lv_obj_get_disp(constlv_obj_t * obj )
+<span class="linenos"> 557</span>    功能：获取对象的显示
+<span class="linenos"> 558</span>    返回:指针对象的显示
+<span class="linenos"> 559</span>
+<span class="linenos"> 560</span>    lv_obj_t * lv_obj_get_parent(constlv_obj_t * obj )
+<span class="linenos"> 561</span>    功能：返回对象的父对象
+<span class="linenos"> 562</span>    返回:指向“ obj”的父对象的指针
+<span class="linenos"> 563</span>    形参：
+<span class="linenos"> 564</span>    obj：指向对象的指针
+<span class="linenos"> 565</span>
+<span class="linenos"> 566</span>
+<span class="linenos"> 567</span>    lv_obj_t * lv_obj_get_child(constlv_obj_t * obj,constlv_obj_t * child )
+<span class="linenos"> 568</span>    功能：遍历对象的子项(从“最新的,最后创建的”开始)
+<span class="linenos"> 569</span>    返回:&#39;act_child&#39;之后的子级；如果没有更多子级,则为NULL
+<span class="linenos"> 570</span>    形参：
+<span class="linenos"> 571</span>    obj：指向对象的指针
+<span class="linenos"> 572</span>    child：第一次调用时为NULL,以获取下一个子类,以后再返回上一个返回值
+<span class="linenos"> 573</span>
+<span class="linenos"> 574</span>
+<span class="linenos"> 575</span>    lv_obj_t * lv_obj_get_child_back(constlv_obj_t * obj,constlv_obj_t * child )
+<span class="linenos"> 576</span>    功能：遍历对象的子项(从“最早的”开始,首先创建)
+<span class="linenos"> 577</span>    返回:&#39;act_child&#39;之后的子级；如果没有更多子级,则为NULL
+<span class="linenos"> 578</span>    形参：
+<span class="linenos"> 579</span>    obj：指向对象的指针
+<span class="linenos"> 580</span>    child：第一次调用时为NULL,以获取下一个子类,以后再返回上一个返回值
+<span class="linenos"> 581</span>
+<span class="linenos"> 582</span>
+<span class="linenos"> 583</span>    uint16_t lv_obj_count_children(constlv_obj_t * obj )
+<span class="linenos"> 584</span>    功能：计算对象的子代(仅直接在“ obj”上的子代)
+<span class="linenos"> 585</span>    返回:&#39;obj&#39;的子代号
+<span class="linenos"> 586</span>    形参：
+<span class="linenos"> 587</span>    obj：指向对象的指针
+<span class="linenos"> 588</span>
+<span class="linenos"> 589</span>
+<span class="linenos"> 590</span>    uint16_t lv_obj_count_children_recursive(constlv_obj_t * obj )
+<span class="linenos"> 591</span>    功能：递归计算对象的子代
+<span class="linenos"> 592</span>    返回:&#39;obj&#39;的子代号
+<span class="linenos"> 593</span>    形参：
+<span class="linenos"> 594</span>    obj：指向对象的指针
+<span class="linenos"> 595</span>
+<span class="linenos"> 596</span>
+<span class="linenos"> 597</span>    void lv_obj_get_coords(constlv_obj_t * obj,lv_area_t * cords_p )
+<span class="linenos"> 598</span>    功能：将对象的坐标复制到区域
+<span class="linenos"> 599</span>    形参：
+<span class="linenos"> 600</span>    obj：指向对象的指针
+<span class="linenos"> 601</span>    cords_p：指向存储坐标的区域的指针
+<span class="linenos"> 602</span>
+<span class="linenos"> 603</span>
+<span class="linenos"> 604</span>    void lv_obj_get_inner_coords(constlv_obj_t * obj,lv_area_t * coords_p )
+<span class="linenos"> 605</span>    功能：减少由lv_obj_get_coords()对象的图形可用区域重试的区域。(没有边框的大小或其他额外的图形元素)
+<span class="linenos"> 606</span>    形参：
+<span class="linenos"> 607</span>    coords_p：将结果区域存储在此处
+<span class="linenos"> 608</span>
+<span class="linenos"> 609</span>
+<span class="linenos"> 610</span>    lv_coord_t lv_obj_get_x(constlv_obj_t * obj )
+<span class="linenos"> 611</span>    功能：获取对象的x坐标
+<span class="linenos"> 612</span>    返回:“ obj”到其父对象左侧的距离
+<span class="linenos"> 613</span>    形参：
+<span class="linenos"> 614</span>    obj：指向对象的指针
+<span class="linenos"> 615</span>
+<span class="linenos"> 616</span>
+<span class="linenos"> 617</span>    lv_coord_t lv_obj_get_y(constlv_obj_t * obj )
+<span class="linenos"> 618</span>    功能：获取对象的y坐标
+<span class="linenos"> 619</span>    返回:“ obj”到其父对象顶部的距离
+<span class="linenos"> 620</span>    形参：
+<span class="linenos"> 621</span>    obj：指向对象的指针
+<span class="linenos"> 622</span>
+<span class="linenos"> 623</span>
+<span class="linenos"> 624</span>    lv_coord_t lv_obj_get_width(constlv_obj_t * obj )
+<span class="linenos"> 625</span>    功能：获取对象的宽度
+<span class="linenos"> 626</span>    返回:宽度
+<span class="linenos"> 627</span>    形参：
+<span class="linenos"> 628</span>    obj：指向对象的指针
+<span class="linenos"> 629</span>
+<span class="linenos"> 630</span>
+<span class="linenos"> 631</span>    lv_coord_t lv_obj_get_height(constlv_obj_t * obj )
+<span class="linenos"> 632</span>    功能：获取对象的高度
+<span class="linenos"> 633</span>    返回:高度
+<span class="linenos"> 634</span>    形参：
+<span class="linenos"> 635</span>    obj：指向对象的指针
+<span class="linenos"> 636</span>
+<span class="linenos"> 637</span>
+<span class="linenos"> 638</span>    lv_coord_t lv_obj_get_width_fit(constlv_obj_t * obj )
+<span class="linenos"> 639</span>    功能：通过左右填充减少宽度。
+<span class="linenos"> 640</span>    返回:仍然适合容器的宽度
+<span class="linenos"> 641</span>    形参：
+<span class="linenos"> 642</span>    obj：指向对象的指针
+<span class="linenos"> 643</span>
+<span class="linenos"> 644</span>
+<span class="linenos"> 645</span>    lv_coord_t lv_obj_get_height_fit(constlv_obj_t * obj )
+<span class="linenos"> 646</span>    功能：通过顶部底部填充减少高度。
+<span class="linenos"> 647</span>    返回:仍然适合容器的高度
+<span class="linenos"> 648</span>    形参：
+<span class="linenos"> 649</span>    obj：指向对象的指针
+<span class="linenos"> 650</span>
+<span class="linenos"> 651</span>
+<span class="linenos"> 652</span>    lv_coord_t lv_obj_get_height_margin(lv_obj_t * obj )
+<span class="linenos"> 653</span>    功能：通过考虑顶部和底部边距来获取对象的高度。返回的高度将是obj_h + margin_top + margin_bottom
+<span class="linenos"> 654</span>    返回:包括您的边距在内的高度
+<span class="linenos"> 655</span>    形参：
+<span class="linenos"> 656</span>    obj：指向对象的指针
+<span class="linenos"> 657</span>
+<span class="linenos"> 658</span>
+<span class="linenos"> 659</span>    lv_coord_t lv_obj_get_width_margin(lv_obj_t * obj )
+<span class="linenos"> 660</span>    功能：通过考虑左边距和右边距来获得对象的宽度。返回的宽度将是obj_w + margin_left + margin_right
+<span class="linenos"> 661</span>    返回:包括您的边距在内的高度
+<span class="linenos"> 662</span>    形参：
+<span class="linenos"> 663</span>    obj：指向对象的指针
+<span class="linenos"> 664</span>
+<span class="linenos"> 665</span>
+<span class="linenos"> 666</span>    lv_coord_t lv_obj_get_width_grid(lv_obj_t * obj,uint8_t div,uint8_t span )
+<span class="linenos"> 667</span>    功能：划分对象的宽度并获得给定列数的宽度。考虑填充。
+<span class="linenos"> 668</span>    返回:根据给定参数的宽度
+<span class="linenos"> 669</span>    形参：
+<span class="linenos"> 670</span>    obj：指向对象的指针
+<span class="linenos"> 671</span>    div：表示假设有多少列。如果为1,则宽度将设置为父级的宽度；如果为2,则只有父级宽度的一半-父级的内部填充；如果为3,则只有第三个父级宽度-2 *父级的内部填充
+<span class="linenos"> 672</span>    span：合并了多少列
+<span class="linenos"> 673</span>
+<span class="linenos"> 674</span>
+<span class="linenos"> 675</span>    lv_coord_t lv_obj_get_height_grid(lv_obj_t * obj,uint8_t div,uint8_t span )
+<span class="linenos"> 676</span>    功能：划分对象的高度并获得给定列数的宽度。考虑填充。
+<span class="linenos"> 677</span>    返回:根据给定参数的高度
+<span class="linenos"> 678</span>    形参：
+<span class="linenos"> 679</span>    obj：指向对象的指针
+<span class="linenos"> 680</span>    div：表示假设有多少行。如果为1,则将设置父级的高度；如果为2,则只有父级的一半高度-父级的内部填充；如果只有3,则只有第三级父级的高度-2 *父级的内部填充
+<span class="linenos"> 681</span>    span：合并了多少行
+<span class="linenos"> 682</span>
+<span class="linenos"> 683</span>
+<span class="linenos"> 684</span>    bool lv_obj_get_auto_realign(constlv_obj_t * obj )
+<span class="linenos"> 685</span>    功能：获取对象的自动重新对齐属性。
+<span class="linenos"> 686</span>    返回:true：启用自动重新对齐；false：禁用自动重新对齐
+<span class="linenos"> 687</span>    形参：
+<span class="linenos"> 688</span>    obj：指向对象的指针
+<span class="linenos"> 689</span>
+<span class="linenos"> 690</span>
+<span class="linenos"> 691</span>    lv_coord_t lv_obj_get_ext_click_pad_left(constlv_obj_t * obj )
+<span class="linenos"> 692</span>    功能：获取扩展的可点击区域的左侧填充
+<span class="linenos"> 693</span>    返回:扩展的左填充
+<span class="linenos"> 694</span>    形参：
+<span class="linenos"> 695</span>    obj：指向对象的指针
+<span class="linenos"> 696</span>
+<span class="linenos"> 697</span>
+<span class="linenos"> 698</span>    lv_coord_t lv_obj_get_ext_click_pad_right(constlv_obj_t * obj )
+<span class="linenos"> 699</span>    功能：获取扩展的可点击区域的正确填充
+<span class="linenos"> 700</span>    返回:扩展的右填充
+<span class="linenos"> 701</span>    形参：
+<span class="linenos"> 702</span>    obj：指向对象的指针
+<span class="linenos"> 703</span>
+<span class="linenos"> 704</span>
+<span class="linenos"> 705</span>    lv_coord_t lv_obj_get_ext_click_pad_top(constlv_obj_t * obj )
+<span class="linenos"> 706</span>    功能：获取扩展的可点击区域的顶部填充
+<span class="linenos"> 707</span>    返回:扩展的顶部填充
+<span class="linenos"> 708</span>    形参：
+<span class="linenos"> 709</span>    obj：指向对象的指针
+<span class="linenos"> 710</span>
+<span class="linenos"> 711</span>
+<span class="linenos"> 712</span>    lv_coord_t lv_obj_get_ext_click_pad_bottom(constlv_obj_t * obj )
+<span class="linenos"> 713</span>    功能：获取扩展的可点击区域的底部填充
+<span class="linenos"> 714</span>    返回:扩展的底部填充
+<span class="linenos"> 715</span>    形参：
+<span class="linenos"> 716</span>    obj：指向对象的指针
+<span class="linenos"> 717</span>
+<span class="linenos"> 718</span>
+<span class="linenos"> 719</span>    lv_coord_t lv_obj_get_ext_draw_pad(constlv_obj_t * obj )
+<span class="linenos"> 720</span>    功能：获取对象的扩展尺寸属性
+<span class="linenos"> 721</span>    返回:扩展尺寸属性
+<span class="linenos"> 722</span>    形参：
+<span class="linenos"> 723</span>    obj：指向对象的指针
+<span class="linenos"> 724</span>
+<span class="linenos"> 725</span>
+<span class="linenos"> 726</span>    lv_style_list_t * lv_obj_get_style_list(constlv_obj_t * obj,uint8_t部分)
+<span class="linenos"> 727</span>    功能：获取对象零件的样式列表。
+<span class="linenos"> 728</span>    返回:指向样式列表的指针。(可以NULL)
+<span class="linenos"> 729</span>    形参：
+<span class="linenos"> 730</span>    obj：指向对象的指针。
+<span class="linenos"> 731</span>    part：part应该获取样式列表的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 732</span>
+<span class="linenos"> 733</span>
+<span class="linenos"> 734</span>    lv_style_int_t _lv_obj_get_style_int(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 735</span>    功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+<span class="linenos"> 736</span>    返回:
+<span class="linenos"> 737</span>    给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+<span class="linenos"> 738</span>    注意：
+<span class="linenos"> 739</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_width()
+<span class="linenos"> 740</span>    2.出于性能原因,不检查该属性是否确实具有整数类型
+<span class="linenos"> 741</span>    形参：
+<span class="linenos"> 742</span>    obj：指向对象的指针
+<span class="linenos"> 743</span>    part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 744</span>    prop：要获取的属性。例如LV_STYLE_BORDER_WIDTH。对象的状态将在内部添加
+<span class="linenos"> 745</span>
+<span class="linenos"> 746</span>
+<span class="linenos"> 747</span>    lv_color_t _lv_obj_get_style_color(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 748</span>    功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+<span class="linenos"> 749</span>    返回:
+<span class="linenos"> 750</span>    给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+<span class="linenos"> 751</span>    注意：
+<span class="linenos"> 752</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_color()
+<span class="linenos"> 753</span>    2.由于性能原因,不会检查属性是否确实具有颜色类型
+<span class="linenos"> 754</span>    形参：
+<span class="linenos"> 755</span>    obj：指向对象的指针
+<span class="linenos"> 756</span>    part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 757</span>    prop：要获取的属性。例如LV_STYLE_BORDER_COLOR。对象的状态将在内部添加
+<span class="linenos"> 758</span>
+<span class="linenos"> 759</span>
+<span class="linenos"> 760</span>    lv_opa_t _lv_obj_get_style_opa(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 761</span>    功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+<span class="linenos"> 762</span>    返回:
+<span class="linenos"> 763</span>    给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+<span class="linenos"> 764</span>    注意：
+<span class="linenos"> 765</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 766</span>    2.由于性能原因,不检查属性是否确实具有不透明度类型
+<span class="linenos"> 767</span>    形参：
+<span class="linenos"> 768</span>    obj：指向对象的指针
+<span class="linenos"> 769</span>    part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 770</span>    prop：要获取的属性。例如LV_STYLE_BORDER_OPA。对象的状态将在内部添加
+<span class="linenos"> 771</span>
+<span class="linenos"> 772</span>
+<span class="linenos"> 773</span>    constvoid * _lv_obj_get_style_ptr(constlv_obj_t * obj,uint8_t part,lv_style_property_t prop )
+<span class="linenos"> 774</span>    功能：获取处于对象当前状态的对象的一部分的样式属性。如果正在运行过渡,则将其考虑在内
+<span class="linenos"> 775</span>    返回:
+<span class="linenos"> 776</span>    给定零件在当前状态下的属性值。如果找不到该属性,则将返回默认值。
+<span class="linenos"> 777</span>    注意：
+<span class="linenos"> 778</span>    1.不应直接使用。请改用特定的属性get函数。例如：lv_obj_style_get_border_opa()
+<span class="linenos"> 779</span>    2.出于性能原因,不检查该属性是否确实具有指针类型
+<span class="linenos"> 780</span>    形参：
+<span class="linenos"> 781</span>    obj：指向对象的指针
+<span class="linenos"> 782</span>    part：应获取样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 783</span>    prop：要获取的属性。例如LV_STYLE_TEXT_FONT。对象的状态将在内部添加
+<span class="linenos"> 784</span>
+<span class="linenos"> 785</span>
+<span class="linenos"> 786</span>    lv_style_t * lv_obj_get_local_style(lv_obj_t * obj,uint8_t part)
+<span class="linenos"> 787</span>    功能：获取对象部分的局部样式。
+<span class="linenos"> 788</span>    返回:
+<span class="linenos"> 789</span>    指向本地样式的指针(如果存在)NULL。
+<span class="linenos"> 790</span>    形参：
+<span class="linenos"> 791</span>    obj：指向对象的指针
+<span class="linenos"> 792</span>    part：应设置样式属性的对象部分。例如LV_OBJ_PART_MAIN,LV_BTN_PART_MAIN,LV_SLIDER_PART_KNOB
+<span class="linenos"> 793</span>
+<span class="linenos"> 794</span>
+<span class="linenos"> 795</span>    bool lv_obj_get_hidden(constlv_obj_t * obj )
+<span class="linenos"> 796</span>    功能：获取对象的隐藏属性
+<span class="linenos"> 797</span>    返回:
+<span class="linenos"> 798</span>    true：对象被隐藏
+<span class="linenos"> 799</span>    形参：
+<span class="linenos"> 800</span>    obj：指向对象的指针
+<span class="linenos"> 801</span>
+<span class="linenos"> 802</span>
+<span class="linenos"> 803</span>    bool lv_obj_get_adv_hittest(constlv_obj_t * obj )
+<span class="linenos"> 804</span>    功能：获取是否在对象上启用了高级命中测试
+<span class="linenos"> 805</span>    返回：
+<span class="linenos"> 806</span>    true：启用高级匹配测试
+<span class="linenos"> 807</span>    形参：
+<span class="linenos"> 808</span>    obj：指向对象的指针
+<span class="linenos"> 809</span>
+<span class="linenos"> 810</span>
+<span class="linenos"> 811</span>    bool lv_obj_get_click(constlv_obj_t * obj )
+<span class="linenos"> 812</span>    功能：获取对象的点击启用属性
+<span class="linenos"> 813</span>    返回：
+<span class="linenos"> 814</span>    true：可点击对象
+<span class="linenos"> 815</span>    形参：
+<span class="linenos"> 816</span>    obj：指向对象的指针
+<span class="linenos"> 817</span>
+<span class="linenos"> 818</span>
+<span class="linenos"> 819</span>    bool lv_obj_get_top(constlv_obj_t * obj )
+<span class="linenos"> 820</span>    功能：获取对象的顶部启用属性
+<span class="linenos"> 821</span>    返回：
+<span class="linenos"> 822</span>    true：启用自动顶部功能
+<span class="linenos"> 823</span>    形参：
+<span class="linenos"> 824</span>    obj：指向对象的指针
+<span class="linenos"> 825</span>
+<span class="linenos"> 826</span>
+<span class="linenos"> 827</span>    bool lv_obj_get_drag(constlv_obj_t * obj )
+<span class="linenos"> 828</span>    功能：获取对象的拖动启用属性
+<span class="linenos"> 829</span>    返回：
+<span class="linenos"> 830</span>    true：对象可拖动
+<span class="linenos"> 831</span>    形参：
+<span class="linenos"> 832</span>    obj：指向对象的指针
+<span class="linenos"> 833</span>
+<span class="linenos"> 834</span>
+<span class="linenos"> 835</span>    lv_drag_dir_t lv_obj_get_drag_dir(constlv_obj_t * obj )
+<span class="linenos"> 836</span>    功能：获取可以拖动对象的方向
+<span class="linenos"> 837</span>    返回：
+<span class="linenos"> 838</span>    可以将对象拖入允许方向的按位或
+<span class="linenos"> 839</span>    形参：
+<span class="linenos"> 840</span>    obj：指向对象的指针
+<span class="linenos"> 841</span>
+<span class="linenos"> 842</span>
+<span class="linenos"> 843</span>    bool lv_obj_get_drag_throw(constlv_obj_t * obj )
+<span class="linenos"> 844</span>    功能：获取对象的拖动启动属性
+<span class="linenos"> 845</span>    返回：
+<span class="linenos"> 846</span>    true：启用拖动
+<span class="linenos"> 847</span>    形参：
+<span class="linenos"> 848</span>    obj：指向对象的指针
+<span class="linenos"> 849</span>
+<span class="linenos"> 850</span>
+<span class="linenos"> 851</span>    bool lv_obj_get_drag_parent(constlv_obj_t * obj )
+<span class="linenos"> 852</span>    功能：获取对象的拖动父级属性
+<span class="linenos"> 853</span>    返回：
+<span class="linenos"> 854</span>    true：启用拖动父级
+<span class="linenos"> 855</span>    形参：
+<span class="linenos"> 856</span>    obj：指向对象的指针
+<span class="linenos"> 857</span>
+<span class="linenos"> 858</span>
+<span class="linenos"> 859</span>    bool lv_obj_get_focus_parent(constlv_obj_t * obj )
+<span class="linenos"> 860</span>    功能：获取对象的焦点父级属性
+<span class="linenos"> 861</span>    返回：
+<span class="linenos"> 862</span>    true：启用焦点父级
+<span class="linenos"> 863</span>    形参：
+<span class="linenos"> 864</span>    obj：指向对象的指针
+<span class="linenos"> 865</span>
+<span class="linenos"> 866</span>
+<span class="linenos"> 867</span>    bool lv_obj_get_parent_event(constlv_obj_t * obj )
+<span class="linenos"> 868</span>    功能：获取对象的拖动父级属性
+<span class="linenos"> 869</span>    返回：
+<span class="linenos"> 870</span>    true：启用拖动父级
+<span class="linenos"> 871</span>    形参：
+<span class="linenos"> 872</span>    obj：指向对象的指针
+<span class="linenos"> 873</span>
+<span class="linenos"> 874</span>
+<span class="linenos"> 875</span>    bool lv_obj_get_gesture_parent(constlv_obj_t * obj )
+<span class="linenos"> 876</span>    功能：获取对象的手势父级属性
+<span class="linenos"> 877</span>    返回：
+<span class="linenos"> 878</span>    true：启用手势父级
+<span class="linenos"> 879</span>    形参：
+<span class="linenos"> 880</span>    obj：指向对象的指针
+<span class="linenos"> 881</span>
+<span class="linenos"> 882</span>
+<span class="linenos"> 883</span>    lv_bidi_dir_t lv_obj_get_base_dir(constlv_obj_t * obj )
+<span class="linenos"> 884</span>    uint8_t lv_obj_get_protect(constlv_obj_t * obj )
+<span class="linenos"> 885</span>    功能：获取对象的保护字段
+<span class="linenos"> 886</span>    返回：
+<span class="linenos"> 887</span>    保护字段(“的”或值lv_protect_t)
+<span class="linenos"> 888</span>    形参：
+<span class="linenos"> 889</span>    obj：指向对象的指针
+<span class="linenos"> 890</span>
+<span class="linenos"> 891</span>
+<span class="linenos"> 892</span>    bool lv_obj_is_protected(constlv_obj_t * obj,uint8_t prot )
+<span class="linenos"> 893</span>    功能：检查是否已设置给定保护位字段的至少一位
+<span class="linenos"> 894</span>    返回：
+<span class="linenos"> 895</span>    false：未设置任何给定位,true：至少设置了一位
+<span class="linenos"> 896</span>    形参：
+<span class="linenos"> 897</span>    obj：指向对象的指针
+<span class="linenos"> 898</span>    prot：保护要测试的位(的“或”值lv_protect_t)
+<span class="linenos"> 899</span>
+<span class="linenos"> 900</span>
+<span class="linenos"> 901</span>    lv_state_t lv_obj_get_state(constlv_obj_t * obj,uint8_t part)
+<span class="linenos"> 902</span>    lv_signal_cb_t lv_obj_get_signal_cb(constlv_obj_t * obj )
+<span class="linenos"> 903</span>    功能：获取对象的信号功能
+<span class="linenos"> 904</span>    返回:
+<span class="linenos"> 905</span>    信号功能
+<span class="linenos"> 906</span>    形参：
+<span class="linenos"> 907</span>    obj：指向对象的指针
+<span class="linenos"> 908</span>
+<span class="linenos"> 909</span>
+<span class="linenos"> 910</span>    lv_design_cb_t lv_obj_get_design_cb(constlv_obj_t * obj )
+<span class="linenos"> 911</span>    功能：获取对象的设计功能
+<span class="linenos"> 912</span>    返回:
+<span class="linenos"> 913</span>    设计功能
+<span class="linenos"> 914</span>    形参：
+<span class="linenos"> 915</span>    obj：指向对象的指针
+<span class="linenos"> 916</span>
+<span class="linenos"> 917</span>
+<span class="linenos"> 918</span>    lv_event_cb_t lv_obj_get_event_cb(constlv_obj_t * obj )
+<span class="linenos"> 919</span>    功能：获取对象的事件函数
+<span class="linenos"> 920</span>    返回:
+<span class="linenos"> 921</span>    事件功能
+<span class="linenos"> 922</span>    形参：
+<span class="linenos"> 923</span>    obj：指向对象的指针
+<span class="linenos"> 924</span>
+<span class="linenos"> 925</span>
+<span class="linenos"> 926</span>    bool lv_obj_is_point_on_coords(lv_obj_t * obj,constlv_point_t *点)
+<span class="linenos"> 927</span>    功能：
+<span class="linenos"> 928</span>    检查给定的屏幕空间点是否在对象的坐标上。该方法主要用于高级命中测试算法,以检查该点是否在对象内(作为优化)。
+<span class="linenos"> 929</span>    形参：
+<span class="linenos"> 930</span>    obj：要检查的对象
+<span class="linenos"> 931</span>    point：屏幕空间点
+<span class="linenos"> 932</span>
+<span class="linenos"> 933</span>
+<span class="linenos"> 934</span>    bool lv_obj_hittest(lv_obj_t * obj,lv_point_t * point )
+<span class="linenos"> 935</span>    功能：对在屏幕空间中特定位置的对象进行命中测试。
+<span class="linenos"> 936</span>    返回:
+<span class="linenos"> 937</span>    如果对象被认为在该点之下,则返回true
+<span class="linenos"> 938</span>    形参：
+<span class="linenos"> 939</span>    obj：对象进行命中测试
+<span class="linenos"> 940</span>    point：屏幕空间点
+<span class="linenos"> 941</span>
+<span class="linenos"> 942</span>
+<span class="linenos"> 943</span>    void * lv_obj_get_ext_attr(constlv_obj_t * obj )
+<span class="linenos"> 944</span>    获取ext指针
+<span class="linenos"> 945</span>    返回:
+<span class="linenos"> 946</span>    ext指针,而不是动态版本用作ext-&gt; data1,而不是da(ext)-&gt; data1
+<span class="linenos"> 947</span>    形参：
+<span class="linenos"> 948</span>    obj：指向对象的指针
+<span class="linenos"> 949</span>
+<span class="linenos"> 950</span>
+<span class="linenos"> 951</span>    void lv_obj_get_type(constlv_obj_t * obj,lv_obj_type_t * buf )
+<span class="linenos"> 952</span>    功能：获取对象及其祖先类型。将其名称以type_buf当前类型开头。例如buf.type [0] =“ lv_btn”,buf.type [1] =“ lv_cont”,buf.type [2] =“ lv_obj”
+<span class="linenos"> 953</span>    形参：
+<span class="linenos"> 954</span>    obj：指向应获取类型的对象的指针
+<span class="linenos"> 955</span>    buf：指向用于lv_obj_type_t存储类型的缓冲区的指针
+<span class="linenos"> 956</span>
+<span class="linenos"> 957</span>
+<span class="linenos"> 958</span>    lv_obj_user_data_t lv_obj_get_user_data(constlv_obj_t * obj )
+<span class="linenos"> 959</span>    功能：获取对象的用户数据
+<span class="linenos"> 960</span>    返回:
+<span class="linenos"> 961</span>    用户数据
+<span class="linenos"> 962</span>    形参：
+<span class="linenos"> 963</span>    obj：指向对象的指针
+<span class="linenos"> 964</span>
+<span class="linenos"> 965</span>
+<span class="linenos"> 966</span>    lv_obj_user_data_t * lv_obj_get_user_data_ptr(constlv_obj_t * obj )
+<span class="linenos"> 967</span>    功能：获取指向对象的用户数据的指针
+<span class="linenos"> 968</span>    返回:
+<span class="linenos"> 969</span>    指向用户数据的指针
+<span class="linenos"> 970</span>    形参：
+<span class="linenos"> 971</span>    obj：指向对象的指针
+<span class="linenos"> 972</span>
+<span class="linenos"> 973</span>
+<span class="linenos"> 974</span>    void lv_obj_set_user_data(lv_obj_t * obj,lv_obj_user_data_t数据)
+<span class="linenos"> 975</span>    功能：设置对象的用户数据。数据将被复制。
+<span class="linenos"> 976</span>    形参：
+<span class="linenos"> 977</span>    obj：指向对象的指针
+<span class="linenos"> 978</span>    data： 用户数据
+<span class="linenos"> 979</span>
+<span class="linenos"> 980</span>
+<span class="linenos"> 981</span>    void * lv_obj_get_group(constlv_obj_t * obj )
+<span class="linenos"> 982</span>    功能：获取对象组
+<span class="linenos"> 983</span>    返回:
+<span class="linenos"> 984</span>    指向对象组的指针
+<span class="linenos"> 985</span>    形参：
+<span class="linenos"> 986</span>    obj：指向对象的指针
+<span class="linenos"> 987</span>
+<span class="linenos"> 988</span>
+<span class="linenos"> 989</span>    bool lv_obj_is_focused(constlv_obj_t * obj )
+<span class="linenos"> 990</span>    功能：判断对象是否是组的聚焦对象。
+<span class="linenos"> 991</span>    返回:
+<span class="linenos"> 992</span>    true：对象已聚焦,false：对象未聚焦或不在组中
+<span class="linenos"> 993</span>    形参：
+<span class="linenos"> 994</span>    obj：指向对象的指针
+<span class="linenos"> 995</span>
+<span class="linenos"> 996</span>
+<span class="linenos"> 997</span>    lv_obj_t * lv_obj_get_focused_obj(constlv_obj_t * obj )
+<span class="linenos"> 998</span>    功能：通过考虑获得真正专注的对象focus_parent。
+<span class="linenos"> 999</span>    返回:
+<span class="linenos">1000</span>    真正聚焦的对象
+<span class="linenos">1001</span>    形参：
+<span class="linenos">1002</span>    obj：起始对象
+<span class="linenos">1003</span>
+<span class="linenos">1004</span>
+<span class="linenos">1005</span>    lv_res_t lv_obj_handle_get_type_signal(lv_obj_type_t * buf,const char *name)
+<span class="linenos">1006</span>    功能：用于信号回调中以处理LV_SIGNAL_GET_TYPE信号
+<span class="linenos">1007</span>    返回:
+<span class="linenos">1008</span>    LV_RES_OK
+<span class="linenos">1009</span>    形参：
+<span class="linenos">1010</span>    buf：的指针lv_obj_type_t。(param在信号回调中)
+<span class="linenos">1011</span>    name：对象的名称。例如“ lv_btn”。(仅保存指针)
+<span class="linenos">1012</span>
+<span class="linenos">1013</span>
+<span class="linenos">1014</span>    void lv_obj_init_draw_rect_dsc(lv_obj_t * obj,uint8_t type ,lv_draw_rect_dsc_t * draw_dsc )
+<span class="linenos">1015</span>    功能：根据对象的样式初始化矩形描述符
+<span class="linenos">1016</span>    注意：
+<span class="linenos">1017</span>    仅设置相关字段。例如,是否将不评估其他边框属性。border width == 0
+<span class="linenos">1018</span>    形参：
+<span class="linenos">1019</span>    obj：指向对象的指针
+<span class="linenos">1020</span>    type：样式类型。例如LV_OBJ_PART_MAIN,LV_BTN_SLIDER_KOB
+<span class="linenos">1021</span>    draw_dsc：描述符的初始化
+<span class="linenos">1022</span>
+<span class="linenos">1023</span>
+<span class="linenos">1024</span>    void lv_obj_init_draw_label_dsc(lv_obj_t * obj,uint8_t类型,lv_draw_label_dsc_t * draw_dsc )
+<span class="linenos">1025</span>    void lv_obj_init_draw_img_dsc(lv_obj_t * obj,uint8_t part,lv_draw_img_dsc_t * draw_dsc )
+<span class="linenos">1026</span>    void lv_obj_init_draw_line_dsc(lv_obj_t * obj,uint8_t part,lv_draw_line_dsc_t * draw_dsc )
+<span class="linenos">1027</span>    lv_coord_t lv_obj_get_draw_rect_ext_pad_size(lv_obj_t * obj,uint8_t part )
+<span class="linenos">1028</span>    功能：获取所需的额外大小(围绕对象部分)以绘制阴影,轮廓,值等。
+<span class="linenos">1029</span>    形参：
+<span class="linenos">1030</span>    obj：指向对象的指针
+<span class="linenos">1031</span>    part：对象的一部分
+<span class="linenos">1032</span>
+<span class="linenos">1033</span>
+<span class="linenos">1034</span>    void lv_obj_fade_in(lv_obj_t * obj,uint32_t时间,uint32_t延迟)
+<span class="linenos">1035</span>    功能：使用opa_scale动画淡入(从透明到完全覆盖)对象及其所有子对象。
+<span class="linenos">1036</span>    形参：
+<span class="linenos">1037</span>    obj：淡入的对象
+<span class="linenos">1038</span>    time：动画的持续时间[ms]
+<span class="linenos">1039</span>    delay：等待动画开始播放[ms]
+<span class="linenos">1040</span>
+<span class="linenos">1041</span>
+<span class="linenos">1042</span>    void lv_obj_fade_out(lv_obj_t * obj,uint32_t时间,uint32_t延迟)
+<span class="linenos">1043</span>    功能：使用opa_scale动画淡出(从完全覆盖到透明)对象及其所有子对象。
+<span class="linenos">1044</span>    形参：
+<span class="linenos">1045</span>    obj：淡入的对象
+<span class="linenos">1046</span>    time：动画的持续时间[ms]
+<span class="linenos">1047</span>    delay：等待动画开始播放[ms]
+<span class="linenos">1048</span>
+<span class="linenos">1049</span>
+<span class="linenos">1050</span>    bool lv_debug_check_obj_type(constlv_obj_t * obj,constchar * obj_type )
+<span class="linenos">1051</span>    功能：检查是否有给定类型的对象
+<span class="linenos">1052</span>    返回:
+<span class="linenos">1053</span>    true：有效
+<span class="linenos">1054</span>    形参：
+<span class="linenos">1055</span>    obj：指向对象的指针
+<span class="linenos">1056</span>    obj_type：对象的类型。(例如“ lv_btn”)
+<span class="linenos">1057</span>
+<span class="linenos">1058</span>
+<span class="linenos">1059</span>    bool lv_debug_check_obj_valid(constlv_obj_t * obj )
+<span class="linenos">1060</span>    功能：检查是否还有任何对象“处于活动状态”以及层次struct 的一部分
+<span class="linenos">1061</span>    返回:
+<span class="linenos">1062</span>    true：有效
+<span class="linenos">1063</span>    形参：
+<span class="linenos">1064</span>    obj：指向对象的指针
+<span class="linenos">1065</span>    obj_type：对象的类型。(例如“ lv_btn”)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="02_arc.html" class="btn btn-neutral float-right" title="弧(lv_arc)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../03_overview/12_drawing.html" class="btn btn-neutral float-left" title="画画(Drawing)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

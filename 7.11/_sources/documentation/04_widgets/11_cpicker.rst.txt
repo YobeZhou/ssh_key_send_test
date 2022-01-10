@@ -1,0 +1,264 @@
+==================================
+颜色选择器(lv_cpicker)
+==================================
+
+概述
+##################################
+
+顾名思义，拾色器允许选择颜色。可以依次选择颜色的色相，饱和度和值。
+
+小部件有两种形式：圆形（圆盘）和矩形。
+
+在这两种形式中，长按对象，颜色选择器将更改为颜色的下一个参数（色相，饱和度或值）。此外，双击将重置当前参数。
+
+
+零件和样式
+##################################
+拾色器的主要部分称为 ``LV_CPICKER_PART_BG`` 。以圆形形式，它使用scale_width设置圆的宽度，并使用pad_inner在圆和内部预览圆之间填充。在矩形模式下，半径可以用于在矩形上应用半径。
+
+该对象具有称为的虚拟部分 ``LV_CPICKER_PART_KNOB`` ，它是在当前值上绘制的矩形（或圆形）。它使用所有矩形（如样式属性和填充）使其大于圆形或矩形背景的宽度。
+
+
+用法
+##################################
+
+类型
+**********************************
+可以使用 ``lv_cpicker_set_type(cpicker, LV_CPICKER_TYPE_RECT/DISC)`` 更改颜色选择器的类型
+
+设定颜色
+**********************************
+可以使用 ``lv_cpicker_set_hue/saturation/value(cpicker, x)`` 手动设置colro，或者使用 ``lv_cpicker_set_hsv(cpicker, hsv)`` 或 ``lv_cpicker_set_color(cpicker, rgb)`` 一次全部设置
+
+
+色彩模式
+**********************************
+可以使用 ``lv_cpicker_set_color_mode(cpicker, LV_CPICKER_COLOR_MODE_HUE/SATURATION/VALUE)`` 手动选择当前颜色。
+
+使用 ``lv_cpicker_set_color_mode_fixed(cpicker, true)`` 固定颜色（不要长按更改）
+
+
+旋钮颜色
+**********************************
+``lv_cpicker_set_knob_colored(cpicker, true)`` 使旋钮自动将所选颜色显示为背景色。
+
+
+事件
+**********************************
+仅 `通用事件`_ 是按对象类型发送的。
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键
+##################################
+
+- **LV_KEY_UP, LV_KEY_RIGHT** 将当前参数的值增加1
+- **LV_KEY_DOWN, LV_KEY_LEFT** 将当前参数减1
+- **LV_KEY_ENTER** 长按将显示下一个模式。通过双击将重置当前参数。
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+
+范例
+##################################
+
+光盘颜色选择器
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/11_cpicker/01_lv_ex_cpicker_1.png
+	   
+	  光盘颜色选择器
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_CPICKER
+
+	void lv_ex_cpicker_1(void)
+	{
+		lv_obj_t * cpicker;
+
+		cpicker = lv_cpicker_create(lv_scr_act(), NULL);
+		lv_obj_set_size(cpicker, 200, 200);
+		lv_obj_align(cpicker, NULL, LV_ALIGN_CENTER, 0, 0);
+	}
+
+	#endif
+
+
+
+
+
+相关API
+##################################
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * lv_cpicker_create(lv_obj_t * par，constlv_obj_t *copy)
+	功能：创建一个颜色选择器对象
+	返回：
+	指向创建的颜色选择器的指针
+	形参：
+	par：指向对象的指针，它将是新colorpicker的父对象
+	copy：指向颜色选择器对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	void lv_cpicker_set_type(lv_obj_t * cpicker，lv_cpicker_type_t type)
+	功能：为选色器设置新类型
+	形参：
+	cpicker：指向颜色选择器对象的指针
+	type：新型的颜色选择器(来自“ lv_cpicker_type_t”枚举)
+
+
+	bool lv_cpicker_set_hue(lv_obj_t * cpicker，uint16_t hue)
+	功能：设置颜色选择器的当前色相。
+	返回：
+	如果更改，则为true，否则为false
+	形参：
+	cpicker：指向colorpicker对象的指针
+	hue：当前选择的色相[0..360]
+
+
+	bool lv_cpicker_set_saturation(lv_obj_t * cpicker，uint8_t saturation)
+	功能：设置颜色选择器的当前饱和度。
+	返回：
+	如果更改，则为true，否则为false
+	形参：
+	cpicker：指向colorpicker对象的指针
+	saturation：当前选择的饱和度[0..100]
+
+
+	bool lv_cpicker_set_value(lv_obj_t * cpicker，uint8_t val )
+	功能：设置颜色选择器的当前值。
+	返回：
+	如果更改，则为true，否则为false
+	形参：
+	cpicker：指向colorpicker对象的指针
+	val：当前选择的值[0..100]
+
+
+	bool lv_cpicker_set_hsv(lv_obj_t * cpicker，lv_color_hsv_t hsv )
+	功能：设置颜色选择器的当前hsv。
+	返回：
+	如果更改，则为true，否则为false
+	形参：
+	cpicker：指向colorpicker对象的指针
+	hsv：当前选择的hsv
+
+
+	bool lv_cpicker_set_color(lv_obj_t * cpicker，lv_color_t color)
+	功能：设置颜色选择器的当前颜色。
+	返回：
+	如果更改，则为true，否则为false
+	形参：
+	cpicker：指向colorpicker对象的指针
+	color：当前选择的颜色
+
+
+	void lv_cpicker_set_color_mode(lv_obj_t * cpicker，lv_cpicker_color_mode_t mode)
+	功能：设置当前的色彩模式。
+	形参：
+	cpicker：指向colorpicker对象的指针
+	mode：色彩模式(色相/饱和度/色度)
+
+
+	void lv_cpicker_set_color_mode_fixed(lv_obj_t * cpicker，bool fixed)
+	功能：长时间按中心更改颜色模式时设置
+	形参：
+	cpicker：指向colorpicker对象的指针
+	fixed：长按时无法更改色彩模式
+
+
+	void lv_cpicker_set_knob_colored(lv_obj_t * cpicker，bool en )
+	功能：使旋钮上色为当前颜色
+	形参：
+	cpicker：指向colorpicker对象的指针
+	en：true：为旋钮着色；false：不给旋钮上色
+
+
+	lv_cpicker_color_mode_t lv_cpicker_get_color_mode(lv_obj_t * cpicker )
+	功能：获取当前的颜色模式。
+	返回：
+	色彩模式(色相/饱和度/色度)
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	bool lv_cpicker_get_color_mode_fixed(lv_obj_t * cpicker )
+	功能：长按中心时获取颜色模式是否更改
+	返回：
+	长按无法更改模式
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	uint16_t lv_cpicker_get_hue(lv_obj_t * cpicker )
+	功能：获取颜色选择器的当前色相。
+	返回：
+	当前选择的色相
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	uint8_t lv_cpicker_get_saturation(lv_obj_t * cpicker )
+	功能：获取选色器的当前饱和度。
+	返回：
+	当前选择的饱和度
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	uint8_t lv_cpicker_get_value(lv_obj_t * cpicker )
+	功能：获取颜色选择器的当前色相。
+	返回：
+	当前选择值
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	lv_color_hsv_t lv_cpicker_get_hsv(lv_obj_t * cpicker )
+	功能：获取选色器的当前选定的hsv。
+	返回：
+	当前选择的hsv
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	lv_color_t lv_cpicker_get_color(lv_obj_t * cpicker )
+	功能：获取颜色选择器的当前选定颜色。
+	返回：
+	当前选择的颜色
+	形参：
+	cpicker：指向colorpicker对象的指针
+
+
+	bool lv_cpicker_get_knob_colored(lv_obj_t * cpicker )
+	功能：旋钮是否着色为当前颜色
+	返回：
+	true：为旋钮着色；false：不给旋钮上色
+	形参：
+	cpicker：指向颜色选择器对象的指针
+
+
+
+
+
+
+
+
+

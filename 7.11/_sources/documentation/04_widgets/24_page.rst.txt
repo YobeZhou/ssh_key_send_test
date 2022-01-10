@@ -1,0 +1,453 @@
+==================================
+页面(lv_page)
+==================================
+
+概述
+##################################
+页面彼此包含两个 `容器(lv_cont)`_ ：
+
+- 背景
+- 可滚动的顶部。
+
+.. _容器(lv_cont): http://lvgl.100ask.net/documentation/04_widgets/10_cont.html
+
+零件和样式
+##################################
+页面的主要部分称为 ``LV_PAGE_PART_BG`` ，它是页面的背景。它使用所有典型的背景样式属性。使用填充会增加侧面的空间。
+
+可以通过 ``LV_PAGE_PART_SCRL`` 部分引用可滚动对象。它还使用所有典型的背景样式属性和填充来增加侧面的空间。
+
+``LV_LIST_PART_SCROLLBAR`` 是绘制滚动条的背景的虚拟部分。使用所有典型的背景样式属性，使用size设置滚动条的宽度，并使用pad_right和pad_bottom设置间距。
+
+``LV_LIST_PART_EDGE_FLASH`` 还是背景的虚拟部分，当无法进一步沿该方向滚动列表时，将在侧面绘制半圆。使用所有典型的背景属性。
+
+
+
+用法
+##################################
+后台对象可以像页面本身一样被引用。例如。设置页面的宽度： ``lv_obj_set_width(page, 100)`` 。
+
+如果在页面上创建了一个子代，它将被自动移动到可滚动容器中。如果可滚动容器变大，则可以通过拖动来滚动背景（如智能手机上的列表）。
+
+默认情况下，可滚动控件的 ``LV_FIT_MAX`` 适合所有方向。这意味着当子代处于背景中时，可滚动大小将与背景大小相同（减去填充）。
+
+但是，当将对象放置在背景之外时，可滚动大小将增加以使其包含其中。
+
+滚动条
+**********************************
+可以根据以下四个策略显示滚动条：
+
+
+- **LV_SCRLBAR_MODE_OFF** 一直都不显示滚动条
+- **LV_SCRLBAR_MODE_ON**  一直都显示滚动条
+- **LV_SCRLBAR_MODE_DRAG** 拖动页面时显示滚动条
+- **LV_SCRLBAR_MODE_AUTO** 当可滚动容器的大小足以滚动时显示滚动条
+- **LV_SCRLBAR_MODE_HIDE** 暂时隐藏滚动条
+- **LV_SCRLBAR_MODE_UNHIDE** 取消隐藏以前隐藏的滚动条。也恢复原始模式
+
+可以通过以下方式更改滚动条显示策略： ``lv_page_set_scrlbar_mode(page, SB_MODE)`` 。默认值为 ``LV_SCRLBAR_​​MODE_AUTO`` 。
+
+
+胶水对象
+**********************************
+可以将孩子“粘”到页面上。在这种情况下，是否可以通过拖动该对象来滚动页面。可以通过 ``lv_page_glue_obj(child, true)`` 启用它。
+
+
+焦点对象
+**********************************
+页面上的对象可以使用 ``lv_page_focus(page, child, LV_ANIM_ONO/FF)`` 进行聚焦。它将移动可滚动容器以显示一个孩子。
+动画的时间可以通过 ``lv_page_set_anim_time(page, anim_time)`` 设置，以毫秒为单位。 child不必是页面的直接子级。如果可滚动对象也是该对象的祖父母，则此方法有效。
+
+
+
+手动导航
+**********************************
+可以使用 ``lv_page_scroll_hor(page, dist)`` 和 ``lv_page_scroll_ver(page, dist)`` 手动移动可滚动对象
+
+
+
+滚动传播
+**********************************
+如果列表是在另一个可滚动元素（如另一个页面）上创建的，并且Page无法进一步滚动，则滚动可以传播到父对象，以继续在父对象上滚动。
+可以使用 lv_page_set_edge_flash(list, true) 启用它
+
+
+清除页面
+**********************************
+页面上创建的所有对象都可以使用 ``lv_page_clean(page)`` 进行清理。请注意， ``lv_page_clean(page)`` 在这里不起作用，因为它也会删除可滚动对象。
+
+
+可滚动的API
+**********************************
+有一些直接设置/获取可滚动属性的函数：
+
+- ``lv_page_get_scrl()``
+- ``lv_page_set_scrl_fit/fint2/fit4()``
+- ``lv_page_set_scrl_width()``
+- ``lv_page_set_scrl_height()``
+- ``lv_page_set_scrl_fit_width()``
+- ``lv_page_set_scrl_fit_height()``
+- ``lv_page_set_scrl_layout()``
+
+
+事件
+##################################
+仅支持 `通用事件`_  
+
+可滚动对象具有默认的事件回调，该事件回调将以下事件传播到后台对象：
+
+- ``LV_EVENT_PRESSED`` 
+- ``LV_EVENT_PRESSING``
+- ``LV_EVENT_PRESS_LOST``
+- ``LV_EVENT_RELEASED`` 
+- ``LV_EVENT_SHORT_CLICKED`` 
+- ``LV_EVENT_CLICKED``
+- ``LV_EVENT_LONG_PRESSED`` 
+- ``LV_EVENT_LONG_PRESSED_REPEAT``
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+页面处理以下键：
+
+- **LV_KEY_RIGHT/LEFT/UP/DOWN** 滚动页面
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+带有滚动条的页面
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/24_page/01_lv_ex_page_1.png
+	   
+	  带有滚动条的页面
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_PAGE
+
+	void lv_ex_page_1(void)
+	{
+		/*Create a page*/
+		lv_obj_t * page = lv_page_create(lv_scr_act(), NULL);
+		lv_obj_set_size(page, 150, 200);
+		lv_obj_align(page, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Create a label on the page*/
+		lv_obj_t * label = lv_label_create(page, NULL);
+		lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);            /*Automatically break long lines*/
+		lv_obj_set_width(label, lv_page_get_width_fit(page));          /*Set the label width to max value to not show hor. scroll bars*/
+		lv_label_set_text(label, "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n"
+								 "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n"
+								 "Ut enim ad minim veniam, quis nostrud exercitation ullamco\n"
+								 "laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure\n"
+								 "dolor in reprehenderit in voluptate velit esse cillum dolore\n"
+								 "eu fugiat nulla pariatur.\n"
+								 "Excepteur sint occaecat cupidatat non proident, sunt in culpa\n"
+								 "qui officia deserunt mollit anim id est laborum.");
+	}
+
+	#endif
+
+
+
+
+
+
+相关API
+##################################
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+
+	lv_obj_t * lv_page_create(lv_obj_t * par，constlv_obj_t *copy)
+	创建页面对象
+	返回:
+	指向创建页面的指针
+	形参：
+	par：指向对象的指针，它将是新页面的父对象
+	copy：指向页面对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	void lv_page_clean(lv_obj_t *page)
+	删除scrl对象的所有子级，而不删除scrl子级。
+	形参：
+	page：指向对象的指针
+
+
+	lv_obj_t * lv_page_get_scrollable(constlv_obj_t *page)
+	获取页面的可滚动对象
+	返回:
+	指向容器的指针，该容器是页面的可滚动部分
+	形参：
+	page：指向页面对象的指针
+
+
+	uint16_t lv_page_get_anim_time(constlv_obj_t *page)
+	获取动画时间
+	返回:
+	动画时间(以毫秒为单位)
+	形参：
+	page：指向页面对象的指针
+
+
+	void lv_page_set_scrollbar_mode(lv_obj_t *page，lv_scrollbar_mode_t sb_mode )
+	在页面上设置滚动条模式
+	形参：
+	page：指向页面对象的指针
+	sb_mode：来自“ lv_page_sb.mode_t”枚举的新模式
+
+
+	void lv_page_set_anim_time(lv_obj_t *page，uint16_t anim_time )
+	设置页面的动画时间
+	形参：
+	page：指向页面对象的指针
+	anim_time：动画时间(以毫秒为单位)
+
+
+	void lv_page_set_scroll_propagation(lv_obj_t * page，bool en )
+	启用滚动传播功能。如果启用，则如果没有更多滚动空间，页面将移动其父级。页面需要具有类似页面的父页面(例如lv_page，lv_tabview选项卡，lv_win内容区域等)。如果启用，则拖动方向将LV_DRAG_DIR_ONE自动更改，以允许一次仅在一个方向上滚动。
+	形参：
+	page：指向页面的指针
+	en：true或false启用/禁用滚动传播
+
+
+	void lv_page_set_edge_flash(lv_obj_t * page，bool en )
+	启用边缘闪光效果。(到达边缘时显示弧线)
+	形参：
+	page：指向页面的指针
+	en：true或false启用/禁用端闪
+
+
+	void lv_page_set_scrollable_fit4(lv_obj_t *page，lv_fit_t left，lv_fit_t right，lv_fit_t top，lv_fit_t bottom)
+	分别在所有四个方向上设置适合策略。它告诉如何自动更改页面大小。
+	形参：
+	page：指向页面对象的指针
+	left：从左适合政策 lv_fit_t
+	right：合适的政策来自 lv_fit_t
+	top：底部适合政策 lv_fit_t
+	bottom：底部适合政策 lv_fit_t
+
+
+	void lv_page_set_scrollable_fit2(lv_obj_t *page，lv_fit_t hor，lv_fit_t ver )
+	分别水平和垂直设置适合策略。它告诉如何自动更改页面大小。
+	形参：
+	page：指向页面对象的指针
+	hot：来自的水平拟合政策 lv_fit_t
+	ver：垂直适合政策，来自 lv_fit_t
+
+
+	void lv_page_set_scrollable_fit(lv_obj_t *page，lv_fit_t fit)
+	一次在所有4个方向上设置拟合策略。它告诉如何自动更改页面大小。
+	形参：
+	page：指向按钮对象的指针
+	fit：适合政策，来自 lv_fit_t
+
+
+	void lv_page_set_scrl_width(lv_obj_t *page，lv_coord_t w )
+	设置页面可滚动部分的宽度
+	形参：
+	page：指向页面对象的指针
+	w：新的可滚动宽度(没有启用水平对齐功能)
+
+
+	void lv_page_set_scrl_height(lv_obj_t *page，lv_coord_t h )
+	设置页面可滚动部分的高度
+	形参：
+	page：指向页面对象的指针
+	h：新的可滚动高度(启用垂直调整没有效果)
+
+
+	void lv_page_set_scrl_layout(lv_obj_t *page，lv_layout_t layout)
+	设置页面可滚动部分的布局
+	形参：
+	page：指向页面对象的指针
+	layout：来自“ lv_cont_layout_t”的布局
+
+
+	lv_scrollbar_mode_t lv_page_get_scrollbar_mode(constlv_obj_t *page)
+	在页面上设置滚动条模式
+	返回:
+	来自“ lv_page_sb.mode_t”枚举的模式
+	形参：
+	page：指向页面对象的指针
+
+
+	bool lv_page_get_scroll_propagation(lv_obj_t *page)
+	获取滚动传播属性
+	返回:
+	对或错
+	形参：
+	page：指向页面的指针
+
+
+	bool lv_page_get_edge_flash(lv_obj_t *page)
+	获取边缘闪光效果属性。
+	形参：
+	page：指向页面的指针返回:true或false
+
+
+	lv_coord_t lv_page_get_width_fit(lv_obj_t *page)
+	获得可以设置为子代仍不会导致溢出的宽度(显示滚动条)
+	返回:
+	仍然适合页面的宽度
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_coord_t lv_page_get_height_fit(lv_obj_t *page)
+	获得可以设置为子代仍不会导致溢出的高度(显示滚动条)
+	返回:
+	仍然适合页面的高度
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_coord_t lv_page_get_width_grid(lv_obj_t * page，uint8_t div，uint8_t span )
+	划分对象的宽度并获得给定列数的宽度。也要考虑背景的填充和可滚动。
+	返回:
+	根据给定参数的宽度
+	形参：
+	page：指向对象的指针
+	div：表示假设有多少列。如果为1，则宽度将设置为父级的宽度；如果为2，则只有父级宽度的一半-父级的内部填充；如果为3，则只有第三个父级宽度-2 *父级的内部填充
+	span：合并了多少列
+
+
+	lv_coord_t lv_page_get_height_grid(lv_obj_t * page，uint8_t div，uint8_t span )
+	划分对象的高度并获得给定列数的宽度。也要考虑背景的填充和可滚动。
+	返回:
+	根据给定参数的高度
+	形参：
+	page：指向对象的指针
+	div：表示假设有多少行。如果为1，则将设置父级的高度；如果为2，则只有父级的一半高度-父级的内部填充；如果只有3，则只有第三级父级的高度-2 *父级的内部填充
+	span：合并了多少行
+
+
+	lv_coord_t lv_page_get_scrl_width(constlv_obj_t *page)
+	获取页面可滚动部分的宽度
+	返回:
+	滚动条的宽度
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_coord_t lv_page_get_scrl_height(constlv_obj_t *page)
+	获取页面可滚动部分的高度
+	返回:
+	滚动条的高度
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_layout_t lv_page_get_scrl_layout(constlv_obj_t *page)
+	获取页面可滚动部分的布局
+	返回:
+	来自“ lv_cont_layout_t”的布局
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_fit_t lv_page_get_scrl_fit_left(constlv_obj_t *page)
+	获取左合身模式
+	返回:
+	的元素 lv_fit_t
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_fit_t lv_page_get_scrl_fit_right(constlv_obj_t *page)
+	获得合适的健身模式
+	返回:
+	的元素 lv_fit_t
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_fit_t lv_page_get_scrl_fit_top(constlv_obj_t *page)
+	获取最适合的模式
+	返回:
+	的元素 lv_fit_t
+	形参：
+	page：指向页面对象的指针
+
+
+	lv_fit_t lv_page_get_scrl_fit_bottom(constlv_obj_t *page)
+	获取最合适的模式
+	返回:
+	的元素 lv_fit_t
+	形参：
+	page：指向页面对象的指针
+
+
+	bool lv_page_on_edge(lv_obj_t * page，lv_page_edge_t edge )
+	查找页面是否已滚动到特定边缘。
+	返回:
+	如果页面在指定的边缘，则为true
+	形参：
+	page：页面对象
+	edge：边缘检查
+
+
+	void lv_page_glue_obj(lv_obj_t * obj，bool glue)
+	将对象粘到页面上。之后，页面也可以与此对象一起移动(拖动)。
+	形参：
+	obj：指向页面上对象的指针
+	glue：true：启用胶水，false：禁用胶水
+
+
+	void lv_page_focus(lv_obj_t *page，constlv_obj_t * obj，lv_anim_enable_t anim_en )
+	专注于一个对象。它确保对象将在页面上可见。
+	形参：
+	page：指向页面对象的指针
+	obj：指向要聚焦的对象的指针(必须在页面上)
+	anim_en：LV_ANIM_ON聚焦动画；LV_ANIM_OFF无需动画即可对焦
+
+
+	void lv_page_scroll_hor(lv_obj_t *page，lv_coord_t dist )
+	水平滚动页面
+	形参：
+	page：指向页面对象的指针
+	dist：滚动距离(<0：向左滚动；> 0向右滚动)
+
+
+	void lv_page_scroll_ver(lv_obj_t *page，lv_coord_t dist )
+	垂直滚动页面
+	形参：
+	page：指向页面对象的指针
+	dist：滚动距离(<0：向下滚动；> 0向上滚动)
+
+
+	void lv_page_start_edge_flash(lv_obj_t *page，lv_page_edge_t edge)
+	不打算由用户直接使用，而是由内部的其他对象类型直接使用。开始边缘Flash动画。
+	形参：
+	page：
+	edge：要闪烁的边缘。可LV_PAGE_EDGE_LEFT/RIGHT/TOP/BOTTOM
+
+
+
+
+
+
+
+
+

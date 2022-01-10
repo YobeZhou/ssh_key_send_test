@@ -1,0 +1,67 @@
+==================================
+对象层级(Layers)
+==================================
+
+创建对象层级顺序
+##################################
+默认情况下，LVGL在背景上绘制旧对象，在前景上绘制新对象。
+
+例如，假设我们向父对象添加了一个名为 button1 的按钮，然后又添加了另一个名为button2的按钮。
+由于先创建了 button1，所以 button1 会被 button2 及其子对象覆盖。
+
+.. figure:: http://photos.100ask.net/lvgl/03_overview/02_Layers/layers.png
+
+
+.. code-block:: c
+    :linenos:
+	
+	/*Create a screen*/
+	lv_obj_t * scr = lv_obj_create(NULL, NULL);
+	lv_scr_load(scr);         							/*Load the screen*/
+
+	/*Create 2 buttons*/
+	lv_obj_t * btn1 = lv_btn_create(scr, NULL);         /*Create a button on the screen*/
+	lv_btn_set_fit(btn1, true, true);                   /*Enable to automatically set the size according to the content*/
+	lv_obj_set_pos(btn1, 60, 40);              	  		/*Set the position of the button*/
+
+	lv_obj_t * btn2 = lv_btn_create(scr, btn1);         /*Copy the first button*/
+	lv_obj_set_pos(btn2, 180, 80);                    	/*Set the position of the button*/
+
+	/*Add labels to the buttons*/
+	lv_obj_t * label1 = lv_label_create(btn1, NULL);	/*Create a label on the first button*/
+	lv_label_set_text(label1, "Button 1");          	/*Set the text of the label*/
+
+	lv_obj_t * label2 = lv_label_create(btn2, NULL);  	/*Create a label on the second button*/
+	lv_label_set_text(label2, "Button 2");            	/*Set the text of the label*/
+
+	/*Delete the second label*/
+	lv_obj_del(label2);
+
+
+将图层设到前台(foreground)展示
+##################################
+有几种方法可以将对象置于前台：
+
+- 使用 ``lv_obj_set_top(obj，true)`` 。如果 obj 或它的任何子对象被点击，那么 LVGL 将自动将该对象带到前台。它的工作原理类似于PC机上典型的GUI，当点击背景中的窗口时，它会在前台展示。
+- 使用lv_obj_move_foreground(obj) 显式地告诉库将对象带到前台。类似地，使用 ``lv_obj_move_background(obj)`` 将对象 obj 移动到背台。
+- 当使用 ``lv_obj_set_parent(obj，new_parent)`` 时， obj 将在 ``new_parent`` 的前面。
+
+
+顶层和系统层
+##################################
+LVGL 有两个特殊的图层； ``layer_top`` 和 ``layer_sys`` 。两者在显示器的所有屏幕上都是可见且通用的。 **但是，它们不会在多个物理显示器之间共享。** ``layer_top`` 始终位于默认屏幕 ( ``lv_scr_act()`` )的顶部， ``layer_sys`` 则位于 ``layer_top`` 的顶部。用户可以使用 ``layer_top`` 来创建一些随处可见的内容。例如，菜单栏，弹出窗口等。如果启用了 ``click`` 属性，那么 ``layer_top`` 将吸收所有用户单击并充当模态。
+
+
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_set_click(lv_layer_top(), true);
+
+
+``layer_sys`` 也用于LVGL。例如，它将鼠标光标放在那里以确保它始终可见。
+
+
+
+
+
+

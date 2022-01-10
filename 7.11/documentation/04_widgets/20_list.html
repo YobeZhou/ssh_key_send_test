@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>列表(lv_list) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="仪表(lv_lmeter)" href="21_linemeter.html" />
+    <link rel="prev" title="线(lv_line)" href="19_line.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_canvas.html">画布(lv_canvas)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">列表(lv_list)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">添加按钮</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">删除按钮</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">手动导航</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">布局</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">边缘闪烁</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">滚动传播</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">按键处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">简单的列表</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>列表(lv_list)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/20_list.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-list">
+<h1>列表(lv_list)<a class="headerlink" href="#lv-list" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>列表是从背景 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(Page)</a> 和其上的 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/04_btn.html">按钮(Buttons)</a> 构建的。按钮包含可选的类似图标的 <a href="#id24"><span class="problematic" id="id25">`图像(Image)`_</span></a> （也可以是符号）和 <a href="#id2"><span class="problematic" id="id3">`</span></a>标签(Label) <a href="#id4"><span class="problematic" id="id5">`</span></a>_。当列表足够长时，可以滚动它。</p>
+</div>
+<div class="section" id="id6">
+<h2>零件和样式<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>列表与 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(Page)</a> 具有相同的部分</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_BG</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_SCRL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_SCRLBAR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_LIST_PART_EDGE_FLASH</span></code></p></li>
+</ul>
+<p>有关详细信息，请参见 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(Page)</a>  部分。</p>
+<p>列表上的按钮被视为普通按钮，它们只有一个主要部分，称为 <code class="docutils literal notranslate"><span class="pre">LV_BTN_PART_MAIN</span></code> 。</p>
+</div>
+<div class="section" id="id8">
+<h2>用法<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h3>添加按钮<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_list_add_btn(list,</span> <span class="pre">&amp;icon_img,</span> <span class="pre">&quot;Text&quot;)</span></code> 或符号 <code class="docutils literal notranslate"><span class="pre">lv_list_add_btn(list,</span> <span class="pre">SYMBOL_EDIT,</span> <span class="pre">&quot;Edit</span> <span class="pre">text&quot;)</span></code> 添加新的列表元素（按钮）。如果不想添加图像，请使用 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 作为图像源。该函数返回指向创建的按钮的指针，以允许进行进一步的配置。</p>
+<p>按钮的宽度根据对象的宽度设置为最大。按钮的高度会根据内容自动调整。 （内容高度+ padding_top + padding_bottom）。</p>
+<p>标签以 <code class="docutils literal notranslate"><span class="pre">LV_LABEL_LONG_SROLL_CIRC</span></code> 长模式创建，以自动循环滚动长标签。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_list_get_btn_label(list_btn)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_list_get_btn_img(list_btn)</span></code> 可用于获取标签和列表按钮的图像。可以直接使用 <code class="docutils literal notranslate"><span class="pre">lv_list_get_btn_text(list_btn)</span></code> 来输入文本。</p>
+</div>
+<div class="section" id="id10">
+<h3>删除按钮<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>要删除列表元素，请使用 <code class="docutils literal notranslate"><span class="pre">lv_list_remove(list,</span> <span class="pre">btn_index)</span></code> 。可以通过 <code class="docutils literal notranslate"><span class="pre">lv_list_get_btn_index(list,</span> <span class="pre">btn)</span></code> 获得btn_index，其中btn是 <code class="docutils literal notranslate"><span class="pre">lv_list_add_btn()</span></code> 的返回值。</p>
+<p>要清除列表（删除所有按钮），请使用 <code class="docutils literal notranslate"><span class="pre">lv_list_clean(list)</span></code></p>
+</div>
+<div class="section" id="id11">
+<h3>手动导航<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_list_up(list)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lv_list_down(list)</span></code> 在列表中手动导航。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_list_focus(btn,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> 直接关注按钮。</p>
+<p>上/下/焦点移动的动画时间可以通过以下命令设置： <code class="docutils literal notranslate"><span class="pre">lv_list_set_anim_time(list,</span> <span class="pre">anim_time)</span></code> 。动画时间为零表示不是动画。</p>
+</div>
+<div class="section" id="id12">
+<h3>布局<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>默认情况下，列表是垂直的。要获取水平列表，请使用 <code class="docutils literal notranslate"><span class="pre">lv_list_set_layout(list,</span> <span class="pre">LV_LAYOUT_ROW_MID)</span></code> 。</p>
+</div>
+<div class="section" id="id13">
+<h3>边缘闪烁<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>当列表到达最高或最低位置时，可以显示类似圆圈的效果。 <code class="docutils literal notranslate"><span class="pre">lv_list_set_edge_flash(list,</span> <span class="pre">true)</span></code> 启用此功能。</p>
+</div>
+<div class="section" id="id14">
+<h3>滚动传播<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>如果列表是在其他可滚动元素（例如 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/24_page.html">页面(Page)</a> ）上创建的，并且列表无法进一步滚动，则滚动可以传播到父级。这样，滚动将在父级上继续。可以通过lv_list_set_scroll_propagation（list，true）启用它</p>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>事件<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h2>
+<p>仅支持 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a>  。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多内容。</p>
+</div>
+<div class="section" id="id19">
+<h2>按键处理<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h2>
+<p>列表处理以下按键：</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_RIGHT/DOWN</strong> 选择下一个按钮</p></li>
+<li><p><strong>LV_KEY_LEFT/UP</strong> 选择上一个按钮</p></li>
+</ul>
+<p>请注意，与往常一样， <code class="docutils literal notranslate"><span class="pre">LV_K​​EY_ENTER</span></code> 的状态会转换为 <code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSED/PRESSING/RELEASED</span></code> 等。</p>
+<p>所选按钮处于 <code class="docutils literal notranslate"><span class="pre">LV_BTN_STATE_PR/TG_PR</span></code> 状态。</p>
+<p>要手动选择按钮，请使用 <code class="docutils literal notranslate"><span class="pre">lv_list_set_btn_selected(list,</span> <span class="pre">btn)</span></code> 。当列表散焦并再次聚焦时，它将恢复最后选择的按钮。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a>  的更多内容。</p>
+</div>
+<div class="section" id="id21">
+<h2>范例<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id22">
+<h3>简单的列表<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id23">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/20_list/01_lv_ex_list_1.png" src="http://photos.100ask.net/lvgl/04_widgets/20_list/01_lv_ex_list_1.png" />
+<p class="caption"><span class="caption-text">简单的列表</span><a class="headerlink" href="#id23" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 3</span>    <span class="cp">#if LV_USE_LIST</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">event_handler</span><span class="p">(</span><span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">lv_event_t</span> <span class="n">event</span><span class="p">)</span>
+<span class="linenos"> 6</span>    <span class="p">{</span>
+<span class="linenos"> 7</span>            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">LV_EVENT_CLICKED</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 8</span>                    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Clicked: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">lv_list_get_btn_text</span><span class="p">(</span><span class="n">obj</span><span class="p">));</span>
+<span class="linenos"> 9</span>            <span class="p">}</span>
+<span class="linenos">10</span>    <span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="kt">void</span> <span class="nf">lv_ex_list_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="p">{</span>
+<span class="linenos">14</span>            <span class="cm">/*Create a list*/</span>
+<span class="linenos">15</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">list1</span> <span class="o">=</span> <span class="n">lv_list_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="linenos">17</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>            <span class="cm">/*Add buttons to the list*/</span>
+<span class="linenos">20</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">list_btn</span><span class="p">;</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_FILE</span><span class="p">,</span> <span class="s">&quot;New&quot;</span><span class="p">);</span>
+<span class="linenos">23</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_DIRECTORY</span><span class="p">,</span> <span class="s">&quot;Open&quot;</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_CLOSE</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">);</span>
+<span class="linenos">29</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_EDIT</span><span class="p">,</span> <span class="s">&quot;Edit&quot;</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_SAVE</span><span class="p">,</span> <span class="s">&quot;Save&quot;</span><span class="p">);</span>
+<span class="linenos">35</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_BELL</span><span class="p">,</span> <span class="s">&quot;Notify&quot;</span><span class="p">);</span>
+<span class="linenos">38</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>            <span class="n">list_btn</span> <span class="o">=</span> <span class="n">lv_list_add_btn</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">LV_SYMBOL_BATTERY_FULL</span><span class="p">,</span> <span class="s">&quot;Battery&quot;</span><span class="p">);</span>
+<span class="linenos">41</span>            <span class="n">lv_obj_set_event_cb</span><span class="p">(</span><span class="n">list_btn</span><span class="p">,</span> <span class="n">event_handler</span><span class="p">);</span>
+<span class="linenos">42</span>    <span class="p">}</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="21_linemeter.html" class="btn btn-neutral float-right" title="仪表(lv_lmeter)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="19_line.html" class="btn btn-neutral float-left" title="线(lv_line)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

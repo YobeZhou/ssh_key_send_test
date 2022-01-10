@@ -1,0 +1,190 @@
+==================================
+日历(lv_calendar)
+==================================
+
+概述
+##################################
+Calendar对象是经典的日历，可以：
+
+- 突出显示当天
+- 突出显示任何用户定义的日期
+- 显示日期名称
+- 单击按钮进入下一个/上一个月
+- 突出显示点击的日子
+
+
+零件和样式
+##################################
+日历的主要部分称为 ``LV_CALENDAR_PART_BG`` 。它使用典型的背景样式属性绘制背景。
+
+除以下虚拟部分外：
+
+- ``LV_CALENDAR_PART_HEADER`` 显示当前年和月名称的上部区域。它还具有用于移动下一个/上个月的按钮。它使用典型的背景属性以及填充来调整其大小和边距，以设置距日历顶部的距离和日历下方的日期。
+- ``LV_CALENDAR_PART_DAY_NAMES`` 在标题下方显示日期名称。它使用文本样式属性填充来与背景（左，右），标题（上）和日期（下）保持一定距离。
+- ``LV_CALENDAR_PART_DATES`` 显示从1..28 / 29/30/31开始的日期数字（取决于当月）。根据本部分中定义的状态来绘制状态的不同“状态”：
+
+  - 正常日期：以 ``LV_STATE_DEFAULT`` 样式绘制 
+  - 按日期范围：以 ``LV_STATE_PRESSED`` 样式绘制 
+  - 今天：以 ``LV_STATE_FOCUSED`` 样式绘制 
+  - 高亮显示的日期：以 ``LV_STATE_CHECKED`` 样式绘制
+
+用法
+##################################
+
+概述
+**********************************
+要在日历中设置和获取日期，使用 ``lv_calendar_date_t`` 类型，该类型是具有 ``年`` ， ``月`` 和 ``日`` 字段的结构。
+
+当前日期
+**********************************
+要设置当前日期（今天），请使用 ``lv_calendar_set_today_date(calendar, &today_date)`` 函数。
+
+
+显示日期
+**********************************
+要设置显示日期，请使用 ``lv_calendar_set_shown_date(calendar, &shown_date)`` ;
+
+
+高亮日期
+**********************************
+高亮显示的日期列表应存储在由 ``lv_calendar_set_highlighted_dates(calendar, &highlighted_dates)`` 加载的 ``lv_calendar_date_t`` 数组中。
+
+仅将保存数组指针，因此数组应为静态或全局变量。
+
+
+日期名称
+**********************************
+可以使用 ``lv_calendar_set_day_names(calendar, day_names)`` 来调整日期的名称，其中 ``day_names`` 类似于 ``const char * day_names[7] = {"Su", "Mo", ...};`` 
+
+
+月份名称
+**********************************
+与 ``day_names`` 相似，可以使用 ``lv_calendar_set_month_names(calendar, month_names_array)`` 设置月份名称。
+
+
+事件
+##################################
+除了 `通用事件`_ 外，日历还会发送以下特殊事件：当当前月份更改时，还会发送 **LV_EVENT_VALUE_CHANGED** 。
+
+在与输入设备相关的事件中， ``lv_calendar_get_pressed_date(calendar)`` 指示当前正在按下的日期，如果没有按下任何日期，则返回 ``NULL`` 。
+
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+按键
+##################################s
+对象类型不处理任何键。 
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简单日历示例
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/06_calendar/01_lv_ex_calendar.png
+	   
+	  可以选择日期的日历
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+
+	#if LV_USE_CALENDAR
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_VALUE_CHANGED) {
+			lv_calendar_date_t * date = lv_calendar_get_pressed_date(obj);
+			if(date) {
+				printf("Clicked date: %02d.%02d.%d\n", date->day, date->month, date->year);
+			}
+		}
+	}
+
+	void lv_ex_calendar_1(void)
+	{
+		lv_obj_t  * calendar = lv_calendar_create(lv_scr_act(), NULL);
+		lv_obj_set_size(calendar, 235, 235);
+		lv_obj_align(calendar, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_set_event_cb(calendar, event_handler);
+
+		/*Make the date number smaller to be sure they fit into their area*/
+		lv_obj_set_style_local_text_font(calendar, LV_CALENDAR_PART_DATE, LV_STATE_DEFAULT, lv_theme_get_font_small());
+
+		/*Set today's date*/
+		lv_calendar_date_t today;
+		today.year = 2018;
+		today.month = 10;
+		today.day = 23;
+
+		lv_calendar_set_today_date(calendar, &today);
+		lv_calendar_set_showed_date(calendar, &today);
+
+		/*Highlight a few days*/
+		static lv_calendar_date_t highlighted_days[3];       /*Only its pointer will be saved so should be static*/
+		highlighted_days[0].year = 2018;
+		highlighted_days[0].month = 10;
+		highlighted_days[0].day = 6;
+
+		highlighted_days[1].year = 2018;
+		highlighted_days[1].month = 10;
+		highlighted_days[1].day = 11;
+
+		highlighted_days[2].year = 2018;
+		highlighted_days[2].month = 11;
+		highlighted_days[2].day = 22;
+
+		lv_calendar_set_highlighted_dates(calendar, highlighted_days, 3);
+	}
+
+	#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

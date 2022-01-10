@@ -1,0 +1,400 @@
+==================================
+按钮(lv_btn)
+==================================
+
+概述
+##################################
+按钮是简单的矩形对象。它们源自容器，因此也可以提供布局和配合。此外，可以启用它以在单击时自动进入检查状态。
+
+零件和样式
+##################################
+这些按钮仅具有一种主要样式，称为 ``LV_BTN_PART_MAIN`` ，并且可以使用以下组中的所有属性：
+
+- 背景(background)
+- 边界(border)
+- 边框(outline)
+- 阴影(shadow)
+- 数值(value)
+- 模式(pattern)
+- 过渡(transitions)
+
+启用布局或适合时，它还将使用padding属性。
+
+
+用法
+##################################
+为了简化按钮的使用，可以使用 ``lv_btn_get_state(btn)`` 来获取按钮的状态。它返回以下值之一：
+
+- **LV_BTN_STATE_RELEASED**  		松开
+- **LV_BTN_STATE_PRESSED**			被点击
+- **LV_BTN_STATE_CHECKED_RELEASED**	点击后松开
+- **LV_BTN_STATE_CHECKED_PRESSED**  重复点击
+- **LV_BTN_STATE_DISABLED**			禁用
+- **LV_BTN_STATE_CHECKED_DISABLED**	
+ 
+使用 ``lv_btn_set_state(btn, LV_BTN_STATE_...)`` 可以手动更改按钮状态。
+
+如果需要状态的更精确描述（例如，重点突出），则可以使用常规 ``lv_obj_get_state(btn)`` 。
+
+
+可检查
+##################################
+可以使用 ``lv_btn_set_checkable(btn, true)`` 将按钮配置为切换按钮。在这种情况下，单击时，按钮将自动进入 ``LV_STATE_CHECKED`` 状态，或再次单击时返回到LV_STATE_CHECKED状态。
+
+
+布局和适配
+##################################
+与容器类似，按钮也具有布局和适合属性。
+
+- ``lv_btn_set_layout(btn, LV_LAYOUT_...)`` 设置布局。默认值为 ``LV_LAYOUT_CENTER`` 。因此，如果添加标签，则标签将自动与中间对齐，并且无法通过 ``lv_obj_set_pos()`` 移动。您可以使用 ``lv_btn_set_layout(btn, LV_LAYOUT_OFF)`` 禁用布局。
+- ``lv_btn_set_fit/fit2/fit4(btn, LV_FIT_..)`` 允许根据子代，父代和适合类型自动设置按钮的宽度和/或高度。
+
+
+事件
+##################################
+除了 `通用事件`_ 外，按钮还发送以下特殊事件：
+
+- **LV_EVENT_VALUE_CHANGED**-切换按钮时发送。
+
+了解有关 `事件`_ 的更多信息。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键
+##################################
+以下按键由按钮处理：
+
+- **LV_KEY_RIGHT/UP**-如果启用了切换，则进入切换状态。
+- **LV_KEY_LEFT/DOWN**-如果启用了切换，则进入非切换状态。
+
+请注意， ``LV_K​​EY_ENTER`` 的状态已转换为 ``LV_EVENT_PRESSED/PRESSING/RELEASED`` 等。
+
+进一步了解 `按键`_ 。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+范例
+##################################
+
+简单的按钮
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/04_btn/01_lv_ex_btn1.png
+	   
+	  创建两个简单的按钮
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_BTN
+
+	static void event_handler(lv_obj_t * obj, lv_event_t event)
+	{
+		if(event == LV_EVENT_CLICKED) {
+			printf("Clicked\n");
+		}
+		else if(event == LV_EVENT_VALUE_CHANGED) {
+			printf("Toggled\n");
+		}
+	}
+
+	void lv_ex_btn_1(void)
+	{
+		lv_obj_t * label;
+
+		lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_set_event_cb(btn1, event_handler);
+		lv_obj_align(btn1, NULL, LV_ALIGN_CENTER, 0, -40);
+
+		label = lv_label_create(btn1, NULL);
+		lv_label_set_text(label, "Button");
+
+		lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_set_event_cb(btn2, event_handler);
+		lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, 0, 40);
+		lv_btn_set_checkable(btn2, true);
+		lv_btn_toggle(btn2);
+		lv_btn_set_fit2(btn2, LV_FIT_NONE, LV_FIT_TIGHT);
+
+		label = lv_label_create(btn2, NULL);
+		lv_label_set_text(label, "Toggled");
+	}
+	#endif
+
+
+
+按钮样式
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/04_btn/02_lv_ex_btn2.png
+	   
+	  按钮样式
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+	
+	#include "../../../lv_examples.h"
+	#include <stdio.h>
+	#if LV_USE_BTN
+
+	/**
+	 * Advanced button transition examples
+	 */
+	void lv_ex_btn_2(void)
+	{
+		static lv_anim_path_t path_overshoot;
+		lv_anim_path_init(&path_overshoot);
+		lv_anim_path_set_cb(&path_overshoot, lv_anim_path_overshoot);
+
+		static lv_anim_path_t path_ease_out;
+		lv_anim_path_init(&path_ease_out);
+		lv_anim_path_set_cb(&path_ease_out, lv_anim_path_ease_out);
+
+		static lv_anim_path_t path_ease_in_out;
+		lv_anim_path_init(&path_ease_in_out);
+		lv_anim_path_set_cb(&path_ease_in_out, lv_anim_path_ease_in_out);
+
+		/*Gum-like button*/
+		static lv_style_t style_gum;
+		lv_style_init(&style_gum);
+		lv_style_set_transform_width(&style_gum, LV_STATE_PRESSED, 10);
+		lv_style_set_transform_height(&style_gum, LV_STATE_PRESSED, -10);
+		lv_style_set_value_letter_space(&style_gum, LV_STATE_PRESSED, 5);
+		lv_style_set_transition_path(&style_gum, LV_STATE_DEFAULT, &path_overshoot);
+		lv_style_set_transition_path(&style_gum, LV_STATE_PRESSED, &path_ease_in_out);
+		lv_style_set_transition_time(&style_gum, LV_STATE_DEFAULT, 250);
+		lv_style_set_transition_delay(&style_gum, LV_STATE_DEFAULT, 100);
+		lv_style_set_transition_prop_1(&style_gum, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_WIDTH);
+		lv_style_set_transition_prop_2(&style_gum, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_HEIGHT);
+		lv_style_set_transition_prop_3(&style_gum, LV_STATE_DEFAULT, LV_STYLE_VALUE_LETTER_SPACE);
+
+		lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_align(btn1, NULL, LV_ALIGN_CENTER, 0, -80);
+		lv_obj_add_style(btn1, LV_BTN_PART_MAIN, &style_gum);
+
+		/*Instead of creating a label add a values string*/
+		lv_obj_set_style_local_value_str(btn1, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "Gum");
+
+		/*Halo on press*/
+		static lv_style_t style_halo;
+		lv_style_init(&style_halo);
+		lv_style_set_transition_time(&style_halo, LV_STATE_PRESSED, 400);
+		lv_style_set_transition_time(&style_halo, LV_STATE_DEFAULT, 0);
+		lv_style_set_transition_delay(&style_halo, LV_STATE_DEFAULT, 200);
+		lv_style_set_outline_width(&style_halo, LV_STATE_DEFAULT, 0);
+		lv_style_set_outline_width(&style_halo, LV_STATE_PRESSED, 20);
+		lv_style_set_outline_opa(&style_halo, LV_STATE_DEFAULT, LV_OPA_COVER);
+		lv_style_set_outline_opa(&style_halo, LV_STATE_FOCUSED, LV_OPA_COVER);   /*Just to be sure, the theme might use it*/
+		lv_style_set_outline_opa(&style_halo, LV_STATE_PRESSED, LV_OPA_TRANSP);
+		lv_style_set_transition_prop_1(&style_halo, LV_STATE_DEFAULT, LV_STYLE_OUTLINE_OPA);
+		lv_style_set_transition_prop_2(&style_halo, LV_STATE_DEFAULT, LV_STYLE_OUTLINE_WIDTH);
+
+		lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_obj_add_style(btn2, LV_BTN_PART_MAIN, &style_halo);
+		lv_obj_set_style_local_value_str(btn2, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "Halo");
+
+		/*Ripple on press*/
+		static lv_style_t style_ripple;
+		lv_style_init(&style_ripple);
+		lv_style_set_transition_time(&style_ripple, LV_STATE_PRESSED, 300);
+		lv_style_set_transition_time(&style_ripple, LV_STATE_DEFAULT, 0);
+		lv_style_set_transition_delay(&style_ripple, LV_STATE_DEFAULT, 300);
+		lv_style_set_bg_opa(&style_ripple, LV_STATE_DEFAULT, 0);
+		lv_style_set_bg_opa(&style_ripple, LV_STATE_PRESSED, LV_OPA_80);
+		lv_style_set_border_width(&style_ripple, LV_STATE_DEFAULT, 0);
+		lv_style_set_outline_width(&style_ripple, LV_STATE_DEFAULT, 0);
+		lv_style_set_transform_width(&style_ripple, LV_STATE_DEFAULT, -20);
+		lv_style_set_transform_height(&style_ripple, LV_STATE_DEFAULT, -20);
+		lv_style_set_transform_width(&style_ripple, LV_STATE_PRESSED, 0);
+		lv_style_set_transform_height(&style_ripple, LV_STATE_PRESSED, 0);
+
+		lv_style_set_transition_path(&style_ripple, LV_STATE_DEFAULT, &path_ease_out);
+		lv_style_set_transition_prop_1(&style_ripple, LV_STATE_DEFAULT, LV_STYLE_BG_OPA);
+		lv_style_set_transition_prop_2(&style_ripple, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_WIDTH);
+		lv_style_set_transition_prop_3(&style_ripple, LV_STATE_DEFAULT, LV_STYLE_TRANSFORM_HEIGHT);
+
+		lv_obj_t * btn3 = lv_btn_create(lv_scr_act(), NULL);
+		lv_obj_align(btn3, NULL, LV_ALIGN_CENTER, 0, 80);
+		lv_obj_add_style(btn3, LV_BTN_PART_MAIN, &style_ripple);
+		lv_obj_set_style_local_value_str(btn3, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "Ripple");
+	}
+	#endif
+	
+	
+相关API
+##################################
+
+
+Typedefs 
+**********************************
+.. code-block:: c
+    :linenos:
+
+	typedefuint8_tlv_btn_state_t
+	typedefuint8_tlv_btn_part_t
+	
+	
+enums 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	/** Possible states of a button.
+	 * It can be used not only by buttons but other button-like objects too*/
+	enum {
+		LV_BTN_STATE_RELEASED,
+		LV_BTN_STATE_PRESSED,
+		LV_BTN_STATE_DISABLED,
+		LV_BTN_STATE_CHECKED_RELEASED,
+		LV_BTN_STATE_CHECKED_PRESSED,
+		LV_BTN_STATE_CHECKED_DISABLED,
+		_LV_BTN_STATE_LAST, /* Number of states*/
+	};
+
+	/**Styles*/
+	enum {
+		LV_BTN_PART_MAIN = LV_OBJ_PART_MAIN,
+		_LV_BTN_PART_VIRTUAL_LAST,
+		_LV_BTN_PART_REAL_LAST = _LV_OBJ_PART_REAL_LAST,
+	};
+
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	lv_obj_t * lv_btn_create(lv_obj_t * par，constlv_obj_t *copy)
+	功能：创建一个按钮对象
+	返回：
+	指向创建的按钮的指针
+	形参：
+	par：指向对象的指针，它将是新按钮的父对象
+	copy：指向按钮对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	void lv_btn_set_checkable(lv_obj_t * btn，bool tgl )
+	启用切换状态。释放时，按钮将从/切换到切换状态。
+	形参：
+	btn：指向按钮对象的指针
+	tgl：true：启用切换状态，false：禁用
+
+
+	void lv_btn_set_state(lv_obj_t * btn，lv_btn_state_t state)
+	功能：设置按钮的状态
+	形参：
+	btn：指向按钮对象的指针
+	state：按钮的新状态(来自lv_btn_state_t enum)
+
+
+	void lv_btn_toggle(lv_obj_t * btn )
+	功能：切换按钮的状态(ON-> OFF，OFF-> ON)
+	形参：
+	btn：指向按钮对象的指针
+
+
+	void lv_btn_set_layout(lv_obj_t * btn，lv_layout_t layout)
+	功能：在按钮上设置布局
+	形参：
+	btn：指向按钮对象的指针
+	layout：来自“ lv_cont_layout_t”的布局
+
+
+	void lv_btn_set_fit4(lv_obj_t * BTN，lv_fit_t left，lv_fit_t right，lv_fit_t top，lv_fit_t bottom)
+	功能：分别在所有四个方向上设置适合策略。它告诉您如何自动更改按钮大小。
+	形参：
+	btn：指向按钮对象的指针
+	left：从左适合策略 lv_fit_t
+	right：合适的策略来自 lv_fit_t
+	top：最适合的策略，来自 lv_fit_t
+	bottom：自下而上的策略 lv_fit_t
+
+
+	void lv_btn_set_fit2(lv_obj_t * btn，lv_fit_t hor，lv_fit_t ver )
+	功能：分别水平和垂直设置适合策略。它告诉您如何自动更改按钮大小。
+	形参：
+	btn：指向按钮对象的指针
+	hor：来自的水平拟合策略 lv_fit_t
+	ver：垂直适合策略，来自 lv_fit_t
+
+
+	void lv_btn_set_fit(lv_obj_t * btn，lv_fit_t fit )
+	功能：一次在所有4个方向上设置拟合策略。它告诉您如何自动更改按钮的大小。
+	形参：
+	btn：指向按钮对象的指针
+	fit：符合策略 lv_fit_t
+
+
+	lv_btn_state_t lv_btn_get_state(constlv_obj_t * btn )
+	功能：获取按钮的当前状态
+	返回：
+	按钮的状态(来自lv_btn_state_t枚举)如果按钮处于禁用状态，LV_BTN_STATE_DISABLED则将其与其他按钮状态进行“或”运算。
+	形参：
+	btn：指向按钮对象的指针
+
+
+	bool lv_btn_get_checkable(constlv_obj_t * btn )
+	功能：获取按钮的切换启用属性
+	返回：
+	true：启用检查，false：停用
+	形参：
+	btn：指向按钮对象的指针
+
+
+	lv_layout_t lv_btn_get_layout(constlv_obj_t * btn )
+	功能：获取按钮的布局
+	返回：
+	来自“ lv_cont_layout_t”的布局
+	形参：
+	btn：指向按钮对象的指针
+
+
+	lv_fit_t lv_btn_get_fit_left(constlv_obj_t * btn )
+	功能：获取合适的左模式
+	返回：
+	左部元素 lv_fit_t
+	形参：
+	btn：指向按钮对象的指针
+
+
+	lv_fit_t lv_btn_get_fit_right(constlv_obj_t * btn )
+	功能：获得合适的右模式
+	返回：
+	右部元素 lv_fit_t
+	形参：
+	btn：指向按钮对象的指针
+
+
+	lv_fit_t lv_btn_get_fit_top(constlv_obj_t * btn )
+	功能：获取最适合顶部模式
+	返回：
+	顶部元素 lv_fit_t
+	形参：
+	btn：指向按钮对象的指针
+
+
+	lv_fit_t lv_btn_get_fit_bottom(constlv_obj_t * btn )
+	功能：获取最合适底部模式
+	返回：
+	底部元素 lv_fit_t
+	形参：
+	btn：指向按钮对象的指针
+
+
+
+
+
+
+

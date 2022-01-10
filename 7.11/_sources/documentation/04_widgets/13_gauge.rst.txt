@@ -1,0 +1,175 @@
+==================================
+量规(lv_gauge)
+==================================
+
+概述
+##################################
+量规是一种带有刻度标签和一根或多根针的仪表。
+
+小部件和样式
+##################################
+量规的主要部分称为 ``LV_GAUGE_PART_MAIN`` 。它使用典型的背景样式属性绘制背景，并使用线和比例样式属性绘制“较小”比例线。它还使用text属性设置比例标签的样式。pad_inner用于设置刻度线和刻度标签之间的空间。
+
+``LV_GAUGE_PART_MAJOR`` 是一个虚拟小部件，它使用line和scale样式属性描述了主要的比例尺线（添加了标签）。
+
+``LV_GAUGE_PART_NEEDLE`` 也是虚拟小部件，它通过线型属性来描述针。的大小和典型的背景属性用于描述在所述针（多个）的枢转点的矩形（或圆形）。 pad_inner用于使针比刻度线的外半径小。
+
+
+用法
+##################################
+
+设定值和针
+**********************************
+量规可以显示多于一根针。使用 ``lv_gauge_set_needle_count(gauge, needle_num, color_array)`` 函数设置针数和每根针具有颜色的数组。数组必须是静态或全局变量，因为仅存储其指针。
+
+可以使用 ``lv_gauge_set_value(gauge, needle_id, value)`` 来设置针的值。
+
+规模
+**********************************
+可以使用 ``lv_gauge_set_scale(gauge, angle, line_num, label_cnt)`` 函数来调整刻度角度以及刻度线和标签的数量。默认设置为220度，6个比例标签和21条线。
+
+量表的刻度可以偏移。可以通过 ``lv_gauge_set_angle_offset(gauge, angle)`` 进行调整。
+
+
+范围
+**********************************
+量规的范围可以通过 ``lv_gauge_set_range(gauge, min, max)`` 指定。默认范围是0..100。
+
+
+针图
+**********************************
+图像也可用作针。图像应指向右侧（如==>）。要设置图像，请使用 ``lv_gauge_set_needle_img(gauge1, &img, pivot_x, pivot_y)`` 。 ``ivot_x`` 和 ``pivot_y`` 是旋转中心距左上角的偏移量。图像将使用来自 ``LV_GAUGE_PART_NEEDLE`` 中的样式的 ``image_recolor_opa`` 强度重新着色为针的颜色。
+
+
+
+临界值
+**********************************
+要设置临界值，请使用 ``lv_gauge_set_critical_value(gauge, value)`` 。此值之后，比例尺颜色将更改为scale_end_color。默认临界值为80。
+
+
+
+事件
+##################################
+仅 `通用事件`_ 是按对象类型发送的。 
+
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+
+按键
+##################################
+对象类型不处理任何键。 
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+简易量规
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/13_gauge/01_lv_ex_gauge_01.png
+	   
+	  简单按钮矩阵示例
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_GAUGE
+
+
+	void lv_ex_gauge_1(void)
+	{
+		/*Describe the color for the needles*/
+		static lv_color_t needle_colors[3];
+		needle_colors[0] = LV_COLOR_BLUE;
+		needle_colors[1] = LV_COLOR_ORANGE;
+		needle_colors[2] = LV_COLOR_PURPLE;
+
+		/*Create a gauge*/
+		lv_obj_t * gauge1 = lv_gauge_create(lv_scr_act(), NULL);
+		lv_gauge_set_needle_count(gauge1, 3, needle_colors);
+		lv_obj_set_size(gauge1, 200, 200);
+		lv_obj_align(gauge1, NULL, LV_ALIGN_CENTER, 0, 0);
+
+		/*Set the values*/
+		lv_gauge_set_value(gauge1, 0, 10);
+		lv_gauge_set_value(gauge1, 1, 20);
+		lv_gauge_set_value(gauge1, 2, 30);
+	}
+
+	#endif
+
+
+自定义量规指针样式
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/13_gauge/02_lv_ex_gauge_02.png
+	   
+	  自定义量规指针样式
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_GAUGE
+
+
+	void lv_ex_gauge_2(void)
+	{
+		/*Describe the color for the needles*/
+		static lv_color_t needle_colors[3];
+		needle_colors[0] = LV_COLOR_BLUE;
+		needle_colors[1] = LV_COLOR_ORANGE;
+		needle_colors[2] = LV_COLOR_PURPLE;
+
+		LV_IMG_DECLARE(img_hand);
+
+		/*Create a gauge*/
+		lv_obj_t * gauge1 = lv_gauge_create(lv_scr_act(), NULL);
+		lv_gauge_set_needle_count(gauge1, 3, needle_colors);
+		lv_obj_set_size(gauge1, 200, 200);
+		lv_obj_align(gauge1, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_gauge_set_needle_img(gauge1, &img_hand, 4, 4);
+		/*Allow recoloring of the images according to the needles' color*/
+		lv_obj_set_style_local_image_recolor_opa(gauge1, LV_GAUGE_PART_NEEDLE, LV_STATE_DEFAULT, LV_OPA_COVER);
+
+		/*Set the values*/
+		lv_gauge_set_value(gauge1, 0, 10);
+		lv_gauge_set_value(gauge1, 1, 20);
+		lv_gauge_set_value(gauge1, 2, 30);
+	}
+
+	#endif
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

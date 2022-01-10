@@ -1,0 +1,336 @@
+==================================
+图片按钮(lv_imgbtn)
+==================================
+
+概述
+##################################
+图像按钮与简单的“按钮”对象非常相似。唯一的区别是，它在每种状态下显示用户定义的图像，而不是绘制矩形。在阅读本节之前，请先阅读 `按钮`_ 一节以更好地理解本节内容。
+
+.. _按钮: http://lvgl.100ask.net/documentation/04_widgets/04_btn.html
+
+
+零件和样式
+##################################
+图像按钮对象只有一个主要部分，称为 ``LV_IMG_BTN_PART_MAIN`` ，在其中使用了所有图像样式属性。可以使用image_recolor和image_recolor_opa属性在每种状态下为图像重新着色。例如，如果按下该按钮可使图像变暗。
+
+
+用法
+##################################
+
+图片来源
+**********************************
+调用 ``lv_imgbtn_set_src(imgbtn, LV_BTN_STATE_..., &img_src)`` 将图像设置为一种状态。除了“图像”按钮不支持“符号”之外，图像源的工作原理与 `图像对象`_ 中所述的相同。
+
+如果在 lv_conf.h 中启用了 ``LV_IMGBTN_TILED`` ，则 ``lv_imgbtn_set_src_tiled(imgbtn, LV_BTN_STATE_..., &img_src_left, &img_src_mid, &img_src_right)`` 可用。使用平铺功能，将重复中间图像以填充对象的宽度。因此，对于 ``LV_IMGBTN_TILED`` ，可以使用 ``lv_obj_set_width()`` 设置图像按钮的宽度。但是，如果没有此选项，则宽度将始终与图像源的宽度相同。
+
+.. _图像对象: http://lvgl.100ask.net/documentation/04_widgets/14_img.html
+
+按钮功能
+**********************************
+类似于普通按钮 ``lv_imgbtn_set_checkable(imgbtn, true/false)`` ，``lv_imgbtn_toggle(imgbtn)`` 和 ``lv_imgbtn_set_state(imgbtn, LV_BTN_STATE_...)`` 也可以使用。
+
+
+事件
+##################################
+除了 `通用事件`_ ，以下 `特殊事件`_ 也通过按钮发送：
+
+- **LV_EVENT_VALUE_CHANGED** - 切换按钮时发送。
+
+请注意，与通用输入设备相关的事件（如LV_EVENT_PRESSED）也以非活动状态发送。您需要使用lv_btn_get_state（btn）检查状态，以忽略非活动按钮中的事件。
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _特殊事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id7
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+
+按键
+##################################
+以下按键类型由按钮处理：
+
+- **LV_KEY_RIGHT/UP** - 如果启用了切换，则进入切换状态。
+- **LV_KEY_LEFT/DOWN** - 如果启用了切换，则进入非切换状态。
+
+请注意，与往常一样，LV_K​​EY_ENTER的状态会转换为LV_EVENT_PRESSED / PRESSING / RELEASED等。 
+
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+范例
+##################################
+
+简单的图像按钮
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/15_imgbtn/01_lv_ex_imgbtn_01.png
+	   
+	  简单的图像按钮
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_IMGBTN
+
+	void lv_ex_imgbtn_1(void)
+	{
+		LV_IMG_DECLARE(imgbtn_green);
+		LV_IMG_DECLARE(imgbtn_blue);
+
+		/*Darken the button when pressed*/
+		static lv_style_t style;
+		lv_style_init(&style);
+		lv_style_set_image_recolor_opa(&style, LV_STATE_PRESSED, LV_OPA_30);
+		lv_style_set_image_recolor(&style, LV_STATE_PRESSED, LV_COLOR_BLACK);
+		lv_style_set_text_color(&style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+
+		/*Create an Image button*/
+		lv_obj_t * imgbtn1 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_src(imgbtn1, LV_BTN_STATE_RELEASED, &imgbtn_green);
+		lv_imgbtn_set_src(imgbtn1, LV_BTN_STATE_PRESSED, &imgbtn_green);
+		lv_imgbtn_set_src(imgbtn1, LV_BTN_STATE_CHECKED_RELEASED, &imgbtn_blue);
+		lv_imgbtn_set_src(imgbtn1, LV_BTN_STATE_CHECKED_PRESSED, &imgbtn_blue);
+		lv_imgbtn_set_checkable(imgbtn1, true);
+		lv_obj_add_style(imgbtn1, LV_IMGBTN_PART_MAIN, &style);
+		lv_obj_align(imgbtn1, NULL, LV_ALIGN_CENTER, 0, -40);
+
+		/*Create a label on the Image button*/
+		lv_obj_t * label = lv_label_create(imgbtn1, NULL);
+		lv_label_set_text(label, "Button");
+	}
+
+	#endif
+
+
+
+
+相关API
+##################################
+
+Typedefs 
+**********************************
+.. code-block:: c
+    :linenos:
+
+	typedef uint16_t lv_btnmatrix_ctrl_t
+	typedef uint8_t lv_btnmatrix_part_t
+
+
+enums 
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	enum [anonymous ]
+	键入以存储按钮控制位(禁用，隐藏等)。前3位用于存储宽度
+	值：
+
+	enumerator LV_BTNMATRIX_CTRL_HIDDEN     /* 隐藏按钮 */
+
+
+	enumerator LV_BTNMATRIX_CTRL_NO_REPEAT  /* 不要重复按此按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_DISABLED   /* 禁用此按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_CHECKABLE  /* 可以切换按钮。*/
+
+
+	enumerator LV_BTNMATRIX_CTRL_CHECK_STATE/* 当前已切换按钮(例如，选中)。*/
+
+	/* 1：在CLICK上发送LV_EVENT_SELECTED，0：在PRESS上发送LV_EVENT_SELECTED */
+	enumerator LV_BTNMATRIX_CTRL_CLICK_TRIG
+
+
+	enum [anonymous ]
+	值：
+	enumerator LV_BTNMATRIX_PART_BG
+	enumerator LV_BTNMATRIX_PART_BTN
+	
+	
+
+函数
+**********************************
+.. code-block:: c
+    :linenos:
+	
+	LV_EXPORT_CONST_INT( LV_BTNMATRIX_BTN_NONE )
+	lv_obj_t * lv_btnmatrix_create(lv_obj_t * par，constlv_obj_t *copy)
+	功能：创建一个按钮矩阵对象
+	返回：
+	指向创建的按钮矩阵的指针
+	形参：
+	par：指向对象的指针，它将是新按钮矩阵的父对象
+	copy：指向按钮矩阵对象的指针，如果不为NULL，则将从其复制新对象
+
+
+	void lv_btnmatrix_set_map(lv_obj_t * btnm，constchar *map[] )
+	功能：设置新地图。将根据地图创建/删除按钮。按钮矩阵保留对地图的引用，因此在矩阵有效期内不得释放 char 串数组。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	map：指针的 char 串数组。最后一个 char 串必须是：“”。使用“ \ n”进行换行。
+
+
+	void lv_btnmatrix_set_ctrl_map(lv_obj_t * btnm，constlv_btnmatrix_ctrl_t ctrl_map [] )
+	功能：设置按钮矩阵的按钮控制图(隐藏，禁用等)。控制图数组将被复制，因此在此函数返回：后可以将其释放。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl_map：指向lv_btn_ctrl_t控制字节数组的指针。数组的长度和元素的位置必须与单个按钮的数量和顺序匹配(即，不包括换行符)。地图的元素应类似于：ctrl_map[0] = width | LV_BTNMATRIX_CTRL_NO_REPEAT | LV_BTNMATRIX_CTRL_TGL_ENABLE
+
+
+	void lv_btnmatrix_set_focused_btn(lv_obj_t * btnm，uint16_t id )
+	功能：设置焦点按钮，即在视觉上突出显示它。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	id：要聚焦的按钮的索引(LV_BTNMATRIX_BTN_NONE以除去焦点)
+
+
+	void lv_btnmatrix_set_recolor(constlv_obj_t * btnm，bool en )
+	功能：启用按钮文本的重新着色
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	en：true：启用重新着色；false：禁用
+
+
+	void lv_btnmatrix_set_btn_ctrl(lv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：设置按钮矩阵的按钮属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。(不计算新行)
+
+
+	void lv_btnmatrix_clear_btn_ctrl(constlv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：清除按钮矩阵的按钮属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。(不计算新行)
+
+
+	void lv_btnmatrix_set_btn_ctrl_all(lv_obj_t * btnm，lv_btnmatrix_ctrl_t ctrl )
+	功能：设置按钮矩阵中所有按钮的属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl：要从中设置的属性lv_btnmatrix_ctrl_t。值可以进行或运算。
+
+
+	void lv_btnmatrix_clear_btn_ctrl_all(lv_obj_t * btnm，lv_btnmatrix_ctrl_t ctrl )
+	功能：清除按钮矩阵中所有按钮的属性
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	ctrl：要从中设置的属性lv_btnmatrix_ctrl_t。值可以进行或运算。
+	en：true：设置属性；false：清除属性
+
+
+	void lv_btnmatrix_set_btn_width(lv_obj_t * btnm，uint16_t btn_id，uint8_t width )
+	功能：设置单个按钮的相对宽度。该方法将导致矩阵再生并且是相对昂贵的操作。建议使用来指定初始宽度，lv_btnmatrix_set_ctrl_map并且此方法仅用于动态更改。
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：基于0的按钮索引进行修改。
+	width：相对宽度(与同一行中的按钮相比)。[1..7]
+
+
+	void lv_btnmatrix_set_one_check(lv_obj_t * btnm，bool one_chk )
+	功能：使按钮矩阵像选择器小部件一样(一次只能切换一个按钮)。Checkable必须在要使用lv_btnmatrix_set_ctrl或选择的按钮上启用lv_btnmatrix_set_btn_ctrl_all。
+	形参：
+	btnm：按钮矩阵对象
+	one_chk：是否启用“一次检查”模式
+
+
+	void lv_btnmatrix_set_align(lv_obj_t * btnm，lv_label_align_t align )
+	功能：设置地图文字的对齐方式(向左，向右或居中)
+	形参：
+	btnm：指向btnmatrix对象的指针
+	align：LV_LABEL_ALIGN_LEFT，LV_LABEL_ALIGN_RIGHT或LV_LABEL_ALIGN_CENTER
+
+
+	const char ** lv_btnmatrix_get_map_array(constlv_obj_t * btnm )
+	功能：获取按钮矩阵的当前图
+	返回：
+	当前地图
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	bool lv_btnmatrix_get_recolor(constlv_obj_t * btnm )
+	功能：检查按钮的文本是否可以使用重新着色
+	返回：
+	true：启用文本重新着色；false：禁用
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	uint16_t lv_btnmatrix_get_active_btn(constlv_obj_t * btnm )
+	功能：获取用户最后按下的按钮的索引(按下，释放等)。在event_cb获取按钮的文本，检查是否隐藏等方面很有用。
+	返回：
+	最后释放按钮的索引(LV_BTNMATRIX_BTN_NONE：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	const char * lv_btnmatrix_get_active_btn_text(constlv_obj_t * btnm )
+	功能：获取用户最后一次“激活”按钮的文本(按下，释放等) event_cb
+	返回：
+	最后释放的按钮的文本(NULL：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	uint16_t lv_btnmatrix_get_focused_btn(constlv_obj_t * btnm )
+	功能：获取焦点按钮的索引。
+	返回：
+	焦点按钮的索引(LV_BTNMATRIX_BTN_NONE：如果未设置)
+	形参：
+	btnm：指向按钮矩阵对象的指针
+
+
+	const char * lv_btnmatrix_get_btn_text(constlv_obj_t * btnm，uint16_t btn_id )
+	功能：获取按钮的文字
+	返回：
+	btn_index`按钮的文本
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：索引一个不计算换行符的按钮。(lv_btnmatrix_get_pressed / released的返回：值)
+
+
+	bool lv_btnmatrix_get_btn_ctrl(lv_obj_t * btnm，uint16_t btn_id，lv_btnmatrix_ctrl_t ctrl )
+	功能：获取按钮矩阵的按钮的控制值是启用还是禁用
+	返回：
+	true：禁用长按重复；false：长按重复启用
+	形参：
+	btnm：指向按钮矩阵对象的指针
+	btn_id：索引一个不计算换行符的按钮。(例如lv_btnmatrix_get_pressed / released的返回：值)
+	ctrl：要检查的控制值(可以使用ORed值)
+
+
+	bool lv_btnmatrix_get_one_check(constlv_obj_t * btnm )
+	功能：查找是否启用了“一次切换”模式。
+	返回：
+	是否启用“一次切换”模式
+	形参：
+	btnm：按钮矩阵对象
+
+
+	lv_label_align_t lv_btnmatrix_get_align(constlv_obj_t * btnm )
+	功能：获取align属性
+	返回：
+	LV_LABEL_ALIGN_LEFT，LV_LABEL_ALIGN_RIGHT或LV_LABEL_ALIGN_CENTER
+	形参：
+	btnm：指向btnmatrix对象的指针
+
+
+
+
+
+
+
+
+

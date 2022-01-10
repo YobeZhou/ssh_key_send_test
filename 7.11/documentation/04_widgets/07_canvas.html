@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>画布(lv_canvas) &mdash; 百问网LVGL中文教程手册文档 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/100ask_ico.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="复选框(lv_cb)" href="08_checkbox.html" />
+    <link rel="prev" title="日历(lv_calendar)" href="06_calendar.html" />
+    <link href="../../_static/default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 百问网LVGL中文教程手册文档
+          
+
+          
+            
+            <img src="../../_static/100ask_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">预备知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../01_intro/intro.html">什么是Lvgl？</a></li>
+</ul>
+<p class="caption"><span class="caption-text">移植概述</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/01_sys.html">系统框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/02_project.html">⭐建立一个lvgl项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/03_display.html">显示接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/04_indev.html">输入设备接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/05_tick.html">心跳</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/06_task-handler.html">任务处理器(Task Handler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/07_sleep.html">睡眠管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/08_os.html">操作系统和中断</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_porting/09_log.html">日志记录</a></li>
+</ul>
+<p class="caption"><span class="caption-text">基础知识</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/01_objects.html">对象(Objects)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/02_Layers.html">对象层级(Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/03_events.html">事件(Events)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/05_indev.html">输入设备(Input devices)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/06_display.html">显示(Displays)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/07_font.html">字体(Fonts)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/08_image.html">图片(Images)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/09_file-system.html">文件系统(File system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/10_animation.html">动画效果(Animations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/11_task.html">任务(Task)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_overview/12_drawing.html">画画(Drawing)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">小部件(Widgets)</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_obj.html">基础对象(lv_obj)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_arc.html">弧(lv_arc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_bar.html">进度条(lv_bar)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_btn.html">按钮(lv_btn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_btnmatrix.html">按钮矩阵(lv_btnmatrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_calendar.html">日历(lv_calendar)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">画布(lv_canvas)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">零件和样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">用法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">缓冲区</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">调色板</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">画画</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">旋转和缩放</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">模糊效果</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">按键</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">范例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">在画布上绘图并旋转</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">色度键控的透明画布</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">相关API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#typedefs">Typedefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enums">enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="08_checkbox.html">复选框(lv_cb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_chart.html">图表(lv_chart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_cont.html">容器(lv_cont)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_cpicker.html">颜色选择器(lv_cpicker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_dropdown.html">下拉列表(lv_dropdown)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_gauge.html">量规(lv_gauge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_img.html">图片(lv_img)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_imgbtn.html">图片按钮(lv_imgbtn)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_keyboard.html">键盘(lv_keyboard)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_label.html">标签(lv_label)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_led.html">LED(lv_led)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_line.html">线(lv_line)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_list.html">列表(lv_list)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_linemeter.html">仪表(lv_lmeter)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_msgbox.html">消息框(lv_msdbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_objmask.html">对象蒙版(lv_objmask)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_page.html">页面(lv_page)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_roller.html">滚筒(lv_roller)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_slider.html">滑杆(lv_slider)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_spinbox.html">数字调整框(lv_spinbox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_spinner.html">旋转器(lv_spinner)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_switch.html">开关(lv_switch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_table.html">表格(lv_table)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31_tabview.html">页签(lv_tabview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="32_textarea.html">文本框(lv_textarea)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33_tileview.html">平铺视图(lv_tileview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34_win.html">窗口(lv_win)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">LVGL项目实战</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/01_lvgl_100ask_project_sim.html">LVGL项目实战(Windows模拟器)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/02_lvgl_100ask_project_Linux.html">LVGL项目实战(基于Linux开发板)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_project/03_lvgl_100ask_project_STM32F103.html">LVGL项目实战(基于STM32F103)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">关于百问网(韦东山)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html">公司简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AboutUs/aboutus.html#id2">联系方式</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">百问网LVGL中文教程手册文档</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>画布(lv_canvas)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/documentation/04_widgets/07_canvas.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lv-canvas">
+<h1>画布(lv_canvas)<a class="headerlink" href="#lv-canvas" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>画布继承自 <a class="reference external" href="http://lvgl.100ask.net/documentation/04_widgets/14_img.html">图像</a> ，用户可以在其中绘制任何内容。可以使用lvgl的绘图引擎在此处绘制矩形，文本，图像，线弧。除了一些“效果”，还可以应用，例如旋转，缩放和模糊。</p>
+</div>
+<div class="section" id="id3">
+<h2>零件和样式<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>画布的一个主要部分称为 <code class="docutils literal notranslate"><span class="pre">LV_CANVAS_PART_MAIN</span></code> ，只有image_recolor属性用于为 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_ALPHA_1/2/4/8BIT</span></code> 图像赋予颜色。</p>
+</div>
+<div class="section" id="id4">
+<h2>用法<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>缓冲区<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>画布需要一个缓冲区来存储绘制的图像。要将缓冲区分配给画布，请使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_set_buffer(canvas,</span> <span class="pre">buffer,</span> <span class="pre">width,</span> <span class="pre">height,</span> <span class="pre">LV_IMG_CF_...)</span></code> 。其中 <code class="docutils literal notranslate"><span class="pre">buffer</span></code> 是用于保存画布图像的静态缓冲区（而不仅仅是局部变量）。例如， <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">lv_color_t</span> <span class="pre">buffer[LV_CANVAS_BUF_SIZE_TRUE_COLOR(width,</span> <span class="pre">height)]</span></code> 。 <code class="docutils literal notranslate"><span class="pre">LV_CANVAS_BUF_SIZE_...</span></code> 宏有助于确定不同颜色格式的缓冲区大小。</p>
+<p>画布支持所有内置的颜色格式，例如 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_INDEXED_2BIT</span></code> 。请参阅 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/08_image.html#id4">颜色格式</a> 部分中的完整列表。</p>
+</div>
+<div class="section" id="id7">
+<h3>调色板<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_INDEXED_...</span></code> 颜色格式，需要使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_set_palette(canvas,</span> <span class="pre">3,</span> <span class="pre">LV_COLOR_RED)</span></code> 初始化调色板。它将 index=3 的像素设置为红色。</p>
+</div>
+<div class="section" id="id8">
+<h3>画画<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>要在画布上设置像素，请使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_set_px(canvas,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">LV_COLOR_RED)</span></code> 。对于 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_INDEXED</span> <span class="pre">_...</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_ALPHA</span> <span class="pre">_...</span></code> ，需要将颜色的索引或alpha值作为颜色传递。例如：  <code class="docutils literal notranslate"><span class="pre">lv_color_t</span> <span class="pre">c;</span> <span class="pre">c.full</span> <span class="pre">=</span> <span class="pre">3</span></code> ;</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_canvas_fill_bg(canvas,</span> <span class="pre">LV_COLOR_BLUE,</span> <span class="pre">LV_OPA_50)</span></code> 将整个画布填充为蓝色，不透明度为50％。请注意，如果当前的颜色格式不支持颜色（例如 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_ALPHA_2BIT</span></code> ），则会忽略颜色。同样，如果不支持不透明度（例如 <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR</span></code> ），则会将其忽略。</p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_copy_buf(canvas,</span> <span class="pre">buffer_to_copy,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">height)</span></code> 将像素数组复制到画布。缓冲区和画布的颜色格式需要匹配。</p>
+<p>画一些东西到画布上使用</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_rect(canvas,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">heigth,</span> <span class="pre">&amp;draw_dsc)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_text(canvas,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">max_width,</span> <span class="pre">&amp;draw_dsc,</span> <span class="pre">txt,</span> <span class="pre">LV_LABEL_ALIGN_LEFT/CENTER/RIGHT)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_img(canvas,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">&amp;img_src,</span> <span class="pre">&amp;draw_dsc)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_line(canvas,</span> <span class="pre">point_array,</span> <span class="pre">point_cnt,</span> <span class="pre">&amp;draw_dsc)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_polygon(canvas,</span> <span class="pre">points_array,</span> <span class="pre">point_cnt,</span> <span class="pre">&amp;draw_dsc)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_canvas_draw_arc(canvas,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">radius,</span> <span class="pre">start_angle,</span> <span class="pre">end_angle,</span> <span class="pre">&amp;draw_dsc)</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">draw_dsc</span></code> 是 <code class="docutils literal notranslate"><span class="pre">lv_draw_rect/label/img/line_dsc_t</span></code> 变量，应首先使用 <code class="docutils literal notranslate"><span class="pre">lv_draw_rect/label/img/line_dsc_init()</span></code> 函数初始化，然后使用所需的颜色和其他值对其进行修改。</p>
+<p>绘制功能可以绘制为任何颜色格式。例如，可以在 <code class="docutils literal notranslate"><span class="pre">LV_IMG_VF_ALPHA_8BIT</span></code> 画布上绘制文本，然后将结果图像用作lv_objmask中的蒙版。</p>
+</div>
+<div class="section" id="id9">
+<h3>旋转和缩放<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_canvas_transform()</span></code> 可用于旋转和/或缩放图像的图像并将结果存储在画布上。该函数需要以下参数：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">canvas</span></code> 指向画布对象以存储转换结果的指针。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img</span> <span class="pre">pointer</span></code> 转换为图像描述符。也可以是其他画布的图像描述符（ <code class="docutils literal notranslate"><span class="pre">lv_canvas_get_img()</span></code> ）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">angle</span></code> 旋转角度（0..3600），0.1度分辨率</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> 缩放系数（256不缩放，512倍大小，128个一半大小）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset_x</span></code> 偏移量X，以指示将结果数据放在目标画布上的位置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset_y</span></code> 偏移量Y，以指示将结果数据放在目标画布上的位置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pivot_x</span></code> 旋转的X轴。相对于源画布。设置为 <code class="docutils literal notranslate"><span class="pre">源宽度/</span> <span class="pre">2</span></code> 以围绕中心旋转</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pivot_y</span></code> 旋转的枢轴Y。相对于源画布。设置为 <code class="docutils literal notranslate"><span class="pre">源高度/</span> <span class="pre">2</span></code> 以围绕中心旋转</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">antialias</span></code> true：在转换过程中应用抗锯齿。看起来更好，但速度较慢。</p></li>
+</ul>
+<p>请注意，画布无法自身旋转。您需要源和目标画布或图像。</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>模糊效果<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>画布的给定区域可以使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_blur_hor(canvas,</span> <span class="pre">&amp;area,</span> <span class="pre">r)</span></code> 水平模糊，垂直使用 <code class="docutils literal notranslate"><span class="pre">lv_canvas_blur_ver(canvas,</span> <span class="pre">&amp;area,</span> <span class="pre">r)</span></code> 模糊。r是模糊的半径（值越大表示毛刺强度越大）。  <code class="docutils literal notranslate"><span class="pre">area</span></code> 是应该应用模糊的区域（相对于画布进行解释）</p>
+</div>
+<div class="section" id="id11">
+<h2>事件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>默认情况下，画布的单击被禁用（由Image继承），因此不生成任何事件。</p>
+<p>如果启用了单击（lv_obj_set_click（canvas，true）），则仅 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2">通用事件</a> 由对象类型发送。</p>
+<p>了解有关 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/03_events.html">事件</a> 的更多信息。</p>
+</div>
+<div class="section" id="id14">
+<h2>按键<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<p>画布对象类型不处理任何键。</p>
+<p>进一步了解 <a class="reference external" href="http://lvgl.100ask.net/documentation/03_overview/05_indev.html">按键</a> 。</p>
+</div>
+<div class="section" id="id16">
+<h2>范例<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id17">
+<h3>在画布上绘图并旋转<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id20">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/07_canvas/01_lv_ex_canvas_1.png" src="http://photos.100ask.net/lvgl/04_widgets/07_canvas/01_lv_ex_canvas_1.png" />
+<p class="caption"><span class="caption-text">在画布上绘图并旋转</span><a class="headerlink" href="#id20" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_CANVAS</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="cp">#define CANVAS_WIDTH  200</span>
+<span class="linenos"> 6</span>    <span class="cp">#define CANVAS_HEIGHT  150</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="kt">void</span> <span class="nf">lv_ex_canvas_1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 9</span>    <span class="p">{</span>
+<span class="linenos">10</span>            <span class="n">lv_draw_rect_dsc_t</span> <span class="n">rect_dsc</span><span class="p">;</span>
+<span class="linenos">11</span>            <span class="n">lv_draw_rect_dsc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect_dsc</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos">13</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">bg_opa</span> <span class="o">=</span> <span class="n">LV_OPA_COVER</span><span class="p">;</span>
+<span class="linenos">14</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">bg_grad_dir</span> <span class="o">=</span> <span class="n">LV_GRAD_DIR_HOR</span><span class="p">;</span>
+<span class="linenos">15</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="n">LV_COLOR_RED</span><span class="p">;</span>
+<span class="linenos">16</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">bg_grad_color</span> <span class="o">=</span> <span class="n">LV_COLOR_BLUE</span><span class="p">;</span>
+<span class="linenos">17</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="linenos">18</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">border_opa</span> <span class="o">=</span> <span class="n">LV_OPA_90</span><span class="p">;</span>
+<span class="linenos">19</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="n">LV_COLOR_WHITE</span><span class="p">;</span>
+<span class="linenos">20</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">shadow_width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="linenos">21</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">shadow_ofs_x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="linenos">22</span>            <span class="n">rect_dsc</span><span class="p">.</span><span class="n">shadow_ofs_y</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="n">lv_draw_label_dsc_t</span> <span class="n">label_dsc</span><span class="p">;</span>
+<span class="linenos">25</span>            <span class="n">lv_draw_label_dsc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">label_dsc</span><span class="p">);</span>
+<span class="linenos">26</span>            <span class="n">label_dsc</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">LV_COLOR_YELLOW</span><span class="p">;</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>            <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">cbuf</span><span class="p">[</span><span class="n">LV_CANVAS_BUF_SIZE_TRUE_COLOR</span><span class="p">(</span><span class="n">CANVAS_WIDTH</span><span class="p">,</span> <span class="n">CANVAS_HEIGHT</span><span class="p">)];</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">canvas</span> <span class="o">=</span> <span class="n">lv_canvas_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">31</span>            <span class="n">lv_canvas_set_buffer</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">cbuf</span><span class="p">,</span> <span class="n">CANVAS_WIDTH</span><span class="p">,</span> <span class="n">CANVAS_HEIGHT</span><span class="p">,</span> <span class="n">LV_IMG_CF_TRUE_COLOR</span><span class="p">);</span>
+<span class="linenos">32</span>            <span class="n">lv_obj_align</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">LV_ALIGN_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="linenos">33</span>            <span class="n">lv_canvas_fill_bg</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>            <span class="n">lv_canvas_draw_rect</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect_dsc</span><span class="p">);</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>            <span class="n">lv_canvas_draw_text</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">label_dsc</span><span class="p">,</span> <span class="s">&quot;Some text on text canvas&quot;</span><span class="p">,</span> <span class="n">LV_LABEL_ALIGN_LEFT</span><span class="p">);</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>            <span class="cm">/* Test the rotation. It requires an other buffer where the orignal image is stored.</span>
+<span class="linenos">40</span><span class="cm">             * So copy the current image to buffer and rotate it to the canvas */</span>
+<span class="linenos">41</span>            <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">cbuf_tmp</span><span class="p">[</span><span class="n">CANVAS_WIDTH</span> <span class="o">*</span> <span class="n">CANVAS_HEIGHT</span><span class="p">];</span>
+<span class="linenos">42</span>            <span class="n">memcpy</span><span class="p">(</span><span class="n">cbuf_tmp</span><span class="p">,</span> <span class="n">cbuf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cbuf_tmp</span><span class="p">));</span>
+<span class="linenos">43</span>            <span class="n">lv_img_dsc_t</span> <span class="n">img</span><span class="p">;</span>
+<span class="linenos">44</span>            <span class="n">img</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">cbuf_tmp</span><span class="p">;</span>
+<span class="linenos">45</span>            <span class="n">img</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">cf</span> <span class="o">=</span> <span class="n">LV_IMG_CF_TRUE_COLOR</span><span class="p">;</span>
+<span class="linenos">46</span>            <span class="n">img</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">CANVAS_WIDTH</span><span class="p">;</span>
+<span class="linenos">47</span>            <span class="n">img</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">CANVAS_HEIGHT</span><span class="p">;</span>
+<span class="linenos">48</span>
+<span class="linenos">49</span>            <span class="n">lv_canvas_fill_bg</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">LV_COLOR_SILVER</span><span class="p">,</span> <span class="n">LV_OPA_COVER</span><span class="p">);</span>
+<span class="linenos">50</span>            <span class="n">lv_canvas_transform</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">img</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">LV_IMG_ZOOM_NONE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CANVAS_WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">CANVAS_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="linenos">51</span>    <span class="p">}</span>
+<span class="linenos">52</span>
+<span class="linenos">53</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id18">
+<h3>色度键控的透明画布<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default" id="id21">
+<img alt="http://photos.100ask.net/lvgl/04_widgets/07_canvas/02_lv_ex_canvas_2.png" src="http://photos.100ask.net/lvgl/04_widgets/07_canvas/02_lv_ex_canvas_2.png" />
+<p class="caption"><span class="caption-text">色度键控的透明画布</span><a class="headerlink" href="#id21" title="永久链接至图片">¶</a></p>
+</div>
+<p>上述效果的示例代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="cp">#include</span> <span class="cpf">&quot;../../../lv_examples.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 2</span>    <span class="cp">#if LV_USE_CANVAS</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="cp">#define CANVAS_WIDTH  50</span>
+<span class="linenos"> 5</span>    <span class="cp">#define CANVAS_HEIGHT  50</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="cm">/**</span>
+<span class="linenos"> 8</span><span class="cm">     * Create a transparent canvas with Chroma keying and indexed color format (palette).</span>
+<span class="linenos"> 9</span><span class="cm">     */</span>
+<span class="linenos">10</span>    <span class="kt">void</span> <span class="nf">lv_ex_canvas_2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="p">{</span>
+<span class="linenos">12</span>            <span class="cm">/*Create a button to better see the transparency*/</span>
+<span class="linenos">13</span>            <span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>            <span class="cm">/*Create a buffer for the canvas*/</span>
+<span class="linenos">16</span>            <span class="k">static</span> <span class="n">lv_color_t</span> <span class="n">cbuf</span><span class="p">[</span><span class="n">LV_CANVAS_BUF_SIZE_INDEXED_1BIT</span><span class="p">(</span><span class="n">CANVAS_WIDTH</span><span class="p">,</span> <span class="n">CANVAS_HEIGHT</span><span class="p">)];</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>            <span class="cm">/*Create a canvas and initialize its the palette*/</span>
+<span class="linenos">19</span>            <span class="n">lv_obj_t</span> <span class="o">*</span> <span class="n">canvas</span> <span class="o">=</span> <span class="n">lv_canvas_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="linenos">20</span>            <span class="n">lv_canvas_set_buffer</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">cbuf</span><span class="p">,</span> <span class="n">CANVAS_WIDTH</span><span class="p">,</span> <span class="n">CANVAS_HEIGHT</span><span class="p">,</span> <span class="n">LV_IMG_CF_INDEXED_1BIT</span><span class="p">);</span>
+<span class="linenos">21</span>            <span class="n">lv_canvas_set_palette</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LV_COLOR_TRANSP</span><span class="p">);</span>
+<span class="linenos">22</span>            <span class="n">lv_canvas_set_palette</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">LV_COLOR_RED</span><span class="p">);</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>            <span class="cm">/*Create colors with the indices of the palette*/</span>
+<span class="linenos">25</span>            <span class="n">lv_color_t</span> <span class="n">c0</span><span class="p">;</span>
+<span class="linenos">26</span>            <span class="n">lv_color_t</span> <span class="n">c1</span><span class="p">;</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>            <span class="n">c0</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">29</span>            <span class="n">c1</span><span class="p">.</span><span class="n">full</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>            <span class="cm">/*Transparent background*/</span>
+<span class="linenos">32</span>            <span class="n">lv_canvas_fill_bg</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">LV_OPA_TRANSP</span><span class="p">);</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="cm">/*Create hole on the canvas*/</span>
+<span class="linenos">35</span>            <span class="kt">uint32_t</span> <span class="n">x</span><span class="p">;</span>
+<span class="linenos">36</span>            <span class="kt">uint32_t</span> <span class="n">y</span><span class="p">;</span>
+<span class="linenos">37</span>            <span class="k">for</span><span class="p">(</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">38</span>                    <span class="k">for</span><span class="p">(</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">39</span>                            <span class="n">lv_canvas_set_px</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c0</span><span class="p">);</span>
+<span class="linenos">40</span>                    <span class="p">}</span>
+<span class="linenos">41</span>            <span class="p">}</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="p">}</span>
+<span class="linenos">44</span>    <span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>相关API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<div class="section" id="typedefs">
+<h3>Typedefs<a class="headerlink" href="#typedefs" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">lv_canvas_part_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enums">
+<h3>enums<a class="headerlink" href="#enums" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    enum [anonymous]
+<span class="linenos">2</span>    值：
+<span class="linenos">3</span>    enumerator LV_CANVAS_PART_MAIN
+</pre></div>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>函数<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>    lv_obj_t * lv_canvas_create(lv_obj_t * par，constlv_obj_t *copy)
+<span class="linenos">  2</span>    功能：创建一个画布对象
+<span class="linenos">  3</span>    返回：
+<span class="linenos">  4</span>    指向创建的画布的指针
+<span class="linenos">  5</span>    形参：
+<span class="linenos">  6</span>    par：指向对象的指针，它将是新画布的父对象
+<span class="linenos">  7</span>    copy：指向画布对象的指针，如果不为NULL，则将从其复制新对象
+<span class="linenos">  8</span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span>    void lv_canvas_set_buffer(lv_obj_t * canvas，void * buf，lv_coord_t w，lv_coord_t h，lv_img_cf_t cf )
+<span class="linenos"> 11</span>    功能：为画布设置缓冲区。
+<span class="linenos"> 12</span>    形参：
+<span class="linenos"> 13</span>    buf：画布内容所在的缓冲区。所需的大小为(lv_img_color_format_get_px_size(cf)* w)/ 8 * h)
+<span class="linenos"> 14</span>    可以使用它分配lv_mem_alloc()或可以是静态分配的数组(例如，静态lv_color_t buf [100 * 50])，
+<span class="linenos"> 15</span>    也可以是RAM中的地址或外部地址SRAM
+<span class="linenos"> 16</span>    canvas：指向画布对象的指针
+<span class="linenos"> 17</span>    w：画布的宽度
+<span class="linenos"> 18</span>    h：画布的高度
+<span class="linenos"> 19</span>    cf：颜色格式。LV_IMG_CF_...
+<span class="linenos"> 20</span>
+<span class="linenos"> 21</span>
+<span class="linenos"> 22</span>    void lv_canvas_set_px(lv_obj_t * canvas，lv_coord_t x，lv_coord_t y，lv_color_t c )
+<span class="linenos"> 23</span>    功能：设置画布上像素的颜色
+<span class="linenos"> 24</span>    形参：
+<span class="linenos"> 25</span>    canvas：
+<span class="linenos"> 26</span>    x：要设置点的x坐标
+<span class="linenos"> 27</span>    y：要设置点的x坐标
+<span class="linenos"> 28</span>    c：点的颜色
+<span class="linenos"> 29</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>    void lv_canvas_set_palette(lv_obj_t * canvas，uint8_t id，lv_color_t c )
+<span class="linenos"> 32</span>    功能：使用索引格式设置画布的调色板颜色。仅对LV_IMG_CF_INDEXED1/2/4/8
+<span class="linenos"> 33</span>    形参：
+<span class="linenos"> 34</span>    canvas：指向画布对象的指针
+<span class="linenos"> 35</span>    id：要设置的调色板颜色：
+<span class="linenos"> 36</span>    为LV_IMG_CF_INDEXED1：0..1
+<span class="linenos"> 37</span>    为LV_IMG_CF_INDEXED2：0..3
+<span class="linenos"> 38</span>    为LV_IMG_CF_INDEXED4：0..15
+<span class="linenos"> 39</span>    为LV_IMG_CF_INDEXED8：0..255
+<span class="linenos"> 40</span>    c：要设置的颜色
+<span class="linenos"> 41</span>
+<span class="linenos"> 42</span>
+<span class="linenos"> 43</span>    lv_color_t lv_canvas_get_px(lv_obj_t * canvas，lv_coord_t x，lv_coord_t y )
+<span class="linenos"> 44</span>    功能：获取画布上像素的颜色
+<span class="linenos"> 45</span>    返回：
+<span class="linenos"> 46</span>    点的颜色
+<span class="linenos"> 47</span>    形参：
+<span class="linenos"> 48</span>    canvas：
+<span class="linenos"> 49</span>    x：要设置点的x坐标
+<span class="linenos"> 50</span>    y：要设置点的x坐标
+<span class="linenos"> 51</span>
+<span class="linenos"> 52</span>
+<span class="linenos"> 53</span>    lv_img_dsc_t * lv_canvas_get_img(lv_obj_t * canvas )
+<span class="linenos"> 54</span>    功能：获取画布的图像作为指向lv_img_dsc_t变量的指针。
+<span class="linenos"> 55</span>    返回：
+<span class="linenos"> 56</span>    指向图像描述符的指针。
+<span class="linenos"> 57</span>    形参：
+<span class="linenos"> 58</span>    canvas：指向画布对象的指针
+<span class="linenos"> 59</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span>    void lv_canvas_copy_buf(lv_obj_t *canvas，constvoid * to_copy，lv_coord_t x，lv_coord_t y，lv_coord_t w，lv_coord_t h )
+<span class="linenos"> 62</span>    功能：将缓冲区复制到画布
+<span class="linenos"> 63</span>    形参：
+<span class="linenos"> 64</span>    canvas：指向画布对象的指针
+<span class="linenos"> 65</span>    to_copy：要复制的缓冲区。颜色格式必须与画布的缓冲区颜色格式匹配
+<span class="linenos"> 66</span>    x：目标位置的左侧
+<span class="linenos"> 67</span>    y：目标位置的顶部
+<span class="linenos"> 68</span>    w：要复制的缓冲区的宽度
+<span class="linenos"> 69</span>    h：要复制的缓冲区的高度
+<span class="linenos"> 70</span>
+<span class="linenos"> 71</span>
+<span class="linenos"> 72</span>    void lv_canvas_transform(lv_obj_t * canvas，lv_img_dsc_t * img，int16_t angle，uint16_t zoom，lv_coord_t offset_x，lv_coord_t offset_y，int32_tivot_x，int32_tivot_y，bool antialias )
+<span class="linenos"> 73</span>    功能：转换并成像并将结果存储在画布上。
+<span class="linenos"> 74</span>    形参：
+<span class="linenos"> 75</span>    canvas：指向画布对象的指针，以存储转换结果。
+<span class="linenos"> 76</span>    img：指向要转换的图像描述符的指针。也可以是其他画布的图像描述符(lv_canvas_get_img())。
+<span class="linenos"> 77</span>    angle：旋转角度(0..3600)，0.1度分辨率
+<span class="linenos"> 78</span>    zoom：变焦倍数(256无变焦)；
+<span class="linenos"> 79</span>    offset_x：偏移X以告知将结果数据放在目标画布上的位置
+<span class="linenos"> 80</span>    offset_y：偏移X以告知将结果数据放在目标画布上的位置
+<span class="linenos"> 81</span>    pivot_x：旋转X轴。相对于源画布设置为围绕中心旋转source width / 2
+<span class="linenos"> 82</span>    pivot_y：旋转的枢轴Y。相对于源画布设置为围绕中心旋转source height / 2
+<span class="linenos"> 83</span>    antialias：在转换过程中应用抗锯齿。看起来更好，但速度较慢。
+<span class="linenos"> 84</span>
+<span class="linenos"> 85</span>
+<span class="linenos"> 86</span>    void lv_canvas_blur_hor(lv_obj_t *canvas，constlv_area_t * area，uint16_t r )
+<span class="linenos"> 87</span>    功能：在画布上应用水平模糊
+<span class="linenos"> 88</span>    形参：
+<span class="linenos"> 89</span>    canvas：指向画布对象的指针
+<span class="linenos"> 90</span>    area：要模糊的区域。如果NULL整个画布会模糊。
+<span class="linenos"> 91</span>    r：模糊半径
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span>    void lv_canvas_blur_ver(lv_obj_t *canvas，constlv_area_t * area，uint16_t r )
+<span class="linenos"> 95</span>    功能：在画布上应用垂直模糊
+<span class="linenos"> 96</span>    形参：
+<span class="linenos"> 97</span>    canvas：指向画布对象的指针
+<span class="linenos"> 98</span>    area：要模糊的区域。如果NULL整个画布会模糊。
+<span class="linenos"> 99</span>    r：模糊半径
+<span class="linenos">100</span>
+<span class="linenos">101</span>
+<span class="linenos">102</span>    void lv_canvas_fill_bg(lv_obj_t *canvas，lv_color_t color，lv_opa_t opa )
+<span class="linenos">103</span>    功能：用颜色填充画布
+<span class="linenos">104</span>    形参：
+<span class="linenos">105</span>    canvas：指向画布的指针
+<span class="linenos">106</span>    color：背景色
+<span class="linenos">107</span>    opa：所需的不透明度
+<span class="linenos">108</span>
+<span class="linenos">109</span>
+<span class="linenos">110</span>    void lv_canvas_draw_rect(lv_obj_t * canvas，lv_coord_t x，lv_coord_t y，lv_coord_t w，lv_coord_t h，constlv_draw_rect_dsc_t * rect_dsc )
+<span class="linenos">111</span>    功能：在画布上画一个矩形
+<span class="linenos">112</span>    形参：
+<span class="linenos">113</span>    canvas：指向画布对象的指针
+<span class="linenos">114</span>    x：矩形的左坐标
+<span class="linenos">115</span>    y：矩形的顶部坐标
+<span class="linenos">116</span>    w：矩形的宽度
+<span class="linenos">117</span>    h：矩形的高度
+<span class="linenos">118</span>    rect_dsc：矩形的描述符
+<span class="linenos">119</span>
+<span class="linenos">120</span>
+<span class="linenos">121</span>    void lv_canvas_draw_text(lv_obj_t *canvas，lv_coord_t x，lv_coord_t y，lv_coord_t max_w，lv_draw_label_dsc_t * label_draw_dsc，constchar * txt，lv_label_align_t align )
+<span class="linenos">122</span>    功能：在画布上绘制文本。
+<span class="linenos">123</span>    形参：
+<span class="linenos">124</span>    canvas：指向画布对象的指针
+<span class="linenos">125</span>    x：文本的左坐标
+<span class="linenos">126</span>    y：文本的顶部坐标
+<span class="linenos">127</span>    max_w：文字的最大宽度。文本将被包装以适合此大小
+<span class="linenos">128</span>    label_draw_dsc：指向有效标签描述符的指针 lv_draw_label_dsc_t
+<span class="linenos">129</span>    txt：要显示的文字
+<span class="linenos">130</span>    align：对齐文字(LV_LABEL_ALIGN_LEFT/RIGHT/CENTER)
+<span class="linenos">131</span>
+<span class="linenos">132</span>
+<span class="linenos">133</span>    void lv_canvas_draw_img(lv_obj_t * canvas，lv_coord_t x，lv_coord_t y，constvoid * src，constlv_draw_img_dsc_t * img_draw_dsc )
+<span class="linenos">134</span>    功能：在画布上绘制图像
+<span class="linenos">135</span>    形参：
+<span class="linenos">136</span>    canvas：指向画布对象的指针
+<span class="linenos">137</span>    x：图像的左坐标
+<span class="linenos">138</span>    y：图像的最高坐标
+<span class="linenos">139</span>    src：图像源。可以是lv_img_dsc_t变量的指针或图像的路径。
+<span class="linenos">140</span>    img_draw_dsc：指向有效标签描述符的指针 lv_draw_img_dsc_t
+<span class="linenos">141</span>
+<span class="linenos">142</span>
+<span class="linenos">143</span>    void lv_canvas_draw_line(lv_obj_t *canvas，constlv_point_t points[]，uint32_t point_cnt，constlv_draw_line_dsc_t * line_draw_dsc )
+<span class="linenos">144</span>    功能：在画布上画一条线
+<span class="linenos">145</span>    形参：
+<span class="linenos">146</span>    canvas：指向画布对象的指针
+<span class="linenos">147</span>    points：线的点
+<span class="linenos">148</span>    point_cnt：点数
+<span class="linenos">149</span>    line_draw_dsc：指向初始化lv_draw_line_dsc_t变量的指针
+<span class="linenos">150</span>
+<span class="linenos">151</span>
+<span class="linenos">152</span>    void lv_canvas_draw_polygon(lv_obj_t *canvas，constlv_point_t点[]，uint32_t point_cnt，constlv_draw_rect_dsc_t * poly_draw_dsc )
+<span class="linenos">153</span>    功能：在画布上绘制多边形
+<span class="linenos">154</span>    形参：
+<span class="linenos">155</span>    canvas：指向画布对象的指针
+<span class="linenos">156</span>    points：多边形的点
+<span class="linenos">157</span>    point_cnt：点数
+<span class="linenos">158</span>    poly_draw_dsc：指向初始化lv_draw_rect_dsc_t变量的指针
+<span class="linenos">159</span>
+<span class="linenos">160</span>
+<span class="linenos">161</span>    void lv_canvas_draw_arc(lv_obj_t * canvas，lv_coord_t x，lv_coord_t y，lv_coord_t r，int32_t start_angle，int32_t end_angle，constlv_draw_line_dsc_t * arc_draw_dsc )
+<span class="linenos">162</span>    功能：在画布上画圆弧
+<span class="linenos">163</span>    形参：
+<span class="linenos">164</span>    canvas：指向画布对象的指针
+<span class="linenos">165</span>    x：弧的origo x
+<span class="linenos">166</span>    y：弧线的起源
+<span class="linenos">167</span>    r：圆弧半径
+<span class="linenos">168</span>    start_angle：起始角度(度)
+<span class="linenos">169</span>    end_angle：结束角度(度)
+<span class="linenos">170</span>    arc_draw_dsc：指向初始化lv_draw_line_dsc_t变量的指针
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="08_checkbox.html" class="btn btn-neutral float-right" title="复选框(lv_cb)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="06_calendar.html" class="btn btn-neutral float-left" title="日历(lv_calendar)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2008-2021 深圳百问网科技有限公司 All Rights Reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    //return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+    return fetch("https://raw.githubusercontent.com/100askTeam/100ask_docs_versionlist/main/lvgl_versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => `<option value="${version}">${version}</option>`)}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+==================================
+LED(lv_led)
+==================================
+
+概述
+##################################
+LED是矩形（或圆形）对象。它的亮度可以调节。亮度降低时，LED的颜色会变暗。
+
+零件和样式
+##################################
+LED只有一个主要部分，称为 ``LV_LED_PART_MAIN`` ，它使用所有典型的背景样式属性。
+
+
+用法
+##################################
+
+亮度
+**********************************
+可以使用 ``lv_led_set_bright(led, bright)`` 设置它们的亮度。亮度应介于0（最暗）和255（最亮）之间。
+
+切换
+**********************************
+使用 ``lv_led_on(led)`` 和 ``lv_led_off(led)`` 将亮度设置为预定义的ON或OFF值。 ``lv_led_toggle(led)`` 在ON和OFF状态之间切换。
+
+
+事件
+##################################
+仅支持 `通用事件`_  
+
+了解有关 `事件`_ 的更多内容。
+
+.. _通用事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html#id2
+.. _事件: http://lvgl.100ask.net/documentation/03_overview/03_events.html
+
+
+按键处理
+##################################
+对象类型不处理任何键。 
+
+了解有关 `按键`_  的更多内容。
+
+.. _按键: http://lvgl.100ask.net/documentation/03_overview/05_indev.html
+
+
+
+范例
+##################################
+
+自定义风格的LED
+**********************************
+
+.. figure:: http://photos.100ask.net/lvgl/04_widgets/18_led/01_lv_ex_led_1.png
+	   
+	  自定义风格的LED
+
+
+上述效果的示例代码：
+
+.. code-block:: c
+    :linenos:
+
+
+	#include "../../../lv_examples.h"
+	#if LV_USE_LED
+
+	void lv_ex_led_1(void)
+	{
+		/*Create a LED and switch it OFF*/
+		lv_obj_t * led1  = lv_led_create(lv_scr_act(), NULL);
+		lv_obj_align(led1, NULL, LV_ALIGN_CENTER, -80, 0);
+		lv_led_off(led1);
+
+		/*Copy the previous LED and set a brightness*/
+		lv_obj_t * led2  = lv_led_create(lv_scr_act(), led1);
+		lv_obj_align(led2, NULL, LV_ALIGN_CENTER, 0, 0);
+		lv_led_set_bright(led2, 190);
+
+		/*Copy the previous LED and switch it ON*/
+		lv_obj_t * led3  = lv_led_create(lv_scr_act(), led1);
+		lv_obj_align(led3, NULL, LV_ALIGN_CENTER, 80, 0);
+		lv_led_on(led3);
+	}
+
+	#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
+
+

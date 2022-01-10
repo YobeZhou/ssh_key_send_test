@@ -1,0 +1,100 @@
+==================================
+输入设备(Input devices)
+==================================
+在 LVGL 中输入设备，有下面几种类型：
+
+- 指针式输入设备，如触摸板或鼠标
+- 键盘，如普通键盘或简单的数字键盘
+- 带有左/右转向和推入选项的编码器
+- 外部硬件按钮，分配给屏幕上的特定点
+
+
+在进一步阅读本文之前，请先阅读 `输入设备接口`_ 的部分内容
+
+
+.. _输入设备接口: http://lvgl.100ask.net/documentation/02_porting/04_indev.html
+
+指针
+##################################
+指针输入设备可以具有光标。(通常是鼠标)
+
+.. code-block:: c
+    :linenos:
+	
+	...
+	lv_indev_t * mouse_indev = lv_indev_drv_register(&indev_drv);
+
+	LV_IMG_DECLARE(mouse_cursor_icon);                          /*Declare the image file.*/
+	lv_obj_t * cursor_obj =  lv_img_create(lv_scr_act(), NULL); /*Create an image object for the cursor */
+	lv_img_set_src(cursor_obj, &mouse_cursor_icon);             /*Set the image source*/
+	lv_indev_set_cursor(mouse_indev, cursor_obj);               /*Connect the image  object to the driver*/
+
+请注意，光标对象应设置为 ``lv_obj_set_click(cursor_obj, false)`` 。对于图像，默认情况下禁用单击。
+
+
+键盘和编码器
+##################################
+我们可以使用键盘或编码器完全控制用户界面，而无需触摸板或鼠标。它的作用类似于PC上的TAB键，可以在应用程序或网页中选择元素。
+
+
+组
+**********************************
+想要通过键盘或编码器控制的对象需要添加到Group中。在每个组中，只有一个集中的对象可以接收按下的键或编码器的动作。例如，如果将文本区域作为焦点，并且在键盘上按了某个字母，则将发送键并将其插入到文本区域中。同样，如果将滑块聚焦，然后按向左或向右箭头，则滑块的值将被更改。
+
+需要将输入设备与组关联。一台输入设备只能将键发送到一组，但一组也可以从多个输入设备接收数据。 
+
+要创建组，请使用 ``lv_group_t * g = lv_group_create()`` ，然后将对象添加到组中，请使用 ``lv_group_add_obj(g, obj)`` 。
+
+要将组与输入设备关联，请使用 ``lv_indev_set_group(indev, g)`` ，其中 ``indev`` 是 ``lv_indev_drv_register()`` 的返回值
+
+
+按键
+**********************************
+有一些预定义的键具有特殊含义：
+
+- **LV_KEY_NEXT**			专注于下一个对象
+- **LV_KEY_PREV**			专注于上一个对象 
+- **LV_KEY_ENTER**			触发器 ``LV_EVENT_PRESSED/CLICKED/LONG_PRESSED`` 等事件
+- **LV_KEY_UP**				增加值或向上移动
+- **LV_KEY_DOWN**			减小值或向下移动
+- **LV_KEY_RIGHT**			增加值或向右移动
+- **LV_KEY_LEFT**			减小值或向左移动
+- **LV_KEY_ESC** 			关闭或退出(例如，关闭下拉列表)
+- **LV_KEY_DEL** 			删除(例如，“ 文本”区域中右侧的字符)
+- **LV_KEY_BACKSPACE**		删除左侧的字符(例如，在文本区域中)
+- **LV_KEY_HOME**			转到开头/顶部(例如，在“ 文本”区域中)
+- **LV_KEY_END**			转到末尾(例如，在“ 文本”区域中)
+
+最重要的特殊键是 ``LV_KEY_NEXT/PREV`` ， ``LV_K​​EY_ENTER`` 和 ``LV_KEY_UP/DOWN/LEFT/RIGHT`` 。在 ``read_cb`` 函数中，应将某些键转换为这些特殊键，以便​​在组中导航并与所选对象进行交互。
+
+通常，仅使用 ``LV_KEY_LEFT/RIGHT`` 就足够了，因为大多数对象都可以用它们完全控制。
+
+对于编码器，应仅使用 ``LV_KEY_LEFT`` ， ``LV_K​​EY_RIGHT`` 和 ``LV_KEY_ENTER`` 。
+
+
+编辑和浏览模式
+**********************************
+由于键盘有很多键，因此很容易在对象之间导航并使用键盘进行编辑。但是，编码器的“键”数量有限，因此很难使用默认选项进行导航。创建导航和编辑是为了避免编码器出现此问题。
+ 
+在导航模式下，编码器 ``LV_KEY_LEFT/RIGHT`` 转换为 ``LV_KEY_NEXT/PREV`` 。因此，将通过旋转编码器选择下一个或上一个对象。按 ``LV_KEY_ENTER`` 将更改为编辑模式。 
+
+在“ 编辑”模式下， ``LV_KEY_NEXT/PREV`` 通常用于编辑对象。根据对象的类型，短按或长按可将其 ``LV_KEY_ENTER`` 更改回导航模式。通常，无法按下的对象(如Slider)会在短按时离开“ 编辑”模式。但是，对于具有短单击含义的对象(例如Button)，需要长按。
+
+
+样式
+**********************************
+如果通过触摸板单击对象或通过编码器或键盘将其聚焦，则转到 ``LV_STATE_FOCUSED`` 。因此，将重点应用样式。
+ 
+如果对象进入编辑模式，它将进入 ``LV_STATE_FOCUSED|LV_STATE_EDITED`` 状态，因此将显示这些样式属性。
+
+
+相关API
+##################################
+TODO
+
+
+
+
+
+
+
