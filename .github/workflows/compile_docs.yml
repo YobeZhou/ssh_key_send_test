@@ -1,37 +1,29 @@
-name: Build docs
+name: Node CI
 
-on:
-  push:
-    branches:
-    - master
+on: [push]
 
 jobs:
-  build-and-deploy:
-    #if: github.repository == 'lvgl/lvgl'
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: ls dir
-        run: |
-          ls -al
-      - uses: actions/checkout@v1
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - name: Install npm dependencies
-        run: npm install
-      - name: Run build task
-        run: npm run build --if-present
-      - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@main
-        env:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install npm dependencies
+      run: npm install
+    - name: Run build task
+      run: npm run build --if-present
+    - name: Deploy to Server
+      uses: easingthemes/ssh-deploy@main
+      env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "dist/"
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "./"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
-          EXCLUDE: ""   # path to exclude separated by ,, ie: /dist/, /node_modules/
-
-
+          EXCLUDE: ""
