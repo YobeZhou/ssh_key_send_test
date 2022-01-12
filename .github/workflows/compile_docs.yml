@@ -9,18 +9,13 @@ jobs:
       # check out the repository
       - name: Checkout    
         uses: actions/checkout@v2    #这里使用了github官方提供的action,checkout项目到虚拟机上
-
-      #- name: Install Dependencies
-      #  run: yarn
-      #- name: Build
-      #  run: yarn build
-
-      # 利用action把build好的文件上传到服务器/var/www/react-app路径下,需要确认此目录已在服务端创建
-      - name: deploy file to server
-        uses: wlixcc/SFTP-Deploy-Action@v1.0 
-        with:  
-          username: 'root'   #ssh user name
-          server: '${{ secrets.REMOTE_HOST }}' #引用之前创建好的secret
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} #引用之前创建好的secret
-          local_path: './ssh_key_send_test/*'  # 对应我们项目build的文件夹路径
-          remote_path: '${{ secrets.REMOTE_TARGET }}'
+      - name: executing remote ssh command using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: root
+          key: ${{ secrets.SSH_ID_RSA }}
+          port: 22
+          script: |
+            ls -al
+            cd /root/100ask_lvgl_docs  && git pull
